@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Hello Flask</title>
+                <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+        
+             
+         
+ 
+		<!-- Optional theme -->
+
+		 
+		<!-- Latest compiled and minified JavaScript -->
+
+        {% assets "css_all" %}
+            <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"></script>
+        {% endassets %}
+        {% assets "js_all" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+    <head>
+    <body class="container-fluid">
+        <h1>Hello Flask World!!!</h1>
+
+
+        <div class="row" id="mainWrapper">
+
+            <div class="col-sm-10 col-sm-offset-1"></div>
+
+            
+        </div>
+
+
+    </body>
+</html>

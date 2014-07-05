@@ -1,0 +1,3 @@
+Vvar HEIGHT, US, WIDTH, height, map, projection, quantize, rateById, width;\u000a\u000aUS = null;\u000a\u000amap = null;\u000a\u000aWIDTH = 960;\u000a\u000aHEIGHT = 600;\u000a\u000awidth = WIDTH;\u000a\u000aheight = HEIGHT;\u000a\u000arateById = d3.map();\u000a\u000aquantize = d3.scale.quantize().domain([0, .15]).range(d3.range(9).map(function(i) {\u000a  return "q" + i + "-9";\u000a}));\u000a\u000aprojection = d3.geo.albersUsa().scale(1280).translate([width / 2, height / 2]);\u000a\u000ad3.json("static/other.json", function(error, us) {\u000a  console.log("in ready");\u000a  return console.log(us);\u000a});\u000a
+p1
+.

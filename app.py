@@ -12,7 +12,8 @@ from urllib2 import urlopen
 from ast import literal_eval
 from flask import Flask, jsonify, render_template, request
 from flask.ext import assets
-from flask.ext.pymongo import PyMongo
+# from flask.ext.pymongo
+import pymongo
 
 app = Flask(__name__)
 print "PAST APP"
@@ -33,7 +34,7 @@ print MONGO_URL
 if MONGO_URL:
     # Get a connection
     print "in mongo url"
-    mongo = PyMongo.Connection(MONGO_URL)
+    mongo = pymongo.Connection(MONGO_URL)
     print mongo
     # Get the database
     db = mongo[urlparse(MONGO_URL).path[1:]]
@@ -41,7 +42,7 @@ else:
     # Not on an app with the MongoHQ add-on, do some localhost action
     # mongo = pymongo.Connection('localhost', 27017)
     print "about to hit app"
-    mongo = PyMongo(app)
+    mongo = pymongo(app)
     # db = mongo['someapps-db']
 
 

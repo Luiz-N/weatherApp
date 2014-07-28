@@ -1,5 +1,5 @@
 import os
-# import bs4
+import bs4
 from urlparse import urlparse
 import unicodedata
 import time
@@ -40,13 +40,14 @@ if MONGO_URL:
     db = mongo[urlparse(MONGO_URL).path[1:]]
 else:
     # Not on an app with the MongoHQ add-on, do some localhost action
-    # mongo = pymongo.Connection('localhost', 27017)
     print "about to hit app"
-    mongo = pymongo(app)
-    # db = mongo['someapps-db']
+    mongo = pymongo.Connection('localhost', 27017)
+    print "past py connect"
+    # mongo = pymongo(app)
+    db = mongo['mongoData']
 
 
-print "past app"
+# print "past app"
 env = assets.Environment(app)
 print "past env"
 print "past mongo"
@@ -93,6 +94,7 @@ env.register(
     )
 )
 print "right before app.route"
+print os.environ.get(__name__)
 
 @app.route("/")
 def index():

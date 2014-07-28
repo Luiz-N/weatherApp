@@ -18,6 +18,7 @@ import pymongo
 app = Flask(__name__)
 print "PAST APP"
 print app
+app.debug = True
 print os.environ.get('MONGO_USERNAME')
 print os.environ.get('MONGO_DBNAME')
 

@@ -14,11 +14,11 @@ from flask.ext import assets
 from flask.ext.pymongo import PyMongo
 
 app = Flask(__name__)
-
+print "past app"
 env = assets.Environment(app)
-
+print "past env"
 mongo = PyMongo(app)
-
+print "past mongo"
 # Tell flask-assets where to look for our coffeescript and sass files.
 env.load_path = [
 	os.path.join(os.path.dirname(__file__), 'bootstrap/css'),
@@ -61,7 +61,7 @@ env.register(
         output='css_all.css'
     )
 )
-
+print "right before app.route"
 
 @app.route("/")
 def index():

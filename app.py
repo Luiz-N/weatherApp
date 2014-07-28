@@ -101,6 +101,7 @@ print os.environ.get(__name__)
 def index():
     print db
     print "in index"
+    print os.getcwd()
     return render_template('index.html')
 @app.route("/newQuery")
 

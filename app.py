@@ -1,12 +1,12 @@
 import os
-import bs4
+# import bs4
 from urlparse import urlparse
 import unicodedata
 import time
 
 from datetime import datetime, date
-from operator import add
-from collections import Counter
+# from operator import add
+# from collections import Counter
 from bs4 import BeautifulSoup
 from urllib2 import urlopen
 from ast import literal_eval
@@ -51,7 +51,12 @@ else:
 # print "past app"
 env = assets.Environment(app)
 print "past env"
-print "past mongo"
+print env.load_path
+print "os.path"
+print os.path
+print "__file__"
+print os.path.dirname(__file__)
+# print "past mongo"
 # Tell flask-assets where to look for our coffeescript and sass files.
 env.load_path = [
 	os.path.join(os.path.dirname(__file__), 'bootstrap/css'),

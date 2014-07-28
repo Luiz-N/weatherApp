@@ -24,7 +24,7 @@ if MONGO_URL:
     # Get the database
     db = mongo[urlparse(MONGO_URL).path[1:]]
     app.config['MONGO_USERNAME'] = 'luiz.neves7@gmail.com'
-    app.config['MONGO_PASSWORD'] = 'benfica321'
+    app.config['MONGO_PASSWORD'] = 'Bigwave07'
     app.config['MONGO_DBNAME'] = 'app27873276'
 else:
     # Not on an app with the MongoHQ add-on, do some localhost action

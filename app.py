@@ -15,16 +15,19 @@ from flask.ext import assets
 from flask.ext.pymongo import PyMongo
 
 MONGO_URL = os.environ.get('MONGOHQ_URL')
- 
+print "MONGO URL BELOW"
+print MONGO_URL
 if MONGO_URL:
     # Get a connection
+    print "in mongo url"
     mongo = PyMongo.Connection(MONGO_URL)
-    
+    print mongo
     # Get the database
     db = mongo[urlparse(MONGO_URL).path[1:]]
 else:
     # Not on an app with the MongoHQ add-on, do some localhost action
     # mongo = pymongo.Connection('localhost', 27017)
+    print "about to hit app"
     app = Flask(__name__)
     mongo = PyMongo(app)
     # db = mongo['someapps-db']

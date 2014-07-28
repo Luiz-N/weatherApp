@@ -1,12 +1,9 @@
 import os
-# import bs4
 from urlparse import urlparse
 import unicodedata
 import time
 
 from datetime import datetime, date
-# from operator import add
-# from collections import Counter
 from bs4 import BeautifulSoup
 from urllib2 import urlopen
 from ast import literal_eval
@@ -16,46 +13,28 @@ from flask.ext import assets
 import pymongo
 
 app = Flask(__name__)
-print "PAST APP"
-print app
 app.debug = True
-print os.environ.get('MONGO_USERNAME')
-print os.environ.get('MONGO_DBNAME')
 
 app.config['MONGO_USERNAME'] = 'luiz.neves7@gmail.com'
 app.config['MONGO_PASSWORD'] = 'benfica321'
 app.config['MONGO_DBNAME'] = 'app27873276'
-print "SET APPS"
 
 MONGO_URL = os.environ.get('MONGOHQ_URL')
 
 
-print "MONGO URL BELOW"
-print MONGO_URL
 if MONGO_URL:
     # Get a connection
-    print "in mongo url"
     mongo = pymongo.Connection(MONGO_URL)
-    print mongo
     # Get the database
     db = mongo[urlparse(MONGO_URL).path[1:]]
 else:
     # Not on an app with the MongoHQ add-on, do some localhost action
-    print "about to hit app"
     mongo = pymongo.Connection('localhost', 27017)
-    print "past py connect"
     # mongo = pymongo(app)
     db = mongo['mongoData']
 
 
-# print "past app"
 env = assets.Environment(app)
-print "past env"
-print env.load_path
-print "os.path"
-print os.path
-print "__file__"
-print os.path.dirname(__file__)
 # print "past mongo"
 # Tell flask-assets where to look for our coffeescript and sass files.
 env.load_path = [
@@ -107,8 +86,8 @@ def index():
     print db
     print "in index"
     print os.getcwd()
-    # return render_template('/index.html')
-    return "HELLO PERSON"
+    return render_template("/index.html")
+    # return "HELLO PERSON"
 @app.route("/newQuery")
 
 def getQuery():

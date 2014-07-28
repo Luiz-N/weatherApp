@@ -18,18 +18,18 @@ MONGO_URL = os.environ.get('MONGOHQ_URL')
  
 if MONGO_URL:
     # Get a connection
-    mongo = pymongo.Connection(MONGO_URL)
+    mongo = PyMongo.Connection(MONGO_URL)
     
     # Get the database
     db = mongo[urlparse(MONGO_URL).path[1:]]
 else:
     # Not on an app with the MongoHQ add-on, do some localhost action
     # mongo = pymongo.Connection('localhost', 27017)
+    app = Flask(__name__)
     mongo = PyMongo(app)
     # db = mongo['someapps-db']
 
 
-app = Flask(__name__)
 print "past app"
 env = assets.Environment(app)
 print "past env"

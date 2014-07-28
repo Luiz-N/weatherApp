@@ -1,0 +1,3 @@
+Vd3.csv("static/aggWeather.csv", function(data) {\u000a  console.log("in ready");\u000a  return console.log(data);\u000a});\u000a
+p1
+.

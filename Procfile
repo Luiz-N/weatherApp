@@ -1,2 +1,2 @@
 
-web: gunicorn app:app --workers $WEB_CONCURRENCY
+web: gunicorn app:app --workers 1

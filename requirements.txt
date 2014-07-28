@@ -1,15 +1,8 @@
-BeautifulSoup==3.2.1
-Cython==0.20.1 
 Flask==0.10.1
 Flask-Assets==0.9
 Flask-PyMongo==0.3.0
 Jinja2==2.7.2
 MarkupSafe==0.18
-PIL==1.1.7
-PyAudio==0.2.7
-PySAL==1.6.0
-PyYAML==3.11
-Pygments==1.6
 Sphinx==1.2.1
 VTK==5.10.1
 Werkzeug==0.9.4

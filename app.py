@@ -14,7 +14,20 @@ from flask import Flask, jsonify, render_template, request
 from flask.ext import assets
 from flask.ext.pymongo import PyMongo
 
+app = Flask(__name__)
+print "PAST APP"
+print app
+print os.environ.get('MONGO_USERNAME')
+print os.environ.get('MONGO_DBNAME')
+
+app.config['MONGO_USERNAME'] = 'luiz.neves7@gmail.com'
+app.config['MONGO_PASSWORD'] = 'benfica321'
+app.config['MONGO_DBNAME'] = 'app27873276'
+print "SET APPS"
+
 MONGO_URL = os.environ.get('MONGOHQ_URL')
+
+
 print "MONGO URL BELOW"
 print MONGO_URL
 if MONGO_URL:
@@ -28,7 +41,6 @@ else:
     # Not on an app with the MongoHQ add-on, do some localhost action
     # mongo = pymongo.Connection('localhost', 27017)
     print "about to hit app"
-    app = Flask(__name__)
     mongo = PyMongo(app)
     # db = mongo['someapps-db']
 

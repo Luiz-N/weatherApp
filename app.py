@@ -1,5 +1,5 @@
 import os
-import bs4
+# import bs4
 import unicodedata
 import time
 

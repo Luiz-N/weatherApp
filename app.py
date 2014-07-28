@@ -98,7 +98,7 @@ print os.environ.get(__name__)
 
 @app.route("/")
 def index():
-    # mongo.db.queries.drop()
+    print mongo.db.collecetions()
     print "in index"
     return render_template('index.html')
 @app.route("/newQuery")

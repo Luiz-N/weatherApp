@@ -15,9 +15,9 @@ import pymongo
 app = Flask(__name__)
 app.debug = True
 
-app.config['MONGO_USERNAME'] = 'luiz.neves7@gmail.com'
-app.config['MONGO_PASSWORD'] = 'benfica321'
-app.config['MONGO_DBNAME'] = 'app27873276'
+# app.config['MONGO_USERNAME'] = 'luiz.neves7@gmail.com'
+# app.config['MONGO_PASSWORD'] = 'benfica321'
+# app.config['MONGO_DBNAME'] = 'app27873276'
 
 MONGO_URL = os.environ.get('MONGOHQ_URL')
 

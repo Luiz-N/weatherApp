@@ -98,14 +98,14 @@ print os.environ.get(__name__)
 
 @app.route("/")
 def index():
-    print mongo.db.collecetions()
+    print db
     print "in index"
     return render_template('index.html')
 @app.route("/newQuery")
 
 def getQuery():
     queryString = request.args.get('query', 0, type=str)
-    result = mongo.db.queries.find_one({'query':queryString},{'_id': False})
+    result = db.queries.find_one({'query':queryString},{'_id': False})
     if result is not None:
         return jsonify(result)
     else:
@@ -118,7 +118,7 @@ def scrapeForQuery(queryString, firstTry):
     if soup.find(id="tvgraphclip") is not None:
         finalArray = parsePage(soup)
         print finalArray
-        mongo.db.queries.save({'query':queryString,'dailyCounts':finalArray})
+        db.queries.save({'query':queryString,'dailyCounts':finalArray})
         return finalArray
     elif firstTry is True:
         print "##### trying again ######"
@@ -158,7 +158,7 @@ def getClips():
     month2 = request.args.get('month2',0, type=str)
     day2 = request.args.get('day2',0, type=str)
     # print year,month,day,query
-    # result = mongo.db.queries.find_one({'query':query},{'_id': False})
+    # result = db.queries.find_one({'query':query},{'_id': False})
     clipObjects = parsePageForClips(year+month+day,year2+month2+day2,query)
     # queryString = request.args.get('date', 0, type=dict)
     # print datetime.isoformat(queryString)

@@ -1,0 +1,31 @@
+{
+  "name": "name",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Luiz-N/weatherApp",
+  "authors": [
+    "Luiz <luiz.neves7@gmail.com>"
+  ],
+  "main": "app.py",
+  "keywords": [
+    "Flask",
+    "python",
+    "webassets",
+    "coffeescript",
+    "sass"
+  ],
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1"
+  }
+}

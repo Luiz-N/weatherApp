@@ -12,9 +12,88 @@
   stroke-linejoin: round;
 }
 
-/* line 8 */
+/* line 12 */
 /* line 14 */
-#mainWrapper div {
-  background: lightblue;
-  height: 250px;
+#mainWrapper {
+  overflow: hidden;
+}
+
+/* line 15 */
+/* line 18 */
+#mainWrapper #upperHalf .chart {
+  width: 100%;
+}
+
+/* line 17 */
+/* line 22 */
+#mainWrapper #upperHalf g.resize {
+  display: none;
+}
+
+/* line 19 */
+/* line 26 */
+#mainWrapper #upperHalf rect.background {
+  display: none;
+}
+
+/* line 21 */
+/* line 30 */
+#mainWrapper #upperHalf .buttons {
+  background-color: rgba(240, 128, 128, 0.7);
+}
+
+/* line 23 */
+/* line 34 */
+#mainWrapper #upperHalf .buttons ul {
+  list-style: none;
+}
+
+/* line 25 */
+/* line 38 */
+#mainWrapper #upperHalf .buttons ul li {
+  float: left;
+}
+
+/* line 27 */
+/* line 42 */
+#mainWrapper #upperHalf .rightCol {
+  overflow: hidden;
+}
+
+/* line 32 */
+/* line 46 */
+#mainWrapper #lowerHalf .leftCol {
+  height: 100%;
+  text-align: center;
+  overflow-x: scroll;
+}
+
+/* line 36 */
+/* line 52 */
+#mainWrapper #lowerHalf #cal-heatmap {
+  display: block;
+  top: 50%;
+  height: 30%;
+  width: 50%;
+  margin: -15% 0 0 0;
+}
+
+/* line 43 */
+/* line 60 */
+#mainWrapper #lowerHalf #cal-heatmap g rect:hover {
+  cursor: pointer;
+}
+
+/* line 45 */
+/* line 64 */
+#mainWrapper #lowerHalf #cal-heatmap .graph-label {
+  font-size: 1.5em;
+}
+
+/* line 47 */
+/* line 68 */
+#mainWrapper #lowerHalf .rightCol {
+  height: 100%;
+  text-align: center;
+  overflow: scroll;
 }

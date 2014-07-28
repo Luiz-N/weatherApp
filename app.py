@@ -1,5 +1,6 @@
 import os
 # import bs4
+from urlparse import urlparse
 import unicodedata
 import time
 
@@ -13,11 +14,25 @@ from flask import Flask, jsonify, render_template, request
 from flask.ext import assets
 from flask.ext.pymongo import PyMongo
 
+MONGO_URL = os.environ.get('MONGOHQ_URL')
+ 
+if MONGO_URL:
+    # Get a connection
+    mongo = pymongo.Connection(MONGO_URL)
+    
+    # Get the database
+    db = mongo[urlparse(MONGO_URL).path[1:]]
+else:
+    # Not on an app with the MongoHQ add-on, do some localhost action
+    # mongo = pymongo.Connection('localhost', 27017)
+    mongo = PyMongo(app)
+    # db = mongo['someapps-db']
+
+
 app = Flask(__name__)
 print "past app"
 env = assets.Environment(app)
 print "past env"
-mongo = PyMongo(app)
 print "past mongo"
 # Tell flask-assets where to look for our coffeescript and sass files.
 env.load_path = [

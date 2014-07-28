@@ -5,6 +5,48 @@
   stroke: #fff
   stroke-linejoin: round
 
-#mainWrapper div
-  background: lightblue
-  height:     250px
+h1
+  text-align:center
+
+//#mainWrapper div
+#mainWrapper
+  overflow: hidden
+  #upperHalf
+    .chart
+      width: 100% 
+    g.resize
+      display: none
+    rect.background
+      display: none
+    .buttons
+      background-color: rgba(240,128,128,.7)
+      ul
+        list-style: none
+        li
+          float: left
+    .rightCol
+      overflow: hidden
+
+  #lowerHalf
+
+    .leftCol
+      height: 100%
+      text-align: center
+      overflow-x: scroll
+    #cal-heatmap
+      display: block
+      // position: absolute
+      top: 50%
+      height: 30%
+      width: 50%
+      margin: -15% 0 0 0
+      g rect:hover
+        cursor: pointer
+      .graph-label
+        font-size: 1.5em
+    .rightCol
+      height: 100%
+      text-align: center
+      overflow: scroll
+
+

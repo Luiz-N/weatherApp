@@ -100,7 +100,7 @@ env.register(
     )
 )
 print "right before app.route"
-print os.environ.get(__name__)
+# print os.environ.get(__name__)
 
 @app.route("/")
 def index():
@@ -196,4 +196,7 @@ def parsePageForClips(firstDay,nextDay,query):
 
 
 if __name__ == "__main__":
+    print "IN __main__"
+    port = int(os.environ.get('PORT', 5000))
+    # app.run(host='0.0.0.0', port=port)
     app.run(debug=True)

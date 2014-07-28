@@ -107,7 +107,8 @@ def index():
     print db
     print "in index"
     print os.getcwd()
-    return render_template('/index.html')
+    # return render_template('/index.html')
+    return "HELLO PERSON"
 @app.route("/newQuery")
 
 def getQuery():

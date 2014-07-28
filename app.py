@@ -13,11 +13,7 @@ from flask.ext import assets
 import pymongo
 
 app = Flask(__name__)
-app.debug = True
 
-# app.config['MONGO_USERNAME'] = 'luiz.neves7@gmail.com'
-# app.config['MONGO_PASSWORD'] = 'benfica321'
-# app.config['MONGO_DBNAME'] = 'app27873276'
 
 MONGO_URL = os.environ.get('MONGOHQ_URL')
 
@@ -27,6 +23,9 @@ if MONGO_URL:
     mongo = pymongo.Connection(MONGO_URL)
     # Get the database
     db = mongo[urlparse(MONGO_URL).path[1:]]
+    app.config['MONGO_USERNAME'] = 'luiz.neves7@gmail.com'
+    app.config['MONGO_PASSWORD'] = 'benfica321'
+    app.config['MONGO_DBNAME'] = 'app27873276'
 else:
     # Not on an app with the MongoHQ add-on, do some localhost action
     mongo = pymongo.Connection('localhost', 27017)
@@ -34,50 +33,50 @@ else:
     db = mongo['mongoData']
 
 
-env = assets.Environment(app)
-# print "past mongo"
-# Tell flask-assets where to look for our coffeescript and sass files.
-env.load_path = [
-	os.path.join(os.path.dirname(__file__), 'bootstrap/css'),
-    os.path.join(os.path.dirname(__file__), 'sass'),
-    os.path.join(os.path.dirname(__file__), 'coffee'),
-    os.path.join(os.path.dirname(__file__), 'bower_components'),
-]
+    env = assets.Environment(app)
+    # print "past mongo"
+    # Tell flask-assets where to look for our coffeescript and sass files.
+    env.load_path = [
+    	os.path.join(os.path.dirname(__file__), 'bootstrap/css'),
+        os.path.join(os.path.dirname(__file__), 'sass'),
+        os.path.join(os.path.dirname(__file__), 'coffee'),
+        os.path.join(os.path.dirname(__file__), 'bower_components'),
+    ]
 
 
-env.register(
-    'js_all',
-    assets.Bundle(
-        'jquery/dist/jquery.min.js',
-        'bootstrap.min.js',
-        'd3.min.js',
-        'dc.js',
-        'crossfilter.js',
-        'colorbrewer.js',
+    env.register(
+        'js_all',
         assets.Bundle(
-            'all.coffee',
-            'chartFunctions.coffee',
-            'helpers.coffee', 
-            'listeners.coffee',
-            'dashboardClass.coffee',
-            'chartClass.coffee',
-            #'three.coffee',
-            #'map.coffee',
-            #'all.coffee',
-            filters=['coffeescript']
-        ), 
-        output='js_all.js'
+            'jquery/dist/jquery.min.js',
+            'bootstrap.min.js',
+            'd3.min.js',
+            'dc.js',
+            'crossfilter.js',
+            'colorbrewer.js',
+            assets.Bundle(
+                'all.coffee',
+                'chartFunctions.coffee',
+                'helpers.coffee', 
+                'listeners.coffee',
+                'dashboardClass.coffee',
+                'chartClass.coffee',
+                #'three.coffee',
+                #'map.coffee',
+                #'all.coffee',
+                filters=['coffeescript']
+            ), 
+            output='js_all.js'
+        )
     )
-)
 
-env.register(
-    'css_all',
-    assets.Bundle(
-        'all.sass',
-        filters=['sass','scss'],
-        output='css_all.css'
+    env.register(
+        'css_all',
+        assets.Bundle(
+            'all.sass',
+            filters=['sass','scss'],
+            output='css_all.css'
+        )
     )
-)
 print "right before app.route"
 # print os.environ.get(__name__)
 

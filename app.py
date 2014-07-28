@@ -97,6 +97,7 @@ print "right before app.route"
 @app.route("/")
 def index():
     # mongo.db.queries.drop()
+    print "in index"
     return render_template('index.html')
 @app.route("/newQuery")
 

@@ -1,6 +1,6 @@
 class Dashboard
 	constructor: () ->
-		@upperHeight = ($("#upperHalf .leftCol").width()*.333)
+		@upperHeight = ($("#upperHalf .leftCol").width()*.225)
 		@lowerHeight = $("#graphTitle").offset().top + @upperHeight
 		@metricArray = ["H_Pcnt"]
 		@metricName = "Temp"
@@ -15,7 +15,7 @@ class Dashboard
 		@cal = null
 		@brushFilter = [d3.time.format("%Y-%m-%d").parse("2011-01-01"),d3.time.format("%Y-%m-%d").parse("2012-01-01")]
 		@monthArray = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"]
-		@lastQuery = "flash flood"
+		@lastQuery = defaultClipsArray
 
 	parseData: (data) ->
 		#@data = data
@@ -70,12 +70,13 @@ class Dashboard
 		actualValuesChart = dc.barChart(thisChart.chartObject)
 		actualValuesChart
 			.group(metric)
+			.colors(['rgb(64, 130, 163)'])
 			.valueAccessor (d) -> d.value.avg
 
 		thisChart.chartObject
 			.dimension(@dimension.monthNames)
 			.width(thisChart.width + 75)
-			.height(@upperHeight)
+			.height(@upperHeight - $("#currentYear").height())
 			.yAxisLabel(@displayName)
 			.elasticY(true)
 			.x(d3.scale.ordinal().domain(@monthArray))
@@ -149,18 +150,18 @@ class Dashboard
 		actualValuesChart = dc.lineChart(thisChart.chartObject)
 			.group(metric, "actual " + @displayName)
 			.valueAccessor (d) ->  d.value.avg
-			.colors(['green'])
+			.colors(['#2a6496'])
 			.interpolate('basis-open')
 
 		normValuesChart = dc.lineChart(thisChart.chartObject)
 			.group(metric, "normal " + @displayName)
 			.valueAccessor (d) -> d.value.avg_avg
-			.colors(['rgba(0,0,255,1)'])
+			.colors(['#428bca'])
 			.interpolate('basis-open')
 		
 		# clipsCountChart = dc.lineChart(thisChart.chartObject)
-		# 	.group(buildFakeGroup(defaultClipsArray))
-		# 	.colors(['red'])
+		# 	.group(buildFakeGroup(@lastQuery))
+		# 	.colors(['black'])
 		# 	.interpolate('basis-open')
 		#   .y(d3.scale.linear().range([100, 0]))
 		# 	.yAxis(d3.svg.axis().scale(d3.scale.linear().range([100, 0])))
@@ -186,10 +187,12 @@ class Dashboard
 					chart.redrawBrush(chart.g())
 					chart.filter(go.brushFilter)
 					go.loadCalendar()
+					# chart.select(".dc-legend g").text("test text")
 			)
 
 		thisChart.innerChart.values = actualValuesChart
 		thisChart.innerChart.normalValues = normValuesChart
+		thisChart.innerChart.clipCounts = clipsCountChart
 
 		@charts.timeSeries = thisChart
 	
@@ -257,17 +260,6 @@ class Dashboard
 			chart.updateMetric(@metricName,@displayName)
 			# chart.object.group(chart.averageMetric(@metricName))
 		dc.renderAll()
-		# @renderWordCountGraph()
-		# @activateListeners()
-		# setTimeout ( -> go.loadCalendar()),50
-
-			# chart.object.expireCache()
-		# $("svg").click () ->
-		# 	console.log("refresh svg")
-		# 	dc.events.trigger( -> 
-		# 		@timeSpan = go.charts.timeSeries.chartObject.filter()
-		# 		setTimeout ( -> go.loadCalendar()),350
-		# 	)
 		
 
 	activateListeners: () ->
@@ -281,15 +273,13 @@ class Dashboard
 			$(this).parent().addClass("active")
 			go.refreshCharts()
 
-		$("#upperHalf .rightCol").on "click","button", ->
+		$("#lowerHalf .rightCol").on "click","button", ->
 			queryString = go.inputBox.value
 			go.getWordCount(queryString)
 
 		$(@inputBox).keypress (e) ->
-			console.log(e.which)
 			if e.which == 13
-					console.log("clicked")
-					$("#upperHalf .rightCol button").click()
+					$(".rightCol button").click()
 
 	loadCalendar: () ->
 		# console.log("in calendar")
@@ -311,12 +301,7 @@ class Dashboard
 			metricValues = precipReduceHack(@dimension.dayStamp,@metricName)
 
 		json = buildCalendarJson(metricValues.all())
-		# debugger
-		# values = _.values(json)
-		max = _.max(_.pluck(_.pluck(metricValues.all(),'value'),'avg_avg'))
-		#get max for avgs instead
-		interval = max/10;
-		
+		legendIntervals = calculateIntervals(metricValues)
 		numOfMonths = Math.ceil(((end - begin) / 31536000000)*12)
 		cellSize = @upperHeight*.125
 
@@ -325,8 +310,8 @@ class Dashboard
 			subDomain: "x_day",
 			start: begin,
 			range: numOfMonths,
-			legend: [interval, 2 * interval, 3 * interval, 4 * interval,5 * interval,6 * interval,7 * interval,8*interval,9*interval, max],
-			legendColors: ["#efefef", "coral"]
+			legend: legendIntervals
+			legendColors: ["#efefef", "#2a6496"]
 			cellSize: cellSize
 			legendCellSize: cellSize/2
 			domainGutter: cellSize/2
@@ -334,6 +319,7 @@ class Dashboard
 			legendVerticalPosition: "center"
 			legendMargin: [0,cellSize,0,0]
 			data: json
+			# tooltip: true
 			dataType: "json"
 			onClick: (date,items) => @loadNewsClips(date, items)
 		})
@@ -404,7 +390,8 @@ class Dashboard
 	renderWordCountGraph: () ->
 				$("g.area").remove()
 				chart = @charts.timeSeries.chartObject
-				console.log(@lastQuery)
+				chart.render()
+				# console.log(@lastQuery)
 				height = chart.xAxisY() 
 				max = _.max(_.pluck(@lastQuery,"value"))
 				x = chart.x()

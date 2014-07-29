@@ -11,9 +11,14 @@ h1
 //#mainWrapper div
 #mainWrapper
   overflow: hidden
+  .chart
+    width: 100%
+    float: none
+  #mainCol
+    padding: 0 2em
+
+
   #upperHalf
-    .chart
-      width: 100% 
     g.resize
       display: none
     rect.background
@@ -28,18 +33,20 @@ h1
       overflow: hidden
 
   #lowerHalf
-
-    .leftCol
+    #tabContent
       height: 100%
+    #months
+      // padding: 1em
+      overflow: hidden
+    .leftCol
+      margin-top: 3em
       text-align: center
-      overflow-x: scroll
+      overflow: hidden
     #cal-heatmap
-      display: block
-      // position: absolute
-      top: 50%
-      height: 30%
-      width: 50%
-      margin: -15% 0 0 0
+      padding: 5em 0 0 2em
+      overflow-y: hidden
+      svg.graph-legend
+        -webkit-transform: rotate(180deg)
       g rect:hover
         cursor: pointer
       .graph-label
@@ -47,6 +54,14 @@ h1
     .rightCol
       height: 100%
       text-align: center
-      overflow: scroll
+      overflow: hidden
 
+.cf:before,
+.cf:after 
+  content: " "
+  display: table
+
+
+.cf:after 
+  clear: both
 

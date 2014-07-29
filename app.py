@@ -90,7 +90,7 @@ def index():
 @app.route("/newQuery")
 
 def getQuery():
-    queryString = request.args.get('query', 0, type=str)
+    queryString = request.args.get('query', 0, type=str).strip()
     result = db.queries.find_one({'query':queryString},{'_id': False})
     if result is not None:
         return jsonify(result)
@@ -139,7 +139,7 @@ def getClips():
     year = request.args.get('year',0, type=str)
     month = request.args.get('month',0, type=str)
     day = request.args.get('day',0, type=str)
-    query = request.args.get('query',0, type=str)
+    query = request.args.get('query',0, type=str).strip()
     year2 = request.args.get('year2',0, type=str)
     month2 = request.args.get('month2',0, type=str)
     day2 = request.args.get('day2',0, type=str)
@@ -152,7 +152,7 @@ def getClips():
 
 def parsePageForClips(firstDay,nextDay,query):
     # soup = BeautifulSoup(urlopen("https://archive.org/details/tv?q="+query+"+AND+%28channel%3AWJLA+OR+channel%3AWRC+OR+channel%3AWTTG+OR+channel%3AWUSA+OR+channel%3AWBAL+OR+channel%3AWBFF+OR+channel%3AWJZ+OR+channel%3AWMAR+OR+channel%3AWNUV%29+&rows=10&&time="+firstDay+"-"+nextDay+"))    
-    soup = BeautifulSoup(urlopen('https://archive.org/details/tv?q=flood+AND+%28channel%3AWJLA+OR+channel%3AWRC+OR+channel%3AWTTG+OR+channel%3AWUSA+OR+channel%3AWBAL+OR+channel%3AWBFF+OR+channel%3AWJZ+OR+channel%3AWMAR+OR+channel%3AWNUV%29+&rows=10&&time="+firstDay+"-"+nextDay+"'))
+    soup = BeautifulSoup(urlopen('https://archive.org/details/tv?q='+query+'+AND+%28channel%3AWJLA+OR+channel%3AWRC+OR+channel%3AWTTG+OR+channel%3AWUSA+OR+channel%3AWBAL+OR+channel%3AWBFF+OR+channel%3AWJZ+OR+channel%3AWMAR+OR+channel%3AWNUV%29+&rows=10&&time='+firstDay+'-'+nextDay+''))
     print soup
     clipObjects = []
     clips = soup.find_all("div",class_="sniptitle-search")

@@ -18,82 +18,118 @@
   overflow: hidden;
 }
 
-/* line 15 */
+/* line 14 */
 /* line 18 */
-#mainWrapper #upperHalf .chart {
+#mainWrapper .chart {
   width: 100%;
+  float: none;
 }
 
 /* line 17 */
+/* line 23 */
+#mainWrapper #mainCol {
+  padding: 0 2em;
+}
+
 /* line 22 */
+/* line 27 */
 #mainWrapper #upperHalf g.resize {
   display: none;
 }
 
-/* line 19 */
-/* line 26 */
+/* line 24 */
+/* line 31 */
 #mainWrapper #upperHalf rect.background {
   display: none;
 }
 
-/* line 21 */
-/* line 30 */
+/* line 26 */
+/* line 35 */
 #mainWrapper #upperHalf .buttons {
   background-color: rgba(240, 128, 128, 0.7);
 }
 
-/* line 23 */
-/* line 34 */
+/* line 28 */
+/* line 39 */
 #mainWrapper #upperHalf .buttons ul {
   list-style: none;
 }
 
-/* line 25 */
-/* line 38 */
+/* line 30 */
+/* line 43 */
 #mainWrapper #upperHalf .buttons ul li {
   float: left;
 }
 
-/* line 27 */
-/* line 42 */
+/* line 32 */
+/* line 47 */
 #mainWrapper #upperHalf .rightCol {
   overflow: hidden;
 }
 
-/* line 32 */
-/* line 46 */
-#mainWrapper #lowerHalf .leftCol {
-  height: 100%;
-  text-align: center;
-  overflow-x: scroll;
-}
-
 /* line 36 */
-/* line 52 */
-#mainWrapper #lowerHalf #cal-heatmap {
-  display: block;
-  top: 50%;
-  height: 30%;
-  width: 50%;
-  margin: -15% 0 0 0;
+/* line 51 */
+#mainWrapper #lowerHalf #tabContent {
+  height: 100%;
 }
 
-/* line 43 */
-/* line 60 */
+/* line 38 */
+/* line 55 */
+#mainWrapper #lowerHalf #months {
+  overflow: hidden;
+}
+
+/* line 41 */
+/* line 59 */
+#mainWrapper #lowerHalf .leftCol {
+  margin-top: 3em;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* line 45 */
+/* line 65 */
+#mainWrapper #lowerHalf #cal-heatmap {
+  padding: 5em 0 0 2em;
+  overflow-y: hidden;
+}
+
+/* line 48 */
+/* line 70 */
+#mainWrapper #lowerHalf #cal-heatmap svg.graph-legend {
+  -webkit-transform: rotate(180deg);
+}
+
+/* line 50 */
+/* line 74 */
 #mainWrapper #lowerHalf #cal-heatmap g rect:hover {
   cursor: pointer;
 }
 
-/* line 45 */
-/* line 64 */
+/* line 52 */
+/* line 78 */
 #mainWrapper #lowerHalf #cal-heatmap .graph-label {
   font-size: 1.5em;
 }
 
-/* line 47 */
-/* line 68 */
+/* line 54 */
+/* line 82 */
 #mainWrapper #lowerHalf .rightCol {
   height: 100%;
   text-align: center;
-  overflow: scroll;
+  overflow: hidden;
+}
+
+/* line 59 */
+/* line 89 */
+.cf:before,
+.cf:after {
+  content: " ";
+  display: table;
+}
+
+/* line 65 */
+/* line 96 */
+.cf:after {
+  clear: both;
 }

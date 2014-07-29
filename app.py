@@ -90,7 +90,7 @@ def index():
 @app.route("/newQuery")
 
 def getQuery():
-    queryString = request.args.get('query', 0, type=str).strip()
+    queryString = request.args.get('query', 0, type=str).lower().strip()
     result = db.queries.find_one({'query':queryString},{'_id': False})
     if result is not None:
         return jsonify(result)
@@ -136,21 +136,23 @@ def parsePage(soup):
 
 def getClips():
     print request.args
-    year = request.args.get('year',0, type=str)
-    month = request.args.get('month',0, type=str)
-    day = request.args.get('day',0, type=str)
-    query = request.args.get('query',0, type=str).strip()
+    year = request.args.get('year1',0, type=str)
+    month = request.args.get('month1',0, type=str)
+    day = request.args.get('day1',0, type=str)
+    query = request.args.get('query',0, type=str).lower().strip()
     year2 = request.args.get('year2',0, type=str)
     month2 = request.args.get('month2',0, type=str)
     day2 = request.args.get('day2',0, type=str)
-    # print year,month,day,query
+    print year,month,day,query
     # result = db.queries.find_one({'query':query},{'_id': False})
+
     clipObjects = parsePageForClips(year+month+day,year2+month2+day2,query)
     # queryString = request.args.get('date', 0, type=dict)
     # print datetime.isoformat(queryString)
     return jsonify(clips=clipObjects)
 
 def parsePageForClips(firstDay,nextDay,query):
+    print type(firstDay)
     # soup = BeautifulSoup(urlopen("https://archive.org/details/tv?q="+query+"+AND+%28channel%3AWJLA+OR+channel%3AWRC+OR+channel%3AWTTG+OR+channel%3AWUSA+OR+channel%3AWBAL+OR+channel%3AWBFF+OR+channel%3AWJZ+OR+channel%3AWMAR+OR+channel%3AWNUV%29+&rows=10&&time="+firstDay+"-"+nextDay+"))    
     soup = BeautifulSoup(urlopen('https://archive.org/details/tv?q='+query+'+AND+%28channel%3AWJLA+OR+channel%3AWRC+OR+channel%3AWTTG+OR+channel%3AWUSA+OR+channel%3AWBAL+OR+channel%3AWBFF+OR+channel%3AWJZ+OR+channel%3AWMAR+OR+channel%3AWNUV%29+&rows=10&&time='+firstDay+'-'+nextDay+''))
     print soup

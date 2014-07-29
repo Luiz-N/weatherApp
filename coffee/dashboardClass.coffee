@@ -15,7 +15,7 @@ class Dashboard
 		@cal = null
 		@brushFilter = [d3.time.format("%Y-%m-%d").parse("2011-01-01"),d3.time.format("%Y-%m-%d").parse("2012-01-01")]
 		@monthArray = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"]
-		@lastQuery = defaultClipsArray
+		@lastQuery = "hurricane sandy"
 
 	parseData: (data) ->
 		#@data = data
@@ -192,7 +192,7 @@ class Dashboard
 
 		thisChart.innerChart.values = actualValuesChart
 		thisChart.innerChart.normalValues = normValuesChart
-		thisChart.innerChart.clipCounts = clipsCountChart
+		# thisChart.innerChart.clipCounts = clipsCountChart
 
 		@charts.timeSeries = thisChart
 	
@@ -333,10 +333,10 @@ class Dashboard
 		date.setDate(date.getDate()+1)
 		$.ajax $SCRIPT_ROOT+'/grabClips',
 			  data :
-			    year1  : firstDate.getFullYear()
+			    year1  : String(firstDate.getFullYear())
 			    month1 : ('0' + (firstDate.getMonth()+1)).slice(-2)
 			    day1  : ('0' + firstDate.getDate()).slice(-2)
-			    year2  : date.getFullYear()
+			    year2  : String(date.getFullYear())
 			    month2 : ('0' + (date.getMonth()+1)).slice(-2)
 			    day2  : ('0' + date.getDate()).slice(-2)
 			    query : @lastQuery
@@ -391,7 +391,7 @@ class Dashboard
 				$("g.area").remove()
 				chart = @charts.timeSeries.chartObject
 				chart.render()
-				# console.log(@lastQuery)
+				console.log(@lastQuery)
 				height = chart.xAxisY() 
 				max = _.max(_.pluck(@lastQuery,"value"))
 				x = chart.x()

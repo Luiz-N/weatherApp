@@ -7332,7 +7332,7 @@ Dashboard = (function() {
     this.cal = null;
     this.brushFilter = [d3.time.format("%Y-%m-%d").parse("2011-01-01"), d3.time.format("%Y-%m-%d").parse("2012-01-01")];
     this.monthArray = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
-    this.lastQuery = defaultClipsArray;
+    this.lastQuery = "hurricane sandy";
   }
 
   Dashboard.prototype.parseData = function(data) {
@@ -7420,7 +7420,7 @@ Dashboard = (function() {
   };
 
   Dashboard.prototype.buildTimeSeriesChart = function() {
-    var actualValuesChart, clipsCountChart, go, maxDate, metric, minDate, normValuesChart, thisChart;
+    var actualValuesChart, go, maxDate, metric, minDate, normValuesChart, thisChart;
     go = this;
     thisChart = new Chart(dc.compositeChart("#upperHalf .leftCol div.chart"), this.dimension.monthStamp);
     metric = thisChart.averageMetric(this.metricName);
@@ -7432,7 +7432,6 @@ Dashboard = (function() {
     normValuesChart = dc.lineChart(thisChart.chartObject).group(metric, "normal " + this.displayName).valueAccessor(function(d) {
       return d.value.avg_avg;
     }).colors(['#428bca']).interpolate('basis-open');
-    clipsCountChart = dc.lineChart(thisChart.chartObject).group(buildFakeGroup(this.lastQuery)).colors(['black']).interpolate('basis-open').y(d3.scale.linear().range([100, 0])).yAxis(d3.svg.axis().scale(d3.scale.linear().range([100, 0])));
     thisChart.chartObject.dimension(this.dimension.monthStamp).width(thisChart.width + 30).height(this.upperHeight).yAxisLabel(this.displayName).elasticY(true).x(d3.time.scale().domain([minDate, maxDate])).xUnits(d3.time.months).brushOn(false).legend(dc.legend().x(60).y(10).itemHeight(13).gap(5)).renderHorizontalGridLines(true).compose([actualValuesChart, normValuesChart]).renderlet(function(chart) {
       if (!chart.brushOn()) {
         chart.brushOn(true);
@@ -7445,7 +7444,6 @@ Dashboard = (function() {
     });
     thisChart.innerChart.values = actualValuesChart;
     thisChart.innerChart.normalValues = normValuesChart;
-    thisChart.innerChart.clipCounts = clipsCountChart;
     return this.charts.timeSeries = thisChart;
   };
 
@@ -7549,10 +7547,10 @@ Dashboard = (function() {
     date.setDate(date.getDate() + 1);
     return $.ajax($SCRIPT_ROOT + '/grabClips', {
       data: {
-        year1: firstDate.getFullYear(),
+        year1: String(firstDate.getFullYear()),
         month1: ('0' + (firstDate.getMonth() + 1)).slice(-2),
         day1: ('0' + firstDate.getDate()).slice(-2),
-        year2: date.getFullYear(),
+        year2: String(date.getFullYear()),
         month2: ('0' + (date.getMonth() + 1)).slice(-2),
         day2: ('0' + date.getDate()).slice(-2),
         query: this.lastQuery
@@ -7613,6 +7611,7 @@ Dashboard = (function() {
     $("g.area").remove();
     chart = this.charts.timeSeries.chartObject;
     chart.render();
+    console.log(this.lastQuery);
     height = chart.xAxisY();
     max = _.max(_.pluck(this.lastQuery, "value"));
     x = chart.x();

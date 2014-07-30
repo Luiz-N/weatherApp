@@ -41,7 +41,7 @@ class Dashboard
 		@buildMonthChart()
 		@buildTimeSeriesChart()
 		# @loadCalendar()
-		
+		dc.constants.EVENT_DELAY = 100
 		
 
 	buildDimensions: () ->
@@ -50,9 +50,9 @@ class Dashboard
 		# @dimension.timeOfDay = @cf.dimension (d) -> d.hourlyNum
 		@dimension.monthStamp = @cf.dimension (d) -> d.monthStamp
 		@dimension.dayStamp = @cf.dimension (d) -> d.dayStamp
-		@dimension.monthNames = @cf.dimension (d) ->
+		@dimension.monthNames = @cf.dimension (d) =>
 			month = d.monthNum
-			# go.monthArray[month]
+			@monthArray[month]
 
 	buildMetrics: () ->
 		@metric.avgMonthOverTime = averageValues(@dimension.monthStamp,@metricName)
@@ -67,24 +67,41 @@ class Dashboard
 		thisChart = new Chart(dc.compositeChart("#monthChart"),@dimension.monthNames)
 		metric = thisChart.averageMetric(@metricName)
 
+		# domain = []
+		# (@dimension.dayStamp.bottom(1)[0].Date).getMonth()
+		# group.top(Infinity).forEach( (d) ->
+		#     domain[domain.length] = d.key
+		# )
+		
+		
+
 		actualValuesChart = dc.barChart(thisChart.chartObject)
 		actualValuesChart
 			.group(metric)
 			.colors(['rgb(64, 130, 163)'])
 			.valueAccessor (d) -> d.value.avg
+			.elasticX(true)
 
 		thisChart.chartObject
 			.dimension(@dimension.monthNames)
 			.width(thisChart.width + 75)
 			.height(@upperHeight - $("#currentYear").height())
 			.yAxisLabel(@displayName)
+			# .ordering( (d) ->  d.value.avg)
 			.elasticY(true)
-			.x(d3.scale.ordinal().domain(@monthArray))
+			.elasticX(true)
+			.x(d3.scale.ordinal().domain(months(@dimension.dayStamp.bottom(1)[0].Date.getMonth())))
 			.xUnits(dc.units.ordinal)
 			.renderHorizontalGridLines(true)
 			.compose([actualValuesChart])
-			.renderlet( () ->
-				dc.events.trigger( -> go.loadCalendar())
+			.on "preRedraw", (_chart) =>
+				if actualValuesChart.filter() == null
+					thisChart.updateXAxis(@dimension.dayStamp)
+			.renderlet( (_chart) =>
+				dc.events.trigger( => 
+					# @loadCalendar()
+					# actualValuesChart.renderXAxis(actualValuesChart.g())
+				)
 			)
 
 		thisChart.innerChart.values = actualValuesChart
@@ -178,16 +195,18 @@ class Dashboard
 			.legend(dc.legend().x(60).y(10).itemHeight(13).gap(5))
     	.renderHorizontalGridLines(true)
     	.compose([actualValuesChart,normValuesChart])
-    	.renderlet( (chart) ->
-				if !chart.brushOn()
-					chart.brushOn(true)
-					chart.renderBrush(chart.g())
-					chart.brush().extent(go.brushFilter)
-					# chart.brush().extent([d3.time.format("%Y-%m-%d").parse("2011-01-01"),d3.time.format("%Y-%m-%d").parse("2012-01-01")])
-					chart.redrawBrush(chart.g())
-					chart.filter(go.brushFilter)
-					go.loadCalendar()
-					# chart.select(".dc-legend g").text("test text")
+    	.renderlet( (_chart) =>
+				dc.events.trigger( => 
+					if !_chart.brushOn()
+						_chart.brushOn(true)
+						_chart.renderBrush(_chart.g())
+						_chart.brush().extent(@brushFilter)
+						_chart.redrawBrush(_chart.g())
+						_chart.filter(@brushFilter)
+						@charts.monthChart.updateXAxis(@dimension.dayStamp)
+						@charts.monthChart.chartObject.redraw()
+					@loadCalendar()
+				)
 			)
 
 		thisChart.innerChart.values = actualValuesChart

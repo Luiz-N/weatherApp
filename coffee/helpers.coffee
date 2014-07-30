@@ -132,6 +132,25 @@ calculateIntervals = (metric) ->
   interval = max/10
   [interval, 2 * interval, 3 * interval, 4 * interval,5 * interval,6 * interval,7 * interval,8*interval,9*interval, max]
 
+months = (currentMonth) ->
+  # currentMonth = (@dimension.dayStamp.bottom(1)[0].Date).getMonth()
+  # domain.push(@monthArray[firstMonth])
+  monthArray = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"]
+
+  monthsLeft = 12
+  currentMonth -= 1
+  domain = while monthsLeft -= 0
+    monthsLeft -= 1
+    if currentMonth < 11
+      currentMonth += 1
+      # console.log(months[currentMonth])
+      monthArray[currentMonth]
+    else
+      currentMonth = 0
+      # console.log(months[currentMonth])
+      monthArray[currentMonth]
+
+
 
 buildFakeGroup = (array) ->
   g = []

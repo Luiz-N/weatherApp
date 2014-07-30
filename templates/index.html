@@ -6,9 +6,16 @@
  
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc.css">
         <link rel="stylesheet" href="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.css" />
-<link rel="stylesheet" type="text/css" href="/static/css_all.css"></script>
+<!-- <link rel="stylesheet" type="text/css" href="/static/css_all.css"></script>
 
-<script type="text/javascript" src="/static/js_all.js"></script>   
+<script type="text/javascript" src="/static/js_all.js"></script>    -->
+
+        {% assets "css_all" %}
+            <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"></script>
+        {% endassets %}
+        {% assets "js_all" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}   
 
          <script type="text/javascript" src="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.js"></script>
        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
@@ -80,9 +87,10 @@
                 </div>
             </div>
 <!-- end of main col  -->
-             <div id="tv-container">
+
+             <div id="tv-container" class="row">
                       <div class="thumbnail">
-                        <iframe width="380" height="280" frameborder="0" allowfullscreen src="https://archive.org/embed/WNUV_20101001_043000_FOX_45_Late_Edition?start=60&end=120" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
+                        <!-- <iframe width="380" height="280" frameborder="0" allowfullscreen src="https://archive.org/embed/WBFF_20110202_140000_Fox_45_Good_Day_Baltimore?start=1151&end=1211" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe> -->
                         <div class="caption">
                           <h3>Thumbnail label</h3>
                           <p>...</p>

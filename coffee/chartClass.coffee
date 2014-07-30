@@ -22,3 +22,7 @@ class Chart
 			precipReduceHack(@dimension,metricName)	
 	getDelta: (metricName) ->
 		getDeltas(@dimension,metricName)
+	updateXAxis: (dim) ->
+		monthNum = dim.bottom(1)[0].Date.getMonth()
+		@chartObject.x(d3.scale.ordinal().domain(months(monthNum)))
+		@chartObject.renderXAxis(@chartObject.g())

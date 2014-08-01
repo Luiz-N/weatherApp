@@ -6870,6 +6870,8 @@ d3.csv("static/aggedWeather.csv", function(data) {
   db.activateListeners();
   dataSlice = data[0];
   console.log(dataSlice);
+  $("a.months").click();
+  $("a.search").click();
   return console.log((new Date() - startTime) / 1000);
 });
 
@@ -7347,8 +7349,8 @@ Dashboard = (function() {
     this.upperHeight = $("#upperHalf .leftCol").width() * .225;
     this.lowerHeight = $("#graphTitle").offset().top + this.upperHeight;
     this.metricArray = ["H_Pcnt"];
-    this.metricName = "Temp";
-    this.displayName = "Temperature (F)";
+    this.metricName = "Precip";
+    this.displayName = "Rain/Snow";
     this.queries = [];
     this.inputBox = null;
     this.tvFrameTemplate = $("div.template").clone();
@@ -7359,7 +7361,7 @@ Dashboard = (function() {
     this.cal = null;
     this.brushFilter = [d3.time.format("%Y-%m-%d").parse("2011-02-01"), d3.time.format("%Y-%m-%d").parse("2012-02-01")];
     this.monthArray = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
-    this.lastQuery = "stormy weather";
+    this.lastQuery = "flash flood";
     this.lastQueryResults = null;
   }
 
@@ -7417,11 +7419,13 @@ Dashboard = (function() {
     actualValuesChart.group(metric).colors([this.weatherColor]).valueAccessor(function(d) {
       return d.value.avg;
     }).elasticX(true);
-    thisChart.chartObject.dimension(this.dimension.monthNames).width(thisChart.width + 100).height(this.upperHeight).yAxisLabel(this.displayName).elasticY(true).elasticX(true).x(d3.scale.ordinal().domain(months(this.dimension.dayStamp.bottom(1)[0].Date.getMonth()))).xUnits(dc.units.ordinal).renderHorizontalGridLines(true).compose([actualValuesChart]).on("preRedraw", (function(_this) {
+    thisChart.chartObject.dimension(this.dimension.monthNames).width(thisChart.width + 70).height(this.upperHeight).yAxisLabel(this.displayName).elasticY(true).elasticX(true).x(d3.scale.ordinal().domain(months(this.dimension.dayStamp.bottom(1)[0].Date.getMonth()))).xUnits(dc.units.ordinal).renderHorizontalGridLines(true).compose([actualValuesChart]).on("preRedraw", (function(_this) {
       return function(_chart) {
         _this.brushFilter[0] = moment(_this.charts.timeSeries.chartObject.filter()[0]);
         _this.brushFilter[1] = moment(_this.charts.timeSeries.chartObject.filter()[1]);
         $("#timeSpan").text(_this.brushFilter[0].format("MMMM YYYY") + " - " + _this.brushFilter[1].format("MMMM YYYY"));
+        $("#timeSeries h4 span.metric").text(_this.displayName);
+        $("#timeSeries h4 span.query").text(_this.lastQuery);
         if (actualValuesChart.filter() === null) {
           return thisChart.updateXAxis(_this.dimension.dayStamp);
         }
@@ -7505,7 +7509,8 @@ Dashboard = (function() {
       chart.chartObject.yAxisLabel(this.displayName);
       chart.updateMetric(this.metricName, this.displayName);
     }
-    return dc.renderAll();
+    dc.renderAll();
+    return $("a.months").click();
   };
 
   Dashboard.prototype.activateListeners = function() {
@@ -7516,7 +7521,7 @@ Dashboard = (function() {
     $("#upperHalf .leftCol ul li a").on("click", function() {
       go.metricName = $(this).attr("data-name");
       go.displayName = $(this).html();
-      $("#upperHalf .leftCol li").removeClass("active");
+      $("#upperHalf .leftCol li a").removeClass("active");
       $(this).addClass("active");
       return go.refreshCharts();
     });
@@ -7572,7 +7577,9 @@ Dashboard = (function() {
         return function(date, items) {
           _this.loadNewsClips(date, items);
           date = moment(date);
-          return $("#date").text(date.format("dddd MMM Do, YYYY"));
+          $("#date").text(date.format("dddd MMM Do, YYYY"));
+          $("#date").addClass("invisible");
+          return $(".tv-clip").remove();
         };
       })(this)
     });
@@ -7679,8 +7686,13 @@ Dashboard = (function() {
   };
 
   Dashboard.prototype.displayNewsClips = function(clips) {
-    var clip, iFrame, tvFrame, width, _i, _len, _results;
+    var clip, dte, iFrame, tvFrame, width, _i, _len, _results;
     $(".tv-clip").remove();
+    $("#date").removeClass("invisible");
+    if (clips.length === 0) {
+      dte = $("#date").text();
+      $("#date").text('No local news clips containg "' + this.lastQuery + '"" were found on ' + dte);
+    }
     _results = [];
     for (_i = 0, _len = clips.length; _i < _len; _i++) {
       clip = clips[_i];

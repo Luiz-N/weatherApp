@@ -31,6 +31,9 @@ d3.csv("static/aggedWeather.csv", (data) ->
 
   dataSlice = data[0]
   console.log(dataSlice)
+  $("a.months").click()
+  $("a.search").click()
+  
   console.log((new Date() - startTime)/1000)
 )
 

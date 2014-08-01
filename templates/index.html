@@ -6,10 +6,15 @@
  
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc.css">
         <link rel="stylesheet" href="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.css" />
-<link rel="stylesheet" type="text/css" href="/static/css_all.css"></script>
+<!-- <link rel="stylesheet" type="text/css" href="/static/css_all.css"></script>
 
-<script type="text/javascript" src="/static/js_all.js"></script>  
-
+<script type="text/javascript" src="/static/js_all.js"></script> -->  
+        {% assets "css_all" %}
+            <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"></script>
+        {% endassets %}
+        {% assets "js_all" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}   
 
 
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"></script>
@@ -36,16 +41,16 @@
               <div id="upperHalf" class="row">
                 <div class="leftCol col-xs-12">
                   <ul class="nav nav-pills">
-                    <li ><a class="active" href="#" data-name="Temp" data-display ="">Actual Temp</a></li>
+                    <li ><a  href="#" data-name="Temp" data-display ="">Actual Temp</a></li>
                     <li><a href="#" data-name="Temp_Feels" data-display ="">Apparent Temp</a></li>
                     <li><a href="#" data-name="Wind" data-display ="">Wind</a></li>
-                    <li><a href="#" data-name="Precip" data-display ="">Rain/Snow</a></li>
+                    <li><a class="active" href="#" data-name="Precip" data-display ="">Rain/Snow</a></li>
                     <li><a href="#" data-name="H_Pcnt" data-display ="">Humidity</a></li>
                     <li><a href="#" data-name="C_Pcnt" data-display ="">Cloudiness</a></li>
                     <li><a href="#" data-name="Radiation" data-display ="">Solar Radiation</a></li>
                   </ul>
                   <div id="timeSeries" class="well">
-                    <h4 id="graphTitle">D.C. <span>Temperature</span> and "<span>query</span>" mentions over time</h4>
+                    <h4 id="graphTitle">D.C. <span class="metric">Temperature</span> & mentions of "<span class="query">query</span>" over time</h4>
                   <div class="chart"></div>
                   </div>
  
@@ -59,23 +64,27 @@
                 <div class="rightCol col-xs-12 col-md-5">
                     <!-- <input type="text" class="form-control"> -->
                     <ul id="tabs" class="nav nav-tabs" role="tablist">
-                      <li class="active"><a class="active" href="#search" data-toggle="tab">Search News</a></li>
-                      <li><a href="#months" data-toggle="tab">Months View</a></li>
+                      <li class="active"><a class="active search" href="#search" data-toggle="tab">Search News</a></li>
+                      <li><a class="months" href="#months " data-toggle="tab">Months View</a></li>
                     </ul>
                     <div id="tabContent" class="tab-content well">
                       
                       <div class="tab-pane fade active in" id="search">
                         <div class="input-group">
-                          <input type="text" class="form-control" placeholder="Search for a word or phrase">
+                          <input type="text" value="flash flood" class="form-control" placeholder="Search for a word or phrase">
                           <span class="input-group-btn">
                           <button class="btn btn-default" type="button">Go</button>
                           </span>
                         </div>
                         <p>Enter any word or phrase above to see how many times it was said by D.C./Baltimore local news anchors.
-
-                          Click a day on the calendar to see clips for that day where the word/phrase was said.</p>
+                          </p>
+                          <p>
+                          Drag the box around the timeline above to view that period of time.
+                          Clicking a month in the months tab filters for that month.
+                          Finally, if you click on a day on the calendar you will find clips for that day where the word/phrase was said.</p>
+                          <p>To get you started "Flash Flood" has been entered already</p>
                       </div>
-                      <div class="tab-pane fade" id="months">
+                      <div class="tab-pane fade in active" id="months">
                         <div id="monthChart" class="chart">
 
                          </div>
@@ -92,7 +101,7 @@
   <!--                 <div id ="tv-container" class="row">
                     <div class="col-xs-12 col-sm-6 col-md-4 tv-col">
                         <div class="thumbnail">
-                          <iframe width="380" height="280" frameborder="0" allowfullscreen src="https://archive.org/embed/WBFF_20110202_140000_Fox_45_Good_Day_Baltimore?start=1151&end=1211" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
+                          <iframe width="380" height="280" frameborder="0" allowfullscreen src="https://archive.org/embed/WBFF_20110202_140000_Fox_45_Good_Day_Baltimore?start=1151&end=1211" webkactivitallowfullscreen="true" mozallowfullscreen="true"></iframe>
                         <div class="caption">
                           <h3>Thumbnail label</h3>
                           <p>...</p>

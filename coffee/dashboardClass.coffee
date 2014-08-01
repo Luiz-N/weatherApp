@@ -3,8 +3,8 @@ class Dashboard
 		@upperHeight = ($("#upperHalf .leftCol").width()*.225)
 		@lowerHeight = $("#graphTitle").offset().top + @upperHeight
 		@metricArray = ["H_Pcnt"]
-		@metricName = "Temp"
-		@displayName = "Temperature (F)"
+		@metricName = "Precip"
+		@displayName = "Rain/Snow"
 		@queries = []
 		@inputBox = null
 		@tvFrameTemplate = $("div.template").clone()
@@ -17,7 +17,7 @@ class Dashboard
 		@cal = null
 		@brushFilter = [d3.time.format("%Y-%m-%d").parse("2011-02-01"),d3.time.format("%Y-%m-%d").parse("2012-02-01")]
 		@monthArray = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"]
-		@lastQuery = "stormy weather"
+		@lastQuery = "flash flood"
 		@lastQueryResults = null
 
 	parseData: (data) ->
@@ -46,6 +46,7 @@ class Dashboard
 		@getWordCount()
 		# @loadCalendar()
 		dc.constants.EVENT_DELAY = 80
+
 		# $("#timeSpan").text(@brushFilter[0].format("MMM YYYY")+" - "+@brushFilter[1].format("MMM YYYY"))
 
 
@@ -93,7 +94,7 @@ class Dashboard
 
 		thisChart.chartObject
 			.dimension(@dimension.monthNames)
-			.width(thisChart.width + 100)
+			.width(thisChart.width + 70)
 			.height(@upperHeight)
 			.yAxisLabel(@displayName)
 			# .ordering( (d) ->  d.value.avg)
@@ -111,7 +112,9 @@ class Dashboard
 				# @brushFilter[0] = moment(_chart.brush().extent()[0])
 				# @brushFilter[1] = moment(_chart.brush().extent()[1])
 				$("#timeSpan").text(@brushFilter[0].format("MMMM YYYY")+" - "+@brushFilter[1].format("MMMM YYYY"))
-				
+				$("#timeSeries h4 span.metric").text(@displayName)
+				$("#timeSeries h4 span.query").text(@lastQuery)
+
 		
 				if actualValuesChart.filter() == null
 					thisChart.updateXAxis(@dimension.dayStamp)
@@ -263,6 +266,7 @@ class Dashboard
 			chart.updateMetric(@metricName,@displayName)
 			# chart.object.group(chart.averageMetric(@metricName))
 		dc.renderAll()
+		$("a.months").click()
 		
 
 	activateListeners: () ->
@@ -272,7 +276,7 @@ class Dashboard
 		$("#upperHalf .leftCol ul li a").on "click", ->
 			go.metricName = $(this).attr("data-name")
 			go.displayName = $(this).html()
-			$("#upperHalf .leftCol li").removeClass("active")
+			$("#upperHalf .leftCol li a").removeClass("active")
 			$(this).addClass("active")
 			go.refreshCharts()
 
@@ -328,6 +332,8 @@ class Dashboard
 				@loadNewsClips(date, items)
 				date = moment(date)
 				$("#date").text(date.format("dddd MMM Do, YYYY"))
+				$("#date").addClass("invisible")
+				$(".tv-clip").remove()
 		})
 
 		metricValues.dispose()
@@ -396,6 +402,7 @@ class Dashboard
 			  # complete : (xhr, status) ->
 
 	renderWordCountGraph: () =>
+				# $("a.months").click()
 				$("g.area").remove()
 				chart = @charts.timeSeries.chartObject
 				# chart.redraw()
@@ -440,6 +447,12 @@ class Dashboard
 	displayNewsClips: (clips) =>
 
 		$(".tv-clip").remove()
+		$("#date").removeClass("invisible")
+
+		if clips.length == 0
+			dte = $("#date").text()
+			$("#date").text('No local news clips containg "'+@lastQuery+'"" were found on '+dte)
+
 
 		for clip in clips
 			tvFrame = @tvFrameTemplate.clone().removeClass("template").addClass("tv-clip")

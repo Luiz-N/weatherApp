@@ -1,9 +1,5 @@
-.counties 
-  fill: none
-.states
-  fill: none
-  stroke: #fff
-  stroke-linejoin: round
+.invisible
+  opacity: 0
 
 $weatherColor: rgba(28,139,152,1)
 $weatherColorDim: rgba(28,139,152,.7)
@@ -66,7 +62,9 @@ header
       #timeSeries
         rect.extent
           fill: $weatherColor
-
+        h4
+          color: black
+          text-align: center
         // border: 2px solid $weatherColorDim
         // border-top: 0
         // border-radius: 1px
@@ -129,6 +127,10 @@ header
     #months
       // padding: 1em
       overflow: hidden
+    #search
+      color: black
+      p
+        padding-top: 2em
     .leftCol
       margin-top: 3em
       text-align: center
@@ -164,6 +166,7 @@ header
       x: -5000
     .caption
       padding: .5em 1em
+      color: black
       p
         padding-bottom: 0
         margin: 0

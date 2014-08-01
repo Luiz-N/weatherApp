@@ -12,124 +12,275 @@
   stroke-linejoin: round;
 }
 
-/* line 12 */
+/* line 15 */
 /* line 14 */
-#mainWrapper {
-  overflow: hidden;
+body.container-fluid {
+  background-color: lightgray;
+  color: #1c8b98;
+  padding: 0;
+  background-color: rgba(28, 139, 152, 0.7);
 }
 
-/* line 14 */
-/* line 18 */
+/* line 31 */
+/* line 21 */
+body.container-fluid h1, body.container-fluid h2, body.container-fluid h3, body.container-fluid h4 {
+  margin: 0;
+}
+
+/* line 36 */
+/* line 26 */
+header {
+  background-color: whitesmoke;
+  padding: 0.1em 0;
+  padding-left: 2em;
+}
+
+/* line 41 */
+/* line 33 */
+#mainWrapper {
+  overflow: hidden;
+  padding: 0;
+}
+
+/* line 44 */
+/* line 38 */
 #mainWrapper .chart {
   width: 100%;
   float: none;
 }
 
-/* line 17 */
-/* line 23 */
+/* line 47 */
+/* line 43 */
 #mainWrapper #mainCol {
-  padding: 0 3em;
+  padding: 2em;
 }
 
-/* line 22 */
-/* line 27 */
+/* line 49 */
+/* line 47 */
+#mainWrapper #timeSpan {
+  font-size: 4em;
+  text-align: center;
+  color: whitesmoke;
+  padding: 0.25em;
+}
+
+/* line 54 */
+/* line 54 */
+#mainWrapper .well {
+  margin-bottom: 0;
+}
+
+/* line 60 */
+/* line 58 */
 #mainWrapper #upperHalf g.resize {
   display: none;
 }
 
-/* line 24 */
-/* line 31 */
+/* line 62 */
+/* line 62 */
 #mainWrapper #upperHalf rect.background {
   display: none;
 }
 
-/* line 26 */
-/* line 35 */
-#mainWrapper #upperHalf .buttons {
-  background-color: rgba(240, 128, 128, 0.7);
+/* line 67 */
+/* line 66 */
+#mainWrapper #upperHalf .leftCol #timeSeries rect.extent {
+  fill: #1c8b98;
 }
 
-/* line 28 */
-/* line 39 */
-#mainWrapper #upperHalf .buttons ul {
+/* line 77 */
+/* line 70 */
+#mainWrapper #upperHalf .leftCol ul {
   list-style: none;
+  margin-left: 2px;
 }
 
-/* line 30 */
-/* line 43 */
-#mainWrapper #upperHalf .buttons ul li {
+/* line 81 */
+/* line 75 */
+#mainWrapper #upperHalf .leftCol ul li {
   float: left;
 }
 
-/* line 32 */
-/* line 47 */
+/* line 85 */
+/* line 79 */
+#mainWrapper #upperHalf .leftCol .nav-pills li a {
+  color: #1c8b98;
+  background-color: whitesmoke;
+  border: 1px solid #dddddd;
+  border-bottom-color: transparent;
+  margin-right: 1px;
+  line-height: 1.42857;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+}
+
+/* line 94 */
+/* line 90 */
+#mainWrapper #upperHalf .leftCol .nav-pills li a:hover {
+  background-color: #1c8b98;
+  color: white;
+}
+
+/* line 97 */
+/* line 95 */
+#mainWrapper #upperHalf .leftCol .nav-pills li a.active {
+  background-color: #1c8b98;
+  color: white;
+}
+
+/* line 105 */
+/* line 100 */
 #mainWrapper #upperHalf .rightCol {
   overflow: hidden;
 }
 
-/* line 36 */
-/* line 51 */
-#mainWrapper #lowerHalf #tabContent {
-  height: 100%;
+/* line 110 */
+/* line 104 */
+#mainWrapper #lowerHalf ul.nav li a {
+  color: #1c8b98;
+  background-color: whitesmoke;
+  border: 1px solid #dddddd;
+  border-bottom-color: transparent;
+  margin-right: 1px;
+  line-height: 1.42857;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
 }
 
-/* line 38 */
-/* line 55 */
+/* line 119 */
+/* line 115 */
+#mainWrapper #lowerHalf ul.nav li a:hover {
+  background-color: #1c8b98;
+  color: white;
+}
+
+/* line 122 */
+/* line 120 */
+#mainWrapper #lowerHalf ul.nav li a.active {
+  background-color: #1c8b98;
+  color: white;
+}
+
+/* line 126 */
+/* line 125 */
+#mainWrapper #lowerHalf #tabContent {
+  height: 100%;
+  width: 100%;
+}
+
+/* line 129 */
+/* line 130 */
 #mainWrapper #lowerHalf #months {
   overflow: hidden;
 }
 
-/* line 41 */
-/* line 59 */
+/* line 132 */
+/* line 134 */
 #mainWrapper #lowerHalf .leftCol {
   margin-top: 3em;
   text-align: center;
   overflow: hidden;
 }
 
-/* line 45 */
-/* line 65 */
+/* line 136 */
+/* line 140 */
 #mainWrapper #lowerHalf #cal-heatmap {
   padding: 5em 0 0 2em;
   overflow-y: hidden;
 }
 
-/* line 48 */
-/* line 70 */
+/* line 139 */
+/* line 145 */
 #mainWrapper #lowerHalf #cal-heatmap svg.graph-legend {
   -webkit-transform: rotate(180deg);
 }
 
-/* line 50 */
-/* line 74 */
+/* line 141 */
+/* line 149 */
 #mainWrapper #lowerHalf #cal-heatmap g rect:hover {
   cursor: pointer;
 }
 
-/* line 52 */
-/* line 78 */
+/* line 143 */
+/* line 153 */
 #mainWrapper #lowerHalf #cal-heatmap .graph-label {
   font-size: 1.5em;
 }
 
-/* line 54 */
-/* line 82 */
+/* line 145 */
+/* line 157 */
 #mainWrapper #lowerHalf .rightCol {
   height: 100%;
   text-align: center;
   overflow: hidden;
 }
 
-/* line 59 */
-/* line 89 */
+/* line 152 */
+/* line 163 */
+#mainWrapper #tv-container .tvFrame {
+  padding-bottom: 2em;
+}
+
+/* line 154 */
+/* line 167 */
+#mainWrapper #tv-container #date {
+  text-align: center;
+  color: whitesmoke;
+  font-size: 4em;
+  padding: 0.25em 0;
+}
+
+/* line 159 */
+/* line 174 */
+#mainWrapper #tv-container iframe {
+  margin-bottom: 0;
+}
+
+/* line 161 */
+/* line 178 */
+#mainWrapper #tv-container .template {
+  position: absolute;
+  opacity: 0;
+  x: -5000;
+}
+
+/* line 165 */
+/* line 184 */
+#mainWrapper #tv-container .caption {
+  padding: 0.5em 1em;
+}
+
+/* line 167 */
+/* line 188 */
+#mainWrapper #tv-container .caption p {
+  padding-bottom: 0;
+  margin: 0;
+}
+
+/* line 170 */
+/* line 193 */
+#mainWrapper #tv-container .caption h3 {
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 0.15em;
+  margin-bottom: 0.25em;
+}
+
+/* line 174 */
+/* line 199 */
+#mainWrapper #tv-container .caption h4, #mainWrapper #tv-container .caption p {
+  color: #999999;
+}
+
+/* line 178 */
+/* line 204 */
 .cf:before,
 .cf:after {
   content: " ";
   display: table;
 }
 
-/* line 65 */
-/* line 96 */
+/* line 184 */
+/* line 211 */
 .cf:after {
   clear: both;
 }

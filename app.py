@@ -153,7 +153,7 @@ def getClips():
 
 def parsePageForClips(firstDay,nextDay,query):
     print type(firstDay)
-    query="flood"
+    # query="flood"
     # soup = BeautifulSoup(urlopen("https://archive.org/details/tv?q="+query+"+AND+%28channel%3AWJLA+OR+channel%3AWRC+OR+channel%3AWTTG+OR+channel%3AWUSA+OR+channel%3AWBAL+OR+channel%3AWBFF+OR+channel%3AWJZ+OR+channel%3AWMAR+OR+channel%3AWNUV%29+&rows=10&&time="+firstDay+"-"+nextDay+"))    
     soup = BeautifulSoup(urlopen('https://archive.org/details/tv?q='+query+'+AND+%28channel%3AWJLA+OR+channel%3AWRC+OR+channel%3AWTTG+OR+channel%3AWUSA+OR+channel%3AWBAL+OR+channel%3AWBFF+OR+channel%3AWJZ+OR+channel%3AWMAR+OR+channel%3AWNUV%29+&rows=10&&time='+firstDay+'-'+nextDay+''),"html.parser")
     print soup

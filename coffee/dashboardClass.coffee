@@ -7,15 +7,18 @@ class Dashboard
 		@displayName = "Temperature (F)"
 		@queries = []
 		@inputBox = null
+		@tvFrameTemplate = $("div.template").clone()
 		# @cf = null
+		@weatherColor = '#1C8B98'
 		# @allGroups = null
 		@charts = {}
 		@dimension = {}
 		@metric = {}
 		@cal = null
-		@brushFilter = [d3.time.format("%Y-%m-%d").parse("2011-01-01"),d3.time.format("%Y-%m-%d").parse("2012-01-01")]
+		@brushFilter = [d3.time.format("%Y-%m-%d").parse("2011-02-01"),d3.time.format("%Y-%m-%d").parse("2012-02-01")]
 		@monthArray = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"]
-		@lastQuery = "hurricane sandy"
+		@lastQuery = "stormy weather"
+		@lastQueryResults = null
 
 	parseData: (data) ->
 		#@data = data
@@ -40,9 +43,15 @@ class Dashboard
 		@buildDimensions()
 		@buildMonthChart()
 		@buildTimeSeriesChart()
+		@getWordCount()
 		# @loadCalendar()
-		dc.constants.EVENT_DELAY = 100
-		
+		dc.constants.EVENT_DELAY = 80
+		# $("#timeSpan").text(@brushFilter[0].format("MMM YYYY")+" - "+@brushFilter[1].format("MMM YYYY"))
+
+
+		# tvCols = Math.round($("#mainCol").innerWidth()/$(".tv-col").width()) - 1
+		# until tvCols -= 0
+
 
 	buildDimensions: () ->
 		go = @
@@ -78,14 +87,14 @@ class Dashboard
 		actualValuesChart = dc.barChart(thisChart.chartObject)
 		actualValuesChart
 			.group(metric)
-			.colors(['rgb(64, 130, 163)'])
+			.colors([@weatherColor])
 			.valueAccessor (d) -> d.value.avg
 			.elasticX(true)
 
 		thisChart.chartObject
 			.dimension(@dimension.monthNames)
-			.width(thisChart.width + 75)
-			.height(@upperHeight - $("#currentYear").height())
+			.width(thisChart.width + 100)
+			.height(@upperHeight)
 			.yAxisLabel(@displayName)
 			# .ordering( (d) ->  d.value.avg)
 			.elasticY(true)
@@ -95,6 +104,15 @@ class Dashboard
 			.renderHorizontalGridLines(true)
 			.compose([actualValuesChart])
 			.on "preRedraw", (_chart) =>
+				# debugger
+				@brushFilter[0] = moment(@charts.timeSeries.chartObject.filter()[0])
+				@brushFilter[1] = moment(@charts.timeSeries.chartObject.filter()[1])
+
+				# @brushFilter[0] = moment(_chart.brush().extent()[0])
+				# @brushFilter[1] = moment(_chart.brush().extent()[1])
+				$("#timeSpan").text(@brushFilter[0].format("MMMM YYYY")+" - "+@brushFilter[1].format("MMMM YYYY"))
+				
+		
 				if actualValuesChart.filter() == null
 					thisChart.updateXAxis(@dimension.dayStamp)
 			.renderlet( (_chart) =>
@@ -108,54 +126,6 @@ class Dashboard
 		@charts.monthChart = thisChart
 		# thisChart.innerChart.avgValues = dc.barChart(thisChart.chartObject)
 
-	buildYearChart: () ->
-		thisChart = new Chart(dc.compositeChart("#yearChart"),@dimension.yearName)
-		metric = thisChart.averageMetric(@metricName)
-
-		actualValuesChart = dc.barChart(thisChart.chartObject)
-		actualValuesChart
-			.group(metric)
-			.valueAccessor (d) -> d.value.avg
-
-		thisChart.chartObject
-			.dimension(@dimension.yearName)
-			.width(thisChart.width + 100)
-			.height(thisChart.width*.4)
-			.yAxisLabel(@displayName)
-			.elasticY(true)
-			.group(metric)
-	    .x(d3.scale.ordinal())
-	    .xUnits(dc.units.ordinal)
-    	.renderHorizontalGridLines(true)
-    	.compose([actualValuesChart])
-
-		thisChart.innerChart.values = actualValuesChart
-		@charts.yearChart = thisChart
-
-	buildHourlyChart: () ->
-		thisChart = new Chart(dc.compositeChart("#hourChart"),@dimension.timeOfDay)
-		metric = thisChart.averageMetric(@metricName)
-
-		actualValuesChart = dc.barChart(thisChart.chartObject)
-		actualValuesChart
-			.group(metric)
-			.valueAccessor (d) -> d.value.avg
-
-		thisChart.chartObject
-			.dimension(@dimension.timeOfDay)
-			.width(thisChart.width + 100)
-			.height(thisChart.width*.4)
-			.yAxisLabel(@displayName)
-			.elasticY(true)
-			.group(metric)
-	    .x(d3.scale.ordinal())
-	    .xUnits(dc.units.ordinal)
-    	.renderHorizontalGridLines(true)
-    	.compose([actualValuesChart])
-
-		thisChart.innerChart.values = actualValuesChart
-		@charts.hourChart = thisChart
-
 	buildTimeSeriesChart: () ->
 		go = @
 		thisChart = new Chart(dc.compositeChart("#upperHalf .leftCol div.chart"),@dimension.monthStamp)
@@ -167,13 +137,13 @@ class Dashboard
 		actualValuesChart = dc.lineChart(thisChart.chartObject)
 			.group(metric, "actual " + @displayName)
 			.valueAccessor (d) ->  d.value.avg
-			.colors(['#2a6496'])
+			.colors([@weatherColor])
 			.interpolate('basis-open')
 
 		normValuesChart = dc.lineChart(thisChart.chartObject)
-			.group(metric, "normal " + @displayName)
+			.group(metric, "Recorded " + @displayName)
 			.valueAccessor (d) -> d.value.avg_avg
-			.colors(['#428bca'])
+			.colors(['rgba(28,139,152,.7)'])
 			.interpolate('basis-open')
 		
 		# clipsCountChart = dc.lineChart(thisChart.chartObject)
@@ -196,17 +166,31 @@ class Dashboard
     	.renderHorizontalGridLines(true)
     	.compose([actualValuesChart,normValuesChart])
     	.renderlet( (_chart) =>
+				_chart.selectAll("g.sub path").style("stroke-width",3)
+				_chart.selectAll("g.sub._1 path").style("stroke-dasharray",3)
+				act_legend = $(_chart.anchor()+" g.dc-legend-item text")[0]
+				$(act_legend).text("Recorded " + @displayName)
+				avg_legend = $(_chart.anchor()+" g.dc-legend-item text")[1]
+				$(avg_legend).text("10 year average")
 				dc.events.trigger( => 
 					if !_chart.brushOn()
 						_chart.brushOn(true)
 						_chart.renderBrush(_chart.g())
 						_chart.brush().extent(@brushFilter)
+						@brushFilter = _chart.brush().extent()
 						_chart.redrawBrush(_chart.g())
 						_chart.filter(@brushFilter)
 						@charts.monthChart.updateXAxis(@dimension.dayStamp)
 						@charts.monthChart.chartObject.redraw()
+						@getWordCount()
 					@loadCalendar()
 				)
+			)
+			.on("filter", (_chart,filter) =>
+				alert(filter)
+				# debugger
+				# timeSpan.text()
+
 			)
 
 		thisChart.innerChart.values = actualValuesChart
@@ -285,16 +269,16 @@ class Dashboard
 		go = @
 		timeChart = go.charts.timeSeries.chartObject
 		@inputBox = $(".input-group input")[0]
-		$("#upperHalf .leftCol ul li").on "click","a", ->
+		$("#upperHalf .leftCol ul li a").on "click", ->
 			go.metricName = $(this).attr("data-name")
 			go.displayName = $(this).html()
 			$("#upperHalf .leftCol li").removeClass("active")
-			$(this).parent().addClass("active")
+			$(this).addClass("active")
 			go.refreshCharts()
 
-		$("#lowerHalf .rightCol").on "click","button", ->
-			queryString = go.inputBox.value
-			go.getWordCount(queryString)
+		$("#lowerHalf .rightCol").on "click","button", =>
+			@lastQuery = @inputBox.value
+			@getWordCount()
 
 		$(@inputBox).keypress (e) ->
 			if e.which == 13
@@ -330,7 +314,7 @@ class Dashboard
 			start: begin,
 			range: numOfMonths,
 			legend: legendIntervals
-			legendColors: ["#efefef", "#2a6496"]
+			legendColors: ["#efefef", @weatherColor]
 			cellSize: cellSize
 			legendCellSize: cellSize/2
 			domainGutter: cellSize/2
@@ -340,7 +324,10 @@ class Dashboard
 			data: json
 			# tooltip: true
 			dataType: "json"
-			onClick: (date,items) => @loadNewsClips(date, items)
+			onClick: (date,items) => 
+				@loadNewsClips(date, items)
+				date = moment(date)
+				$("#date").text(date.format("dddd MMM Do, YYYY"))
 		})
 
 		metricValues.dispose()
@@ -359,8 +346,9 @@ class Dashboard
 			    month2 : ('0' + (date.getMonth()+1)).slice(-2)
 			    day2  : ('0' + date.getDate()).slice(-2)
 			    query : @lastQuery
-			  success: (response, status, xhr) ->
+			  success: (response, status, xhr) =>
 			  	console.log(response)
+			  	@displayNewsClips(response.clips)
 			  error: (xhr, status, err) -> console.log(err,status,xhr)
 			  # complete : (xhr, status) ->
 
@@ -389,30 +377,31 @@ class Dashboard
 		@cal.options.legend = [interval, 2 * interval, 3 * interval, 4 * interval,5 * interval,6 * interval,7 * interval,8*interval,9*interval, max]
 		@cal.update(json)
 
-	getWordCount: (queryString) ->
-		go = @
-		queryObject = _.findWhere(@queries,{query:queryString})
+	getWordCount: () =>
+		queryObject = _.findWhere(@queries,{query:@lastQuery})
 
 		if queryObject
-			renderWordCountGraph(queryObject)
+			@lastQueryResults = queryObject.results
+			@renderWordCountGraph()
 		else
 			$.ajax $SCRIPT_ROOT+'/newQuery',
 			  data :
-			    query : queryString
-			  success  : (response, status, xhr) ->
-			  	go.lastQuery = response.dailyCounts
+			    query : @lastQuery
+			  success  : (response, status, xhr) =>
+			  	@lastQueryResults = response.dailyCounts
+			  	@queries.push({query:@lastQuery,results:response.dailyCounts})
 					# console.log(response)
-			  	go.renderWordCountGraph()
+			  	@renderWordCountGraph()
 			  error    : (xhr, status, err) -> console.log(err,status,xhr)
 			  # complete : (xhr, status) ->
 
-	renderWordCountGraph: () ->
+	renderWordCountGraph: () =>
 				$("g.area").remove()
 				chart = @charts.timeSeries.chartObject
-				chart.render()
-				console.log(@lastQuery)
+				# chart.redraw()
+				# console.log(@lastQuery)
 				height = chart.xAxisY() 
-				max = _.max(_.pluck(@lastQuery,"value"))
+				max = _.max(_.pluck(@lastQueryResults,"value"))
 				x = chart.x()
 				y = d3.scale.linear().domain([0, max]).range([height, 0])
 
@@ -425,11 +414,17 @@ class Dashboard
 				area = d3.svg.area()
 							 .x( (d) -> x(d3.time.format("%Y-%m").parse(d.key)))
 							 .y0(height	)
-							 .y1( (d) -> y(d.value))
+							 .y1( (d) ->
+							 		# debugger
+							 		if moment(d3.time.format("%Y-%m").parse(d.key)).year() < 2014
+							 			y(d.value)
+							  	else 
+							  		y(0)
+							  )
 							 .interpolate("basis-open")
 							 # .y( (d) -> 4000)
 				chart.g().select("g.area").append("path")
-							 .datum(@lastQuery)
+							 .datum(@lastQueryResults)
 							 .attr("d",area)
 							 .style("fill", "rgba(153,153,153,.25)" )
 		
@@ -441,6 +436,28 @@ class Dashboard
 
 				$("g.brush").remove()
 				chart.renderBrush(chart.g())
+
+	displayNewsClips: (clips) =>
+
+		$(".tv-clip").remove()
+
+		for clip in clips
+			tvFrame = @tvFrameTemplate.clone().removeClass("template").addClass("tv-clip")
+			iFrame = tvFrame.find("iframe").remove().addClass("well")
+			tvFrame.appendTo("#tv-container")
+
+			tvFrame.find(".show").text(clip.show)
+			tvFrame.find(".date").text(clip.date.split(" ")[3]+" "+clip.date.split(" ")[4])
+			tvFrame.find(".station").text(clip.station)
+			# debugger
+			iFrame.attr("src", clip.link)
+			width = tvFrame.find(".caption").innerWidth()
+			iFrame.attr("width", width)
+			iFrame.attr("height", width*.75)
+			iFrame.prependTo(tvFrame)
+
+			# break
+
 
 		# cal.update(calFormattedJson)
 		# console.log((new Date() - startTime)/1000)

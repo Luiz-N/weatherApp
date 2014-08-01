@@ -7340,6 +7340,9 @@ activateListeners = function() {
 
 Dashboard = (function() {
   function Dashboard() {
+    this.displayNewsClips = __bind(this.displayNewsClips, this);
+    this.renderWordCountGraph = __bind(this.renderWordCountGraph, this);
+    this.getWordCount = __bind(this.getWordCount, this);
     this.loadNewsClips = __bind(this.loadNewsClips, this);
     this.upperHeight = $("#upperHalf .leftCol").width() * .225;
     this.lowerHeight = $("#graphTitle").offset().top + this.upperHeight;
@@ -7348,13 +7351,16 @@ Dashboard = (function() {
     this.displayName = "Temperature (F)";
     this.queries = [];
     this.inputBox = null;
+    this.tvFrameTemplate = $("div.template").clone();
+    this.weatherColor = '#1C8B98';
     this.charts = {};
     this.dimension = {};
     this.metric = {};
     this.cal = null;
-    this.brushFilter = [d3.time.format("%Y-%m-%d").parse("2011-01-01"), d3.time.format("%Y-%m-%d").parse("2012-01-01")];
+    this.brushFilter = [d3.time.format("%Y-%m-%d").parse("2011-02-01"), d3.time.format("%Y-%m-%d").parse("2012-02-01")];
     this.monthArray = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
-    this.lastQuery = "hurricane sandy";
+    this.lastQuery = "stormy weather";
+    this.lastQueryResults = null;
   }
 
   Dashboard.prototype.parseData = function(data) {
@@ -7374,7 +7380,8 @@ Dashboard = (function() {
     this.buildDimensions();
     this.buildMonthChart();
     this.buildTimeSeriesChart();
-    return dc.constants.EVENT_DELAY = 100;
+    this.getWordCount();
+    return dc.constants.EVENT_DELAY = 80;
   };
 
   Dashboard.prototype.buildDimensions = function() {
@@ -7407,11 +7414,14 @@ Dashboard = (function() {
     thisChart = new Chart(dc.compositeChart("#monthChart"), this.dimension.monthNames);
     metric = thisChart.averageMetric(this.metricName);
     actualValuesChart = dc.barChart(thisChart.chartObject);
-    actualValuesChart.group(metric).colors(['rgb(64, 130, 163)']).valueAccessor(function(d) {
+    actualValuesChart.group(metric).colors([this.weatherColor]).valueAccessor(function(d) {
       return d.value.avg;
     }).elasticX(true);
-    thisChart.chartObject.dimension(this.dimension.monthNames).width(thisChart.width + 75).height(this.upperHeight - $("#currentYear").height()).yAxisLabel(this.displayName).elasticY(true).elasticX(true).x(d3.scale.ordinal().domain(months(this.dimension.dayStamp.bottom(1)[0].Date.getMonth()))).xUnits(dc.units.ordinal).renderHorizontalGridLines(true).compose([actualValuesChart]).on("preRedraw", (function(_this) {
+    thisChart.chartObject.dimension(this.dimension.monthNames).width(thisChart.width + 100).height(this.upperHeight).yAxisLabel(this.displayName).elasticY(true).elasticX(true).x(d3.scale.ordinal().domain(months(this.dimension.dayStamp.bottom(1)[0].Date.getMonth()))).xUnits(dc.units.ordinal).renderHorizontalGridLines(true).compose([actualValuesChart]).on("preRedraw", (function(_this) {
       return function(_chart) {
+        _this.brushFilter[0] = moment(_this.charts.timeSeries.chartObject.filter()[0]);
+        _this.brushFilter[1] = moment(_this.charts.timeSeries.chartObject.filter()[1]);
+        $("#timeSpan").text(_this.brushFilter[0].format("MMMM YYYY") + " - " + _this.brushFilter[1].format("MMMM YYYY"));
         if (actualValuesChart.filter() === null) {
           return thisChart.updateXAxis(_this.dimension.dayStamp);
         }
@@ -7425,32 +7435,6 @@ Dashboard = (function() {
     return this.charts.monthChart = thisChart;
   };
 
-  Dashboard.prototype.buildYearChart = function() {
-    var actualValuesChart, metric, thisChart;
-    thisChart = new Chart(dc.compositeChart("#yearChart"), this.dimension.yearName);
-    metric = thisChart.averageMetric(this.metricName);
-    actualValuesChart = dc.barChart(thisChart.chartObject);
-    actualValuesChart.group(metric).valueAccessor(function(d) {
-      return d.value.avg;
-    });
-    thisChart.chartObject.dimension(this.dimension.yearName).width(thisChart.width + 100).height(thisChart.width * .4).yAxisLabel(this.displayName).elasticY(true).group(metric).x(d3.scale.ordinal()).xUnits(dc.units.ordinal).renderHorizontalGridLines(true).compose([actualValuesChart]);
-    thisChart.innerChart.values = actualValuesChart;
-    return this.charts.yearChart = thisChart;
-  };
-
-  Dashboard.prototype.buildHourlyChart = function() {
-    var actualValuesChart, metric, thisChart;
-    thisChart = new Chart(dc.compositeChart("#hourChart"), this.dimension.timeOfDay);
-    metric = thisChart.averageMetric(this.metricName);
-    actualValuesChart = dc.barChart(thisChart.chartObject);
-    actualValuesChart.group(metric).valueAccessor(function(d) {
-      return d.value.avg;
-    });
-    thisChart.chartObject.dimension(this.dimension.timeOfDay).width(thisChart.width + 100).height(thisChart.width * .4).yAxisLabel(this.displayName).elasticY(true).group(metric).x(d3.scale.ordinal()).xUnits(dc.units.ordinal).renderHorizontalGridLines(true).compose([actualValuesChart]);
-    thisChart.innerChart.values = actualValuesChart;
-    return this.charts.hourChart = thisChart;
-  };
-
   Dashboard.prototype.buildTimeSeriesChart = function() {
     var actualValuesChart, go, maxDate, metric, minDate, normValuesChart, thisChart;
     go = this;
@@ -7460,24 +7444,37 @@ Dashboard = (function() {
     maxDate = this.dimension.monthStamp.top(1)[0].Date;
     actualValuesChart = dc.lineChart(thisChart.chartObject).group(metric, "actual " + this.displayName).valueAccessor(function(d) {
       return d.value.avg;
-    }).colors(['#2a6496']).interpolate('basis-open');
-    normValuesChart = dc.lineChart(thisChart.chartObject).group(metric, "normal " + this.displayName).valueAccessor(function(d) {
+    }).colors([this.weatherColor]).interpolate('basis-open');
+    normValuesChart = dc.lineChart(thisChart.chartObject).group(metric, "Recorded " + this.displayName).valueAccessor(function(d) {
       return d.value.avg_avg;
-    }).colors(['#428bca']).interpolate('basis-open');
+    }).colors(['rgba(28,139,152,.7)']).interpolate('basis-open');
     thisChart.chartObject.dimension(this.dimension.monthStamp).width(thisChart.width + 30).height(this.upperHeight).yAxisLabel(this.displayName).elasticY(true).x(d3.time.scale().domain([minDate, maxDate])).xUnits(d3.time.months).brushOn(false).legend(dc.legend().x(60).y(10).itemHeight(13).gap(5)).renderHorizontalGridLines(true).compose([actualValuesChart, normValuesChart]).renderlet((function(_this) {
       return function(_chart) {
+        var act_legend, avg_legend;
+        _chart.selectAll("g.sub path").style("stroke-width", 3);
+        _chart.selectAll("g.sub._1 path").style("stroke-dasharray", 3);
+        act_legend = $(_chart.anchor() + " g.dc-legend-item text")[0];
+        $(act_legend).text("Recorded " + _this.displayName);
+        avg_legend = $(_chart.anchor() + " g.dc-legend-item text")[1];
+        $(avg_legend).text("10 year average");
         return dc.events.trigger(function() {
           if (!_chart.brushOn()) {
             _chart.brushOn(true);
             _chart.renderBrush(_chart.g());
             _chart.brush().extent(_this.brushFilter);
+            _this.brushFilter = _chart.brush().extent();
             _chart.redrawBrush(_chart.g());
             _chart.filter(_this.brushFilter);
             _this.charts.monthChart.updateXAxis(_this.dimension.dayStamp);
             _this.charts.monthChart.chartObject.redraw();
+            _this.getWordCount();
           }
           return _this.loadCalendar();
         });
+      };
+    })(this)).on("filter", (function(_this) {
+      return function(_chart, filter) {
+        return alert(filter);
       };
     })(this));
     thisChart.innerChart.values = actualValuesChart;
@@ -7516,18 +7513,19 @@ Dashboard = (function() {
     go = this;
     timeChart = go.charts.timeSeries.chartObject;
     this.inputBox = $(".input-group input")[0];
-    $("#upperHalf .leftCol ul li").on("click", "a", function() {
+    $("#upperHalf .leftCol ul li a").on("click", function() {
       go.metricName = $(this).attr("data-name");
       go.displayName = $(this).html();
       $("#upperHalf .leftCol li").removeClass("active");
-      $(this).parent().addClass("active");
+      $(this).addClass("active");
       return go.refreshCharts();
     });
-    $("#lowerHalf .rightCol").on("click", "button", function() {
-      var queryString;
-      queryString = go.inputBox.value;
-      return go.getWordCount(queryString);
-    });
+    $("#lowerHalf .rightCol").on("click", "button", (function(_this) {
+      return function() {
+        _this.lastQuery = _this.inputBox.value;
+        return _this.getWordCount();
+      };
+    })(this));
     return $(this.inputBox).keypress(function(e) {
       if (e.which === 13) {
         return $(".rightCol button").click();
@@ -7561,7 +7559,7 @@ Dashboard = (function() {
       start: begin,
       range: numOfMonths,
       legend: legendIntervals,
-      legendColors: ["#efefef", "#2a6496"],
+      legendColors: ["#efefef", this.weatherColor],
       cellSize: cellSize,
       legendCellSize: cellSize / 2,
       domainGutter: cellSize / 2,
@@ -7572,7 +7570,9 @@ Dashboard = (function() {
       dataType: "json",
       onClick: (function(_this) {
         return function(date, items) {
-          return _this.loadNewsClips(date, items);
+          _this.loadNewsClips(date, items);
+          date = moment(date);
+          return $("#date").text(date.format("dddd MMM Do, YYYY"));
         };
       })(this)
     });
@@ -7593,9 +7593,12 @@ Dashboard = (function() {
         day2: ('0' + date.getDate()).slice(-2),
         query: this.lastQuery
       },
-      success: function(response, status, xhr) {
-        return console.log(response);
-      },
+      success: (function(_this) {
+        return function(response, status, xhr) {
+          console.log(response);
+          return _this.displayNewsClips(response.clips);
+        };
+      })(this),
       error: function(xhr, status, err) {
         return console.log(err, status, xhr);
       }
@@ -7620,23 +7623,29 @@ Dashboard = (function() {
     return this.cal.update(json);
   };
 
-  Dashboard.prototype.getWordCount = function(queryString) {
-    var go, queryObject;
-    go = this;
+  Dashboard.prototype.getWordCount = function() {
+    var queryObject;
     queryObject = _.findWhere(this.queries, {
-      query: queryString
+      query: this.lastQuery
     });
     if (queryObject) {
-      return renderWordCountGraph(queryObject);
+      this.lastQueryResults = queryObject.results;
+      return this.renderWordCountGraph();
     } else {
       return $.ajax($SCRIPT_ROOT + '/newQuery', {
         data: {
-          query: queryString
+          query: this.lastQuery
         },
-        success: function(response, status, xhr) {
-          go.lastQuery = response.dailyCounts;
-          return go.renderWordCountGraph();
-        },
+        success: (function(_this) {
+          return function(response, status, xhr) {
+            _this.lastQueryResults = response.dailyCounts;
+            _this.queries.push({
+              query: _this.lastQuery,
+              results: response.dailyCounts
+            });
+            return _this.renderWordCountGraph();
+          };
+        })(this),
         error: function(xhr, status, err) {
           return console.log(err, status, xhr);
         }
@@ -7648,23 +7657,46 @@ Dashboard = (function() {
     var area, group, height, max, x, y, yAxisRight;
     $("g.area").remove();
     chart = this.charts.timeSeries.chartObject;
-    chart.render();
-    console.log(this.lastQuery);
     height = chart.xAxisY();
-    max = _.max(_.pluck(this.lastQuery, "value"));
+    max = _.max(_.pluck(this.lastQueryResults, "value"));
     x = chart.x();
     y = d3.scale.linear().domain([0, max]).range([height, 0]);
     group = chart.g().append("g").attr("class", "area").attr("transform", "translate(42,0)");
     area = d3.svg.area().x(function(d) {
       return x(d3.time.format("%Y-%m").parse(d.key));
     }).y0(height).y1(function(d) {
-      return y(d.value);
+      if (moment(d3.time.format("%Y-%m").parse(d.key)).year() < 2014) {
+        return y(d.value);
+      } else {
+        return y(0);
+      }
     }).interpolate("basis-open");
-    chart.g().select("g.area").append("path").datum(this.lastQuery).attr("d", area).style("fill", "rgba(153,153,153,.25)");
+    chart.g().select("g.area").append("path").datum(this.lastQueryResults).attr("d", area).style("fill", "rgba(153,153,153,.25)");
     yAxisRight = d3.svg.axis().scale(y).orient("right").ticks(3);
     group.append("g").attr("transform", "translate(" + (chart.xAxisLength()) + ",0)").attr("class", "axis y hack").call(yAxisRight);
     $("g.brush").remove();
     return chart.renderBrush(chart.g());
+  };
+
+  Dashboard.prototype.displayNewsClips = function(clips) {
+    var clip, iFrame, tvFrame, width, _i, _len, _results;
+    $(".tv-clip").remove();
+    _results = [];
+    for (_i = 0, _len = clips.length; _i < _len; _i++) {
+      clip = clips[_i];
+      tvFrame = this.tvFrameTemplate.clone().removeClass("template").addClass("tv-clip");
+      iFrame = tvFrame.find("iframe").remove().addClass("well");
+      tvFrame.appendTo("#tv-container");
+      tvFrame.find(".show").text(clip.show);
+      tvFrame.find(".date").text(clip.date.split(" ")[3] + " " + clip.date.split(" ")[4]);
+      tvFrame.find(".station").text(clip.station);
+      iFrame.attr("src", clip.link);
+      width = tvFrame.find(".caption").innerWidth();
+      iFrame.attr("width", width);
+      iFrame.attr("height", width * .75);
+      _results.push(iFrame.prependTo(tvFrame));
+    }
+    return _results;
   };
 
   return Dashboard;

@@ -4,22 +4,22 @@
   opacity: 0;
 }
 
-/* line 11 */
+/* line 12 */
 /* line 7 */
 body.container-fluid {
   background-color: lightgray;
   color: #1c8b98;
   padding: 0;
-  background-color: rgba(28, 139, 152, 0.7);
+  background-color: rgba(51, 102, 153, 0.7);
 }
 
-/* line 27 */
+/* line 28 */
 /* line 14 */
 body.container-fluid h1, body.container-fluid h2, body.container-fluid h3, body.container-fluid h4 {
   margin: 0;
 }
 
-/* line 32 */
+/* line 33 */
 /* line 19 */
 header {
   background-color: whitesmoke;
@@ -27,27 +27,27 @@ header {
   padding-left: 2em;
 }
 
-/* line 37 */
+/* line 38 */
 /* line 26 */
 #mainWrapper {
   overflow: hidden;
   padding: 0;
 }
 
-/* line 40 */
+/* line 41 */
 /* line 31 */
 #mainWrapper .chart {
   width: 100%;
   float: none;
 }
 
-/* line 43 */
+/* line 44 */
 /* line 36 */
 #mainWrapper #mainCol {
   padding: 2em;
 }
 
-/* line 45 */
+/* line 46 */
 /* line 40 */
 #mainWrapper #timeSpan {
   font-size: 4em;
@@ -56,54 +56,54 @@ header {
   padding: 0.25em;
 }
 
-/* line 50 */
+/* line 51 */
 /* line 47 */
 #mainWrapper .well {
   margin-bottom: 0;
 }
 
-/* line 56 */
+/* line 57 */
 /* line 51 */
 #mainWrapper #upperHalf g.resize {
   display: none;
 }
 
-/* line 58 */
+/* line 59 */
 /* line 55 */
 #mainWrapper #upperHalf rect.background {
   display: none;
 }
 
-/* line 63 */
+/* line 64 */
 /* line 59 */
 #mainWrapper #upperHalf .leftCol #timeSeries rect.extent {
-  fill: #1c8b98;
+  fill: #336699;
 }
 
-/* line 65 */
+/* line 66 */
 /* line 63 */
 #mainWrapper #upperHalf .leftCol #timeSeries h4 {
   color: black;
   text-align: center;
 }
 
-/* line 75 */
+/* line 76 */
 /* line 68 */
 #mainWrapper #upperHalf .leftCol ul {
   list-style: none;
   margin-left: 2px;
 }
 
-/* line 79 */
+/* line 80 */
 /* line 73 */
 #mainWrapper #upperHalf .leftCol ul li {
   float: left;
 }
 
-/* line 83 */
+/* line 84 */
 /* line 77 */
 #mainWrapper #upperHalf .leftCol .nav-pills li a {
-  color: #1c8b98;
+  color: #336699;
   background-color: whitesmoke;
   border: 1px solid #dddddd;
   border-bottom-color: transparent;
@@ -113,30 +113,30 @@ header {
   border-radius: 4px 4px 0 0;
 }
 
-/* line 92 */
+/* line 93 */
 /* line 88 */
 #mainWrapper #upperHalf .leftCol .nav-pills li a:hover {
-  background-color: #1c8b98;
+  background-color: #336699;
   color: white;
 }
 
-/* line 95 */
+/* line 96 */
 /* line 93 */
 #mainWrapper #upperHalf .leftCol .nav-pills li a.active {
-  background-color: #1c8b98;
+  background-color: #336699;
   color: white;
 }
 
-/* line 103 */
+/* line 104 */
 /* line 98 */
 #mainWrapper #upperHalf .rightCol {
   overflow: hidden;
 }
 
-/* line 108 */
+/* line 109 */
 /* line 102 */
 #mainWrapper #lowerHalf ul.nav li a {
-  color: #1c8b98;
+  color: #336699;
   background-color: whitesmoke;
   border: 1px solid #dddddd;
   border-bottom-color: transparent;
@@ -146,46 +146,46 @@ header {
   border-radius: 4px 4px 0 0;
 }
 
-/* line 117 */
+/* line 118 */
 /* line 113 */
 #mainWrapper #lowerHalf ul.nav li a:hover {
-  background-color: #1c8b98;
+  background-color: #336699;
   color: white;
 }
 
-/* line 120 */
+/* line 121 */
 /* line 118 */
 #mainWrapper #lowerHalf ul.nav li a.active {
-  background-color: #1c8b98;
+  background-color: #336699;
   color: white;
 }
 
-/* line 124 */
+/* line 125 */
 /* line 123 */
 #mainWrapper #lowerHalf #tabContent {
   height: 100%;
   width: 100%;
 }
 
-/* line 127 */
+/* line 128 */
 /* line 128 */
 #mainWrapper #lowerHalf #months {
   overflow: hidden;
 }
 
-/* line 130 */
+/* line 131 */
 /* line 132 */
 #mainWrapper #lowerHalf #search {
   color: black;
 }
 
-/* line 132 */
+/* line 133 */
 /* line 136 */
 #mainWrapper #lowerHalf #search p {
   padding-top: 2em;
 }
 
-/* line 134 */
+/* line 135 */
 /* line 140 */
 #mainWrapper #lowerHalf .leftCol {
   margin-top: 3em;
@@ -193,32 +193,32 @@ header {
   overflow: hidden;
 }
 
-/* line 138 */
+/* line 139 */
 /* line 146 */
 #mainWrapper #lowerHalf #cal-heatmap {
   padding: 5em 0 0 2em;
   overflow-y: hidden;
 }
 
-/* line 141 */
+/* line 142 */
 /* line 151 */
 #mainWrapper #lowerHalf #cal-heatmap svg.graph-legend {
   -webkit-transform: rotate(180deg);
 }
 
-/* line 143 */
+/* line 144 */
 /* line 155 */
 #mainWrapper #lowerHalf #cal-heatmap g rect:hover {
   cursor: pointer;
 }
 
-/* line 145 */
+/* line 146 */
 /* line 159 */
 #mainWrapper #lowerHalf #cal-heatmap .graph-label {
   font-size: 1.5em;
 }
 
-/* line 147 */
+/* line 148 */
 /* line 163 */
 #mainWrapper #lowerHalf .rightCol {
   height: 100%;
@@ -226,13 +226,13 @@ header {
   overflow: hidden;
 }
 
-/* line 154 */
+/* line 155 */
 /* line 169 */
 #mainWrapper #tv-container .tvFrame {
   padding-bottom: 2em;
 }
 
-/* line 156 */
+/* line 157 */
 /* line 173 */
 #mainWrapper #tv-container #date {
   text-align: center;
@@ -241,13 +241,13 @@ header {
   padding: 0.25em 0;
 }
 
-/* line 161 */
+/* line 162 */
 /* line 180 */
 #mainWrapper #tv-container iframe {
   margin-bottom: 0;
 }
 
-/* line 163 */
+/* line 164 */
 /* line 184 */
 #mainWrapper #tv-container .template {
   position: absolute;
@@ -255,21 +255,21 @@ header {
   x: -5000;
 }
 
-/* line 167 */
+/* line 168 */
 /* line 190 */
 #mainWrapper #tv-container .caption {
   padding: 0.5em 1em;
   color: black;
 }
 
-/* line 170 */
+/* line 171 */
 /* line 195 */
 #mainWrapper #tv-container .caption p {
   padding-bottom: 0;
   margin: 0;
 }
 
-/* line 173 */
+/* line 174 */
 /* line 200 */
 #mainWrapper #tv-container .caption h3 {
   border-bottom: 1px solid lightgray;
@@ -277,13 +277,13 @@ header {
   margin-bottom: 0.25em;
 }
 
-/* line 177 */
+/* line 178 */
 /* line 206 */
 #mainWrapper #tv-container .caption h4, #mainWrapper #tv-container .caption p {
   color: #999999;
 }
 
-/* line 181 */
+/* line 182 */
 /* line 211 */
 .cf:before,
 .cf:after {
@@ -291,7 +291,7 @@ header {
   display: table;
 }
 
-/* line 187 */
+/* line 188 */
 /* line 218 */
 .cf:after {
   clear: both;

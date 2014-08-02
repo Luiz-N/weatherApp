@@ -7354,7 +7354,7 @@ Dashboard = (function() {
     this.queries = [];
     this.inputBox = null;
     this.tvFrameTemplate = $("div.template").clone();
-    this.weatherColor = '#1C8B98';
+    this.weatherColor = 'rgba(51,102,153,1)';
     this.charts = {};
     this.dimension = {};
     this.metric = {};
@@ -7451,7 +7451,7 @@ Dashboard = (function() {
     }).colors([this.weatherColor]).interpolate('basis-open');
     normValuesChart = dc.lineChart(thisChart.chartObject).group(metric, "Recorded " + this.displayName).valueAccessor(function(d) {
       return d.value.avg_avg;
-    }).colors(['rgba(28,139,152,.7)']).interpolate('basis-open');
+    }).colors(['rgba(51,102,153,.7)']).interpolate('basis-open');
     thisChart.chartObject.dimension(this.dimension.monthStamp).width(thisChart.width + 30).height(this.upperHeight).yAxisLabel(this.displayName).elasticY(true).x(d3.time.scale().domain([minDate, maxDate])).xUnits(d3.time.months).brushOn(false).legend(dc.legend().x(60).y(10).itemHeight(13).gap(5)).renderHorizontalGridLines(true).compose([actualValuesChart, normValuesChart]).renderlet((function(_this) {
       return function(_chart) {
         var act_legend, avg_legend;
@@ -7564,7 +7564,7 @@ Dashboard = (function() {
       start: begin,
       range: numOfMonths,
       legend: legendIntervals,
-      legendColors: ["#efefef", this.weatherColor],
+      legendColors: ["#efefef", '#336699'],
       cellSize: cellSize,
       legendCellSize: cellSize / 2,
       domainGutter: cellSize / 2,

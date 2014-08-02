@@ -9,7 +9,7 @@ class Dashboard
 		@inputBox = null
 		@tvFrameTemplate = $("div.template").clone()
 		# @cf = null
-		@weatherColor = '#1C8B98'
+		@weatherColor = 'rgba(51,102,153,1)'
 		# @allGroups = null
 		@charts = {}
 		@dimension = {}
@@ -146,7 +146,7 @@ class Dashboard
 		normValuesChart = dc.lineChart(thisChart.chartObject)
 			.group(metric, "Recorded " + @displayName)
 			.valueAccessor (d) -> d.value.avg_avg
-			.colors(['rgba(28,139,152,.7)'])
+			.colors(['rgba(51,102,153,.7)'])
 			.interpolate('basis-open')
 		
 		# clipsCountChart = dc.lineChart(thisChart.chartObject)
@@ -318,7 +318,7 @@ class Dashboard
 			start: begin,
 			range: numOfMonths,
 			legend: legendIntervals
-			legendColors: ["#efefef", @weatherColor]
+			legendColors: ["#efefef", '#336699']
 			cellSize: cellSize
 			legendCellSize: cellSize/2
 			domainGutter: cellSize/2

@@ -46,7 +46,7 @@ class Dashboard
 		@buildTimeSeriesChart()
 		@getWordCount()
 		# @loadCalendar()
-		dc.constants.EVENT_DELAY = 80
+		dc.constants.EVENT_DELAY = 250
 
 		# $("#timeSpan").text(@brushFilter[0].format("MMM YYYY")+" - "+@brushFilter[1].format("MMM YYYY"))
 

@@ -219,6 +219,9 @@ header {
 /* line 164 */
 #mainWrapper #lowerHalf span.monthButton {
   position: absolute;
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
   display: block;
   width: 100%;
@@ -232,8 +235,8 @@ header {
   border-top: 2px dashed #336699;
 }
 
-/* line 165 */
-/* line 179 */
+/* line 168 */
+/* line 182 */
 #mainWrapper #lowerHalf span.monthButton:hover {
   background: #336699;
   color: rgba(255, 255, 255, 0.9);
@@ -241,20 +244,20 @@ header {
   border-top: 2px dashed rgba(255, 255, 255, 0.75);
 }
 
-/* line 171 */
-/* line 186 */
+/* line 174 */
+/* line 189 */
 #mainWrapper #lowerHalf #search {
   color: black;
 }
 
-/* line 173 */
-/* line 190 */
+/* line 176 */
+/* line 193 */
 #mainWrapper #lowerHalf #search p {
   padding-top: 2em;
 }
 
-/* line 175 */
-/* line 194 */
+/* line 178 */
+/* line 197 */
 #mainWrapper #lowerHalf .leftCol {
   transition: all 400ms ease-out;
   margin-top: 0em;
@@ -263,34 +266,34 @@ header {
   padding: 0;
 }
 
-/* line 181 */
-/* line 202 */
+/* line 184 */
+/* line 205 */
 #mainWrapper #lowerHalf #cal-heatmap {
   padding: 2em 0 0 2em;
   overflow-y: hidden;
 }
 
-/* line 184 */
-/* line 207 */
+/* line 187 */
+/* line 210 */
 #mainWrapper #lowerHalf #cal-heatmap svg.graph-legend {
   -webkit-transform: rotate(180deg);
 }
 
-/* line 186 */
-/* line 211 */
+/* line 189 */
+/* line 214 */
 #mainWrapper #lowerHalf #cal-heatmap g rect:hover {
   cursor: pointer;
 }
 
-/* line 188 */
-/* line 215 */
+/* line 191 */
+/* line 218 */
 #mainWrapper #lowerHalf #cal-heatmap .graph-label {
   fill: #666666;
   font-size: 1.5em;
 }
 
-/* line 191 */
-/* line 220 */
+/* line 194 */
+/* line 223 */
 #mainWrapper #lowerHalf .rightCol {
   transition: all 400ms ease-out;
   position: absolute;
@@ -298,14 +301,14 @@ header {
   text-align: center;
 }
 
-/* line 201 */
-/* line 227 */
+/* line 204 */
+/* line 230 */
 #mainWrapper #tv-container .tvFrame {
   padding-bottom: 2em;
 }
 
-/* line 203 */
-/* line 231 */
+/* line 206 */
+/* line 234 */
 #mainWrapper #tv-container #date {
   text-align: center;
   color: rgba(255, 255, 255, 0.9);
@@ -313,77 +316,77 @@ header {
   padding: 0.25em 0;
 }
 
-/* line 208 */
-/* line 238 */
+/* line 211 */
+/* line 241 */
 #mainWrapper #tv-container iframe {
   margin-bottom: 0;
 }
 
-/* line 210 */
-/* line 242 */
+/* line 213 */
+/* line 245 */
 #mainWrapper #tv-container .template {
   position: absolute;
   opacity: 0;
   x: -5000;
 }
 
-/* line 214 */
-/* line 248 */
+/* line 217 */
+/* line 251 */
 #mainWrapper #tv-container .caption {
   padding: 0.5em 1em;
   color: black;
 }
 
-/* line 217 */
-/* line 253 */
+/* line 220 */
+/* line 256 */
 #mainWrapper #tv-container .caption p {
   padding-bottom: 0;
   margin: 0;
 }
 
-/* line 220 */
-/* line 258 */
+/* line 223 */
+/* line 261 */
 #mainWrapper #tv-container .caption h3 {
   border-bottom: 1px solid lightgray;
   padding-bottom: 0.15em;
   margin-bottom: 0.25em;
 }
 
-/* line 224 */
-/* line 264 */
+/* line 227 */
+/* line 267 */
 #mainWrapper #tv-container .caption h4, #mainWrapper #tv-container .caption p {
   color: #999999;
 }
 
-/* line 227 */
-/* line 269 */
+/* line 230 */
+/* line 272 */
 #welcomeModal {
   color: #336699;
 }
 
-/* line 230 */
-/* line 273 */
+/* line 233 */
+/* line 276 */
 #welcomeModal a {
   color: black;
   border-bottom: 1px dashed black;
 }
 
-/* line 233 */
-/* line 278 */
+/* line 236 */
+/* line 281 */
 #welcomeModal a:hover {
   border: none;
 }
 
-/* line 237 */
-/* line 283 */
+/* line 240 */
+/* line 286 */
 .cf:before,
 .cf:after {
   content: " ";
   display: table;
 }
 
-/* line 243 */
-/* line 290 */
+/* line 246 */
+/* line 293 */
 .cf:after {
   clear: both;
 }

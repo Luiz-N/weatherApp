@@ -7577,7 +7577,7 @@ Dashboard = (function() {
     this.buildMonthChart();
     this.buildTimeSeriesChart();
     this.getWordCount();
-    return dc.constants.EVENT_DELAY = 80;
+    return dc.constants.EVENT_DELAY = 250;
   };
 
   Dashboard.prototype.buildDimensions = function() {

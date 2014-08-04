@@ -361,16 +361,29 @@ header {
   color: #336699;
 }
 
-/* line 232 */
-/* line 274 */
+/* line 230 */
+/* line 273 */
+#welcomeModal a {
+  color: black;
+  border-bottom: 1px dashed black;
+}
+
+/* line 233 */
+/* line 278 */
+#welcomeModal a:hover {
+  border: none;
+}
+
+/* line 237 */
+/* line 283 */
 .cf:before,
 .cf:after {
   content: " ";
   display: table;
 }
 
-/* line 238 */
-/* line 281 */
+/* line 243 */
+/* line 290 */
 .cf:after {
   clear: both;
 }

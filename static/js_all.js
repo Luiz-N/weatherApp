@@ -7905,7 +7905,6 @@ Dashboard = (function() {
     $(chart.anchor() + " g.dc-legend").append(newItem);
     $("#timeSeries h4 span.metric").text(this.displayName);
     $("#timeSeries h4 span.query").text(this.lastQuery);
-    chart.yAxisLabel(this.displayName + " " + this.units);
     $("g.brush").remove();
     return chart.renderBrush(chart.g());
   };

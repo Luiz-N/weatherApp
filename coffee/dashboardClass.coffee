@@ -479,7 +479,7 @@ class Dashboard
 
 				$("#timeSeries h4 span.metric").text(@displayName)
 				$("#timeSeries h4 span.query").text(@lastQuery)
-				chart.yAxisLabel(@displayName+" "+@units)
+				# chart.yAxisLabel(@displayName+" "+@units)
 				# chart.renderYAxis()
 
 				$("g.brush").remove()

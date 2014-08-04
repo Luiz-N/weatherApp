@@ -3,8 +3,9 @@ class Dashboard
 		@upperHeight = ($("#upperHalf .leftCol").width()*.225)
 		@lowerHeight = $("#graphTitle").offset().top + @upperHeight
 		@metricArray = ["H_Pcnt"]
-		@metricName = "Precip"
-		@displayName = "Rain/Snow"
+		@metricName = "Temp"
+		@displayName = "Actual Temp"
+		@units = "(F)"
 		@queries = []
 		@inputBox = null
 		@tvFrameTemplate = $("div.template").clone()
@@ -15,7 +16,7 @@ class Dashboard
 		@dimension = {}
 		@metric = {}
 		@cal = null
-		@brushFilter = [d3.time.format("%Y-%m-%d").parse("2011-02-01"),d3.time.format("%Y-%m-%d").parse("2012-02-01")]
+		@brushFilter = [d3.time.format("%Y-%m-%d").parse("2010-02-01"),d3.time.format("%Y-%m-%d").parse("2011-02-01")]
 		@monthArray = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"]
 		@lastQuery = "flash flood"
 		@lastQueryResults = null
@@ -38,7 +39,7 @@ class Dashboard
 		    #d.weekStamp = d3.time.week(d.Date)
 
 		
-		$("#lowerHalf").height(@lowerHeight)
+		# $("#lowerHalf").height(@lowerHeight)
 
 		@buildDimensions()
 		@buildMonthChart()
@@ -52,7 +53,6 @@ class Dashboard
 
 		# tvCols = Math.round($("#mainCol").innerWidth()/$(".tv-col").width()) - 1
 		# until tvCols -= 0
-
 
 	buildDimensions: () ->
 		go = @
@@ -106,18 +106,22 @@ class Dashboard
 			.compose([actualValuesChart])
 			.on "preRedraw", (_chart) =>
 				# debugger
-				@brushFilter[0] = moment(@charts.timeSeries.chartObject.filter()[0])
-				@brushFilter[1] = moment(@charts.timeSeries.chartObject.filter()[1])
+				firstDate = moment(@dimension.dayStamp.bottom(1)[0].Date)
+				# console.log(@brushFilter[0])
+				# console.log
+				# @brushFilter[1] = moment(@charts.timeSeries.chartObject.filter()[1])
+				secondDate = moment(@dimension.dayStamp.top(1)[0].Date)
+
 
 				# @brushFilter[0] = moment(_chart.brush().extent()[0])
 				# @brushFilter[1] = moment(_chart.brush().extent()[1])
-				$("#timeSpan").text(@brushFilter[0].format("MMMM YYYY")+" - "+@brushFilter[1].format("MMMM YYYY"))
-				$("#timeSeries h4 span.metric").text(@displayName)
-				$("#timeSeries h4 span.query").text(@lastQuery)
+				$("#timeSpan").text(firstDate.format("MMMM YYYY")+" - "+secondDate.format("MMMM YYYY"))
 
+
+				thisChart.updateXAxis(@dimension.dayStamp)
 		
-				if actualValuesChart.filter() == null
-					thisChart.updateXAxis(@dimension.dayStamp)
+				# if actualValuesChart.filter() == null
+				# 	thisChart.updateXAxis(@dimension.dayStamp)
 			.renderlet( (_chart) =>
 				dc.events.trigger( => 
 					# @loadCalendar()
@@ -146,11 +150,11 @@ class Dashboard
 		normValuesChart = dc.lineChart(thisChart.chartObject)
 			.group(metric, "Recorded " + @displayName)
 			.valueAccessor (d) -> d.value.avg_avg
-			.colors(['rgba(51,102,153,.7)'])
+			.colors(['rgba(51,102,153,.5)'])
 			.interpolate('basis-open')
 		
 		# clipsCountChart = dc.lineChart(thisChart.chartObject)
-		# 	.group(buildFakeGroup(@lastQuery))
+		# 	.group(buildFakeGroup(flashFoodArray))
 		# 	.colors(['black'])
 		# 	.interpolate('basis-open')
 		#   .y(d3.scale.linear().range([100, 0]))
@@ -160,21 +164,24 @@ class Dashboard
 			.dimension(@dimension.monthStamp)
 			.width(thisChart.width + 30)
 			.height(@upperHeight)
-			.yAxisLabel(@displayName)
+			.yAxisLabel(@displayName+" "+@units)
 			.elasticY(true)
 	    .x(d3.time.scale().domain([minDate,maxDate]))
 		  .xUnits(d3.time.months)
 		  .brushOn(false)
-			.legend(dc.legend().x(60).y(10).itemHeight(13).gap(5))
+			.legend(dc.legend().x(60).y(thisChart.chartObject.xAxisY()-60).itemHeight(13).gap(5))
     	.renderHorizontalGridLines(true)
     	.compose([actualValuesChart,normValuesChart])
     	.renderlet( (_chart) =>
 				_chart.selectAll("g.sub path").style("stroke-width",3)
 				_chart.selectAll("g.sub._1 path").style("stroke-dasharray",3)
-				act_legend = $(_chart.anchor()+" g.dc-legend-item text")[0]
-				$(act_legend).text("Recorded " + @displayName)
-				avg_legend = $(_chart.anchor()+" g.dc-legend-item text")[1]
-				$(avg_legend).text("10 year average")
+				legend = $(_chart.anchor()+" g.dc-legend-item")
+				act_legend = legend[0]
+				$(act_legend).find("text").text("Recorded " + @displayName)
+				avg_legend = legend[1]
+				$(avg_legend).find("text").text("10 year average")
+
+
 				dc.events.trigger( => 
 					if !_chart.brushOn()
 						_chart.brushOn(true)
@@ -269,24 +276,44 @@ class Dashboard
 		$("a.months").click()
 		
 
-	activateListeners: () ->
+	activateListeners: () =>
 		go = @
-		timeChart = go.charts.timeSeries.chartObject
+		timeChart = @charts.timeSeries.chartObject
 		@inputBox = $(".input-group input")[0]
 		$("#upperHalf .leftCol ul li a").on "click", ->
 			go.metricName = $(this).attr("data-name")
 			go.displayName = $(this).html()
+			go.units = $(this).attr("data-units")
 			$("#upperHalf .leftCol li a").removeClass("active")
 			$(this).addClass("active")
 			go.refreshCharts()
 
-		$("#lowerHalf .rightCol").on "click","button", =>
+		$("#upperHalf .input-group").on "click","button", =>
 			@lastQuery = @inputBox.value
 			@getWordCount()
 
 		$(@inputBox).keypress (e) ->
 			if e.which == 13
-					$(".rightCol button").click()
+					$("#upperHalf .input-group button").click()
+
+		monthChartWidth = $("#lowerHalf div.rightCol").outerWidth()
+		buttonWidth = $("div.rightCol span.monthButton").outerHeight()
+		totalWidth = monthChartWidth + buttonWidth
+		$("#lowerHalf div.leftCol").css("transform","translateX("+buttonWidth+"px)")
+		$("#lowerHalf div.rightCol").css("transform","translateX(-"+monthChartWidth+"px)")
+
+		monthsViewable = false
+		$("span.monthButton").on "click", () =>
+			if monthsViewable == false
+				$("#lowerHalf div.leftCol").css("transform","translateX("+totalWidth+"px)")
+				$("#lowerHalf div.rightCol").css("transform","translateX("+0+"px)")
+				$("span.monthChart")
+				monthsViewable = true
+			else
+				$("#lowerHalf div.leftCol").css("transform","translateX("+buttonWidth+"px)")
+				$("#lowerHalf div.rightCol").css("transform","translateX(-"+monthChartWidth+"px)")
+				monthsViewable = false
+
 
 	loadCalendar: () ->
 		# console.log("in calendar")
@@ -316,9 +343,11 @@ class Dashboard
 			domain: "month",
 			subDomain: "x_day",
 			start: begin,
+			domainDynamicDimension: false
 			range: numOfMonths,
 			legend: legendIntervals
-			legendColors: ["#efefef", '#336699']
+			legendColors: ["#ebf0f5", '#336699']
+			# #efefef"
 			cellSize: cellSize
 			legendCellSize: cellSize/2
 			domainGutter: cellSize/2
@@ -326,7 +355,6 @@ class Dashboard
 			legendVerticalPosition: "center"
 			legendMargin: [0,cellSize,0,0]
 			data: json
-			# tooltip: true
 			dataType: "json"
 			onClick: (date,items) => 
 				@loadNewsClips(date, items)
@@ -438,11 +466,26 @@ class Dashboard
 				yAxisRight = d3.svg.axis().scale(y).orient("right").ticks(3)
 				group.append("g")
 								.attr("transform", "translate(" + (chart.xAxisLength()) + ",0)")
-								.attr("class","axis y hack")
+								.attr("class","axis hack")
 								.call(yAxisRight)
+				if $(chart.anchor()).find("g.dc-legend-item").length == 3
+					$(chart.anchor()).find("g.dc-legend-item:last-child").remove()
+				# debugger
+				act_legend = $(chart.anchor()).find("g.dc-legend-item:first-child")
+				newItem = $(act_legend).clone().css("transform","translateY(36px)")
+				newItem.find("text").text('TV news mentions of "'+@lastQuery+'"')
+				newItem.find("rect").css("fill","rgba(153,153,153,.4)")
+				$(chart.anchor() + " g.dc-legend").append(newItem)
+
+				$("#timeSeries h4 span.metric").text(@displayName)
+				$("#timeSeries h4 span.query").text(@lastQuery)
+				chart.yAxisLabel(@displayName+" "+@units)
+				# chart.renderYAxis()
 
 				$("g.brush").remove()
+				# chart.brushOn(false)
 				chart.renderBrush(chart.g())
+				# chart.redraw()
 
 	displayNewsClips: (clips) =>
 

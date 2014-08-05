@@ -177,9 +177,9 @@ class Dashboard
 				_chart.selectAll("g.sub._1 path").style("stroke-dasharray",3)
 				legend = $(_chart.anchor()+" g.dc-legend-item")
 				act_legend = legend[0]
-				$(act_legend).find("text").text("Recorded " + @displayName)
+				$(act_legend).find("text").text("Recorded " + @displayName + " "+@units)
 				avg_legend = legend[1]
-				$(avg_legend).find("text").text("10 year average")
+				$(avg_legend).find("text").text("10 year average"+ " "+@units)
 
 
 				dc.events.trigger( => 
@@ -209,59 +209,6 @@ class Dashboard
 
 		@charts.timeSeries = thisChart
 	
-	buildCharts: () ->
-		thisChart = new Chart(dc.lineChart("#dlta .chart"),@dimension.monthStamp)
-		# metric = thisChart.averageMetric(@metricName)
-	
-		minDate = @dimension.monthStamp.bottom(1)[0].Date
-		maxDate = @dimension.monthStamp.top(1)[0].Date
-
-		# actualValuesChart = dc.lineChart(thisChart.chartObject)
-		# 	.group(metric, "actual " + @displayName)
-		# 	.valueAccessor (d) -> d.value.avg
-		# 	.colors(['green'])
-		# 	.interpolate('basis-open')
-
-		# normValuesChart = dc.lineChart(thisChart.chartObject)
-		# 	.group(metric, "normal " + @displayName)
-		# 	.valueAccessor (d) -> d.value.avg_avg
-		# 	.colors(['rgba(0,0,255,1)'])
-		# 	.interpolate('basis-open')
-		
-		# clipsCountChart = dc.lineChart(thisChart.chartObject)
-		# 	.group(buildFakeGroup(defaultClipsArray))
-		# 	.colors(['red'])
-		# 	.interpolate('basis-open')
-		  # .y(d3.scale.linear().range([100, 0]))
-			# .yAxis(d3.svg.axis().scale(d3.scale.linear().range([100, 0])))
-
-		thisChart.chartObject
-			.dimension(@dimension.monthStamp)
-			.group(thisChart.getDelta("Temp"),"Temp")
-			.width(thisChart.width + 30)
-			.height(thisChart.width*.333)
-			# .yAxisLabel(@displayName)
-			.valueAccessor (d) -> d.value.delta
-			.elasticY(true)
-	    .x(d3.time.scale().domain([minDate,maxDate]))
-		  .xUnits(d3.time.months)
-		  # .brushOn(true)
-		  .legend(dc.legend().x(60).y(10).itemHeight(13).gap(5))
-    	.renderHorizontalGridLines(true)
-    	# .stack(thisChart.getDelta("Wind"),"Wind")
-    	# .stack(thisChart.getDelta("Precip"),"Precip")
-    	# .stack(thisChart.getDelta("Temp_Feels"),"Temp_Feels")
-
-
-    	# .compose([actualValuesChart,normValuesChart,clipsCountChart])
-
-		# for metric in @metricArray
-    	# thisChart.chartObject.stack(thisChart.getDelta(metric),metric)
-
-		# thisChart.innerChart.values = actualValuesChart
-		# thisChart.innerChart.normalValues = normValuesChart
-
-		@charts.delta = thisChart
 
 	refreshCharts: () ->
 		go = @
@@ -315,7 +262,7 @@ class Dashboard
 				monthsViewable = false
 
 
-	loadCalendar: () ->
+	loadCalendar: () =>
 		# console.log("in calendar")
 		$("div.ch-tooltip").remove()
 		
@@ -347,7 +294,7 @@ class Dashboard
 			range: numOfMonths,
 			legend: legendIntervals
 			legendColors: ["#ebf0f5", '#336699']
-			# #efefef"
+			itemName: [@units,@units]
 			cellSize: cellSize
 			legendCellSize: cellSize/2
 			domainGutter: cellSize/2
@@ -360,7 +307,7 @@ class Dashboard
 				@loadNewsClips(date, items)
 				date = moment(date)
 				$("#date").text(date.format("dddd MMM Do, YYYY"))
-				$("#date").addClass("invisible")
+				$("#date").addClass("hidden")
 				$(".tv-clip").remove()
 		})
 
@@ -369,6 +316,8 @@ class Dashboard
 	loadNewsClips: (date,items) =>
 		# console.log(date.toISOString())
 		# console.log(items)
+		$("#tv-container div.bigLoader").removeClass("hidden")
+		$('html, body').animate({scrollTop: $(document).height()}, 'slow')
 		firstDate = new Date(date.getTime())
 		date.setDate(date.getDate()+1)
 		$.ajax $SCRIPT_ROOT+'/grabClips',
@@ -384,7 +333,8 @@ class Dashboard
 			  	console.log(response)
 			  	@displayNewsClips(response.clips)
 			  error: (xhr, status, err) -> console.log(err,status,xhr)
-			  # complete : (xhr, status) ->
+			  complete : (xhr, status) ->
+			  	$("#tv-container div.bigLoader").addClass("hidden")
 
 	updateCal: () ->
 		go = @
@@ -412,8 +362,8 @@ class Dashboard
 		@cal.update(json)
 
 	getWordCount: () =>
+		$("#upperHalf div.smallLoader").removeClass("hidden")
 		queryObject = _.findWhere(@queries,{query:@lastQuery})
-
 		if queryObject
 			@lastQueryResults = queryObject.results
 			@renderWordCountGraph()
@@ -422,75 +372,78 @@ class Dashboard
 			  data :
 			    query : @lastQuery
 			  success  : (response, status, xhr) =>
-			  	@lastQueryResults = response.dailyCounts
-			  	@queries.push({query:@lastQuery,results:response.dailyCounts})
-					# console.log(response)
-			  	@renderWordCountGraph()
+						@lastQueryResults = response.dailyCounts
+						if @lastQueryResults == null
+						 	 alert('It doesn\'t seem "'+@lastQuery+'" has ever been said before on the news.')
+						else		
+							@queries.push({query:@lastQuery,results:response.dailyCounts})
+							@renderWordCountGraph()
+						$("#upperHalf div.smallLoader").addClass("hidden")
 			  error    : (xhr, status, err) -> console.log(err,status,xhr)
 			  # complete : (xhr, status) ->
 
 	renderWordCountGraph: () =>
-				# $("a.months").click()
-				$("g.area").remove()
-				chart = @charts.timeSeries.chartObject
-				# chart.redraw()
-				# console.log(@lastQuery)
-				height = chart.xAxisY() 
-				max = _.max(_.pluck(@lastQueryResults,"value"))
-				x = chart.x()
-				y = d3.scale.linear().domain([0, max]).range([height, 0])
+		$("#upperHalf div.smallLoader").addClass("hidden")
+		$("g.area").remove()
+		chart = @charts.timeSeries.chartObject
+		# chart.redraw()
+		# console.log(@lastQuery)
+		height = chart.xAxisY() 
+		max = _.max(_.pluck(@lastQueryResults,"value"))
+		x = chart.x()
+		y = d3.scale.linear().domain([0, max]).range([height, 0])
 
 
-				group = chart.g().append("g")
-								.attr("class","area")
-								.attr("transform", "translate(42,0)")
+		group = chart.g().append("g")
+						.attr("class","area")
+						.attr("transform", "translate(42,0)")
 
 
-				area = d3.svg.area()
-							 .x( (d) -> x(d3.time.format("%Y-%m").parse(d.key)))
-							 .y0(height	)
-							 .y1( (d) ->
-							 		# debugger
-							 		if moment(d3.time.format("%Y-%m").parse(d.key)).year() < 2014
-							 			y(d.value)
-							  	else 
-							  		y(0)
-							  )
-							 .interpolate("basis-open")
-							 # .y( (d) -> 4000)
-				chart.g().select("g.area").append("path")
-							 .datum(@lastQueryResults)
-							 .attr("d",area)
-							 .style("fill", "rgba(153,153,153,.25)" )
-		
-				yAxisRight = d3.svg.axis().scale(y).orient("right").ticks(3)
-				group.append("g")
-								.attr("transform", "translate(" + (chart.xAxisLength()) + ",0)")
-								.attr("class","axis hack")
-								.call(yAxisRight)
-				if $(chart.anchor()).find("g.dc-legend-item").length == 3
-					$(chart.anchor()).find("g.dc-legend-item:last-child").remove()
-				# debugger
-				act_legend = $(chart.anchor()).find("g.dc-legend-item:first-child")
-				newItem = $(act_legend).clone().css("transform","translateY(36px)")
-				newItem.find("text").text('TV news mentions of "'+@lastQuery+'"')
-				newItem.find("rect").css("fill","rgba(153,153,153,.4)")
-				$(chart.anchor() + " g.dc-legend").append(newItem)
+		area = d3.svg.area()
+					 .x( (d) -> x(d3.time.format("%Y-%m").parse(d.key)))
+					 .y0(height	)
+					 .y1( (d) ->
+					 		# debugger
+					 		if moment(d3.time.format("%Y-%m").parse(d.key)).year() < 2014
+					 			y(d.value)
+					  	else 
+					  		y(0)
+					  )
+					 .interpolate("basis-open")
+					 # .y( (d) -> 4000)
+		chart.g().select("g.area").append("path")
+					 .datum(@lastQueryResults)
+					 .attr("d",area)
+					 .style("fill", "rgba(153,153,153,.25)" )
 
-				$("#timeSeries h4 span.metric").text(@displayName)
-				$("#timeSeries h4 span.query").text(@lastQuery)
-				# chart.yAxisLabel(@displayName+" "+@units)
-				# chart.renderYAxis()
+		yAxisRight = d3.svg.axis().scale(y).orient("right").ticks(3)
+		group.append("g")
+						.attr("transform", "translate(" + (chart.xAxisLength()) + ",0)")
+						.attr("class","axis hack")
+						.call(yAxisRight)
+		if $(chart.anchor()).find("g.dc-legend-item").length == 3
+			$(chart.anchor()).find("g.dc-legend-item:last-child").remove()
+		# debugger
+		act_legend = $(chart.anchor()).find("g.dc-legend-item:first-child")
+		newItem = $(act_legend).clone().css("transform","translateY(36px)")
+		newItem.find("text").text('TV news mentions of "'+@lastQuery+'"')
+		newItem.find("rect").css("fill","rgba(153,153,153,.4)")
+		$(chart.anchor() + " g.dc-legend").append(newItem)
 
-				$("g.brush").remove()
-				# chart.brushOn(false)
-				chart.renderBrush(chart.g())
-				# chart.redraw()
+		$("#graphTitle span.metric").text(@displayName + " "+@units)
+		$("#graphTitle span.query").text(@lastQuery)
+		# chart.yAxisLabel(@displayName+" "+@units)
+		# chart.renderYAxis()
+
+		$("g.brush").remove()
+		# chart.brushOn(false)
+		chart.renderBrush(chart.g())
+		# chart.redraw()
 
 	displayNewsClips: (clips) =>
 
 		$(".tv-clip").remove()
-		$("#date").removeClass("invisible")
+		$("#date").removeClass("hidden")
 
 		if clips.length == 0
 			dte = $("#date").text()

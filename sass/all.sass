@@ -1,5 +1,5 @@
-.invisible
-  opacity: 0
+// .hidden
+  // display: none
 // rgba(28,139,152,1)
 
 $weatherColor: rgba(51,102,153,1)
@@ -35,8 +35,20 @@ body.container-fluid
 
 header
   // background-color: $greyBackground
-  padding: .1em 0
+  padding: .75em 0
   padding-left: 2em
+  a
+    color: $greyBackground
+    font-size: 1.5em
+    display: inline-block
+    &:hover
+      text-decoration: none
+      font-weight: bolder
+      // color: 
+  a:last-child
+    cursor: pointer
+    float: right
+    padding-right: 2em
 
 #mainWrapper
   overflow: hidden
@@ -46,6 +58,7 @@ header
     float: none
   #mainCol
     padding: 2em
+    padding-top: 0
   #timeSpan
     font-size: 4em
     text-align: center
@@ -228,14 +241,39 @@ header
         color: #999
 
 #welcomeModal
-  // display: none
   color: $weatherColor
+  div.modal-header, div.modal-footer
+    background-color: $weatherColorDim
+    color: $greyBackground
+    span
+      position: absolute
+      left: 20px
+      bottom: 20px
   a
-    color: black
-    border-bottom: 1px dashed black
+    color: $weatherColor
+    border-bottom: 1px dashed
     &:hover
       border: none
+  p
+    font-size: 1.25em
+  button
+    background-color: $greyBackground
+    border-color: $greyBackground
+    color: $weatherColor
+    &:hover
+      background-color: $weatherColor
+      border-color: $weatherColor
+      color: $greyBackground
 
+
+div.bigLoader
+  text-align: center
+  padding: 3em
+  img
+    width: 8%
+div.smallLoader
+  position: absolute
+  left: 26.5%
 
 .cf:before,
 .cf:after 

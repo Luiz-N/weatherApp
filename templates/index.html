@@ -2,30 +2,15 @@
 <html>
     <head>
         <title>DC-Data</title>
-        <script>
-          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-          ga('create', 'UA-53463754-1', 'auto');
-          ga('send', 'pageview');
-        </script>
-
-
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
  
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc.css">
         <link rel="stylesheet" href="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.css" />
 
-<link rel="stylesheet" type="text/css" href="/static/css_all.css"></link>
+        <link rel="stylesheet" type="text/css" href="/static/css_all.css"></link>
 
-<script type="text/javascript" src="/static/js_all.js"></script>      
-   
-    
-
-  
-
+        <script type="text/javascript" src="/static/js_all.js"></script>      
+     
 
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"></script>
          <script type="text/javascript" src="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.js"></script>
@@ -35,22 +20,30 @@
             $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
         </script>
 		
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-		 <!-- 
-		 Latest compiled and minified JavaScript -->
+          ga('create', 'UA-53463754-1', 'auto');
+          ga('send', 'pageview');
 
-
+        </script>
     </head>
         
     <body class="container-fluid">
-    <header><h3><span>DC</span>-Data</h3></header> 
+    <header>
+      <a href="#">DC-Data</a>
+      <a href="#welcomeModal" data-toggle="modal">About</a>
+    </header> 
       <div id="mainWrapper" class="col-xs-12">
         <!-- <div class="row"> -->
 
             <div id="mainCol" class="col-xs-12">
               <div id="upperHalf" class="row">
                 <div class="leftCol col-xs-12">
-                  
+                  <div class="smallLoader hidden"><img src="static/loader.gif" alt=""></div>
                   <ul class="nav nav-pills">
                     <li>
                       <div class="input-group">
@@ -66,12 +59,12 @@
                     <li><a class="" href="#" data-units="(in)" data-name="Precip" data-display ="">Rain/Snow</a></li>
                     <li><a href="#" data-units="(%)" data-name="H_Pcnt" data-display ="">Humidity</a></li>
                     <li><a href="#" data-units="(%)" data-name="C_Pcnt" data-display ="">Cloudiness</a></li>
-                    <li><a href="#" data-units="(Watt-hours/sqr_mtr)" data-name="Radiation" data-display ="">Solar Radiation</a></li>
+                    <li><a href="#" data-units="(kg/s^2)" data-name="Radiation" data-display ="">Solar Radiation</a></li>
                     <li><a href="#" data-units="(F)" data-name="Temp_Feels" data-display ="">Apparent Temp</a></li>
                     <li ><a class="active" href="#" data-units="(F)" data-name="Temp" data-display ="">Actual Temp</a></li>
                   </ul>
                   <div id="timeSeries" class="well">
-                    <h4 id="graphTitle"><span class="metric">Temperature</span> Levels & Mentions of "<span class="query">query</span>" Over Time</h4>
+                    <h4 id="graphTitle"><span class="metric">Temperature</span> & Mentions of "<span class="query">query</span>" Over Time</h4>
                   <div class="chart"></div>
                   </div>
  
@@ -114,7 +107,8 @@
                     </div> -->
                     </div>
                       <!-- <div class="monthButton" id="monthSelector"></div> -->
-                      <span class="monthButton">Month Selector</span>
+
+                      <span class="monthButton"><span class="glyphicon glyphicon-chevron-down"></span> Click for filter <span class="glyphicon glyphicon-chevron-down"></span></span>
 
                 </div>
 
@@ -160,9 +154,11 @@
                           </div>
                         <!-- </div> -->
                       </div>
+                      <div class="bigLoader hidden"><img src="static/loader.gif" alt=""></div>
                   </div>
+                  
           </div> 
-<!-- end of main wrapper row  -->
+<!-- end of main col   -->
           <div class="modal fade" id="welcomeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -171,17 +167,18 @@
                   <h4 class="modal-title" id="myModalLabel">DC-Data</h4>
                 </div>
                 <div class="modal-body">
-                  <p>This application combines local news coverage and weather data of the D.C./Baltimore Area.</p>
+                  <p>This application was a submission for <a href="http://www.weatheranalytics.com/wa/climate-crush/" target="_blank">Weather Analytics' "Climate Crush"</a> competition. It joins <a href="https://archive.org/details/tv" target="_blank">local news coverage</a> with weather data for the D.C./Baltimore Area.</p>
                   <ul>
                   <li>Search for a word or phrase and see how often it was mentioned by the local newstations over time.
                   </li>
-                  <li>Clicking on a day in the calendar will display news clips from that day containing the current word/phrase.</li>
-                  <li>All weather data is in blue</li>
-                  <li>Drag around the blue-square-brush on the top chart to zoom in on the bottom charts below.</li>
+                  <li>Drag around the blue-square-brush on the upper chart to zoom in on the bottom charts below. All weather data is in blue.</li>
+                  <li>Clicking on a day in the calendar will display news clips from that day containing the searched word or phrase.</li>
+                  
                   </ul>
-                  <p>To get started <a target="_blank" href="https://archive.org/details/tv?q=flash%20flood%20AND%20(channel:WJLA%20OR%20channel:WRC%20OR%20channel:WTTG%20OR%20channel:WUSA%20OR%20channel:WBAL%20OR%20channel:WBFF%20OR%20channel:WJZ%20OR%20channel:WMAR%20OR%20channel:WNUV)">"Flash Flood"</a> has been entered for you already. Try and find out why it was mentioned so many times between July and October of 2011 and if any of the weather metrics correlate. </p>
+                  <p>To get started <a target="_blank" href="https://archive.org/details/tv?q=flash%20flood%20AND%20(channel:WJLA%20OR%20channel:WRC%20OR%20channel:WTTG%20OR%20channel:WUSA%20OR%20channel:WBAL%20OR%20channel:WBFF%20OR%20channel:WJZ%20OR%20channel:WMAR%20OR%20channel:WNUV)">"Flash Flood"</a> has been entered for you already. Try and find out why it was mentioned so many times between July and October of 2011 and if any of the weather metrics correlate. (hint: it was rainy) </p>
                 </div>
                 <div class="modal-footer">
+                  <span>This has been a <a href="https://twitter.com/Hey_Luiz" target="_blank">Hey Luiz</a> production</span>
                   <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
                   <button type="button" data-dismiss="modal" class="btn btn-primary disabled">Loading Data...</button>
                 </div>

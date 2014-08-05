@@ -7539,6 +7539,7 @@ Dashboard = (function() {
     this.renderWordCountGraph = __bind(this.renderWordCountGraph, this);
     this.getWordCount = __bind(this.getWordCount, this);
     this.loadNewsClips = __bind(this.loadNewsClips, this);
+    this.loadCalendar = __bind(this.loadCalendar, this);
     this.activateListeners = __bind(this.activateListeners, this);
     this.upperHeight = $("#upperHalf .leftCol").width() * .225;
     this.lowerHeight = $("#graphTitle").offset().top + this.upperHeight;
@@ -7650,9 +7651,9 @@ Dashboard = (function() {
         _chart.selectAll("g.sub._1 path").style("stroke-dasharray", 3);
         legend = $(_chart.anchor() + " g.dc-legend-item");
         act_legend = legend[0];
-        $(act_legend).find("text").text("Recorded " + _this.displayName);
+        $(act_legend).find("text").text("Recorded " + _this.displayName + " " + _this.units);
         avg_legend = legend[1];
-        $(avg_legend).find("text").text("10 year average");
+        $(avg_legend).find("text").text("10 year average" + " " + _this.units);
         return dc.events.trigger(function() {
           if (!_chart.brushOn()) {
             _chart.brushOn(true);
@@ -7676,17 +7677,6 @@ Dashboard = (function() {
     thisChart.innerChart.values = actualValuesChart;
     thisChart.innerChart.normalValues = normValuesChart;
     return this.charts.timeSeries = thisChart;
-  };
-
-  Dashboard.prototype.buildCharts = function() {
-    var maxDate, minDate, thisChart;
-    thisChart = new Chart(dc.lineChart("#dlta .chart"), this.dimension.monthStamp);
-    minDate = this.dimension.monthStamp.bottom(1)[0].Date;
-    maxDate = this.dimension.monthStamp.top(1)[0].Date;
-    thisChart.chartObject.dimension(this.dimension.monthStamp).group(thisChart.getDelta("Temp"), "Temp").width(thisChart.width + 30).height(thisChart.width * .333).valueAccessor(function(d) {
-      return d.value.delta;
-    }).elasticY(true).x(d3.time.scale().domain([minDate, maxDate])).xUnits(d3.time.months).legend(dc.legend().x(60).y(10).itemHeight(13).gap(5)).renderHorizontalGridLines(true);
-    return this.charts.delta = thisChart;
   };
 
   Dashboard.prototype.refreshCharts = function() {
@@ -7779,6 +7769,7 @@ Dashboard = (function() {
       range: numOfMonths,
       legend: legendIntervals,
       legendColors: ["#ebf0f5", '#336699'],
+      itemName: [this.units, this.units],
       cellSize: cellSize,
       legendCellSize: cellSize / 2,
       domainGutter: cellSize / 2,
@@ -7792,7 +7783,7 @@ Dashboard = (function() {
           _this.loadNewsClips(date, items);
           date = moment(date);
           $("#date").text(date.format("dddd MMM Do, YYYY"));
-          $("#date").addClass("invisible");
+          $("#date").addClass("hidden");
           return $(".tv-clip").remove();
         };
       })(this)
@@ -7802,6 +7793,10 @@ Dashboard = (function() {
 
   Dashboard.prototype.loadNewsClips = function(date, items) {
     var firstDate;
+    $("#tv-container div.bigLoader").removeClass("hidden");
+    $('html, body').animate({
+      scrollTop: $(document).height()
+    }, 'slow');
     firstDate = new Date(date.getTime());
     date.setDate(date.getDate() + 1);
     return $.ajax($SCRIPT_ROOT + '/grabClips', {
@@ -7822,6 +7817,9 @@ Dashboard = (function() {
       })(this),
       error: function(xhr, status, err) {
         return console.log(err, status, xhr);
+      },
+      complete: function(xhr, status) {
+        return $("#tv-container div.bigLoader").addClass("hidden");
       }
     });
   };
@@ -7846,6 +7844,7 @@ Dashboard = (function() {
 
   Dashboard.prototype.getWordCount = function() {
     var queryObject;
+    $("#upperHalf div.smallLoader").removeClass("hidden");
     queryObject = _.findWhere(this.queries, {
       query: this.lastQuery
     });
@@ -7860,11 +7859,16 @@ Dashboard = (function() {
         success: (function(_this) {
           return function(response, status, xhr) {
             _this.lastQueryResults = response.dailyCounts;
-            _this.queries.push({
-              query: _this.lastQuery,
-              results: response.dailyCounts
-            });
-            return _this.renderWordCountGraph();
+            if (_this.lastQueryResults === null) {
+              alert('It doesn\'t seem "' + _this.lastQuery + '" has ever been said before on the news.');
+            } else {
+              _this.queries.push({
+                query: _this.lastQuery,
+                results: response.dailyCounts
+              });
+              _this.renderWordCountGraph();
+            }
+            return $("#upperHalf div.smallLoader").addClass("hidden");
           };
         })(this),
         error: function(xhr, status, err) {
@@ -7876,6 +7880,7 @@ Dashboard = (function() {
 
   Dashboard.prototype.renderWordCountGraph = function() {
     var act_legend, area, group, height, max, newItem, x, y, yAxisRight;
+    $("#upperHalf div.smallLoader").addClass("hidden");
     $("g.area").remove();
     chart = this.charts.timeSeries.chartObject;
     height = chart.xAxisY();
@@ -7903,8 +7908,8 @@ Dashboard = (function() {
     newItem.find("text").text('TV news mentions of "' + this.lastQuery + '"');
     newItem.find("rect").css("fill", "rgba(153,153,153,.4)");
     $(chart.anchor() + " g.dc-legend").append(newItem);
-    $("#timeSeries h4 span.metric").text(this.displayName);
-    $("#timeSeries h4 span.query").text(this.lastQuery);
+    $("#graphTitle span.metric").text(this.displayName + " " + this.units);
+    $("#graphTitle span.query").text(this.lastQuery);
     $("g.brush").remove();
     return chart.renderBrush(chart.g());
   };
@@ -7912,7 +7917,7 @@ Dashboard = (function() {
   Dashboard.prototype.displayNewsClips = function(clips) {
     var clip, dte, iFrame, tvFrame, width, _i, _len, _results;
     $(".tv-clip").remove();
-    $("#date").removeClass("invisible");
+    $("#date").removeClass("hidden");
     if (clips.length === 0) {
       dte = $("#date").text();
       $("#date").text('No local news clips containg "' + this.lastQuery + '"" were found on ' + dte);

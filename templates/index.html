@@ -2,15 +2,24 @@
 <html>
     <head>
         <title>DC-Data</title>
+        <link rel="shortcut icon" href="/static/favicon.ico" >
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
  
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc.css">
         <link rel="stylesheet" href="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.css" />
-
+<!-- 
         <link rel="stylesheet" type="text/css" href="/static/css_all.css"></link>
 
         <script type="text/javascript" src="/static/js_all.js"></script>      
      
+ -->
+
+         {% assets "css_all" %}
+            <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"></script>
+        {% endassets %}
+        {% assets "js_all" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}   
 
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"></script>
          <script type="text/javascript" src="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.js"></script>
@@ -168,13 +177,16 @@
                 </div>
                 <div class="modal-body">
                   <p>This application was a submission for <a href="http://www.weatheranalytics.com/wa/climate-crush/" target="_blank">Weather Analytics' "Climate Crush"</a> competition. It joins <a href="https://archive.org/details/tv" target="_blank">local news coverage</a> with weather data for the D.C./Baltimore Area.</p>
-                  <ul>
-                  <li>Search for a word or phrase and see how often it was mentioned by the local newstations over time.
+                  <img src="static/snapshot.png" alt="">
+                  <!-- <img src="static/snap2.png" alt=""> -->
+
+    <!--               <ul>
+                  <li><img src="static/inputBox.png" alt="">Search for a word or phrase and see how often it was mentioned by the local newstations over time.
                   </li>
                   <li>Drag around the blue-square-brush on the upper chart to zoom in on the bottom charts below. All weather data is in blue.</li>
                   <li>Clicking on a day in the calendar will display news clips from that day containing the searched word or phrase.</li>
                   
-                  </ul>
+                  </ul> -->
                   <p>To get started <a target="_blank" href="https://archive.org/details/tv?q=flash%20flood%20AND%20(channel:WJLA%20OR%20channel:WRC%20OR%20channel:WTTG%20OR%20channel:WUSA%20OR%20channel:WBAL%20OR%20channel:WBFF%20OR%20channel:WJZ%20OR%20channel:WMAR%20OR%20channel:WNUV)">"Flash Flood"</a> has been entered for you already. Try and find out why it was mentioned so many times between July and October of 2011 and if any of the weather metrics correlate. (hint: it was rainy) </p>
                 </div>
                 <div class="modal-footer">

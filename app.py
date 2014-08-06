@@ -73,7 +73,8 @@ else:
         'css_all',
         assets.Bundle(
             'all.sass',
-            filters=['sass','scss'],
+            'extra.css',
+            filters=['sass','scss','css'],
             output='css_all.css'
         )
     )
@@ -156,7 +157,7 @@ def parsePageForClips(firstDay,nextDay,query):
     # query="flood"
     # soup = BeautifulSoup(urlopen("https://archive.org/details/tv?q="+query+"+AND+%28channel%3AWJLA+OR+channel%3AWRC+OR+channel%3AWTTG+OR+channel%3AWUSA+OR+channel%3AWBAL+OR+channel%3AWBFF+OR+channel%3AWJZ+OR+channel%3AWMAR+OR+channel%3AWNUV%29+&rows=10&&time="+firstDay+"-"+nextDay+"))    
     soup = BeautifulSoup(urlopen('https://archive.org/details/tv?q='+query+'+AND+%28channel%3AWJLA+OR+channel%3AWRC+OR+channel%3AWTTG+OR+channel%3AWUSA+OR+channel%3AWBAL+OR+channel%3AWBFF+OR+channel%3AWJZ+OR+channel%3AWMAR+OR+channel%3AWNUV%29+&rows=10&&time='+firstDay+'-'+nextDay+''),"html.parser")
-    print soup
+    # print soup
     clipObjects = []
     clips = soup.find_all("div",class_="sniptitle-search")
     for clip in clips:
@@ -165,16 +166,16 @@ def parsePageForClips(firstDay,nextDay,query):
         startTime = rawLink.split('start/')[1].split('/end')[0]
         endTime = rawLink.split('/end/')[1]
         srcLink = "https://archive.org/embed/"+parsedLink+"?start="+startTime+"&end="+endTime
-        print "##LINK##"
-        print srcLink
-        print "##SHOW##"
+        # print "##LINK##"
+        # print srcLink
+        # print "##SHOW##"
         show = clip.find('a').text
-        print "##STATION##"
+        # print "##STATION##"
         station = clip.find_all('div')[1].text
-        print "##DATE##"
+        # print "##DATE##"
         dte = clip.find_all('div')[2].text
         clipObjects.append({'station':station,'show':show,'link':srcLink,'date':dte})
-        if len(clipObjects) > 50:
+        if len(clipObjects) > 20:
             break
     return clipObjects
 

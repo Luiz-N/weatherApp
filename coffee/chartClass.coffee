@@ -26,3 +26,6 @@ class Chart
 		monthNum = dim.bottom(1)[0].Date.getMonth()
 		@chartObject.x(d3.scale.ordinal().domain(months(monthNum)))
 		@chartObject.renderXAxis(@chartObject.g())
+	resetFilters: () ->
+		for chartName,chart of @innerChart
+			chart.filterAll().expireCache()

@@ -387,81 +387,102 @@ header a:last-child {
 #welcomeModal div.modal-header, #welcomeModal div.modal-footer {
   background-color: rgba(51, 102, 153, 0.65);
   color: rgba(255, 255, 255, 0.9);
+  margin: 0;
 }
 
-/* line 248 */
-/* line 294 */
+/* line 249 */
+/* line 295 */
 #welcomeModal div.modal-header span, #welcomeModal div.modal-footer span {
   position: absolute;
   left: 20px;
   bottom: 20px;
 }
 
-/* line 252 */
-/* line 300 */
+/* line 253 */
+/* line 301 */
+#welcomeModal div.modal-dialog {
+  width: 50%;
+}
+
+/* line 255 */
+/* line 305 */
+#welcomeModal div.modal-dialog img {
+  width: 100%;
+  margin: 0.75em 0;
+  padding: 0.5em 0;
+  border-bottom: 1px dashed;
+  border-top: 1px dashed;
+  border-color: black;
+}
+
+/* line 262 */
+/* line 314 */
 #welcomeModal a {
   color: #336699;
   border-bottom: 1px dashed;
 }
 
-/* line 255 */
-/* line 305 */
+/* line 265 */
+/* line 319 */
 #welcomeModal a:hover {
   border: none;
 }
 
-/* line 257 */
-/* line 309 */
+/* line 267 */
+/* line 323 */
 #welcomeModal p {
-  font-size: 1.25em;
+  font-size: 1.5em;
+  margin: 0;
+  color: black;
 }
 
-/* line 259 */
-/* line 313 */
+/* line 271 */
+/* line 329 */
 #welcomeModal button {
   background-color: rgba(255, 255, 255, 0.9);
   border-color: rgba(255, 255, 255, 0.9);
   color: #336699;
+  font-size: 1.5em;
 }
 
-/* line 263 */
-/* line 319 */
+/* line 276 */
+/* line 336 */
 #welcomeModal button:hover {
   background-color: #336699;
   border-color: #336699;
   color: rgba(255, 255, 255, 0.9);
 }
 
-/* line 269 */
-/* line 326 */
+/* line 282 */
+/* line 343 */
 div.bigLoader {
   text-align: center;
   padding: 3em;
 }
 
-/* line 272 */
-/* line 331 */
+/* line 285 */
+/* line 348 */
 div.bigLoader img {
   width: 8%;
 }
 
-/* line 274 */
-/* line 336 */
+/* line 287 */
+/* line 353 */
 div.smallLoader {
   position: absolute;
   left: 26.5%;
 }
 
-/* line 278 */
-/* line 342 */
+/* line 291 */
+/* line 359 */
 .cf:before,
 .cf:after {
   content: " ";
   display: table;
 }
 
-/* line 284 */
-/* line 349 */
+/* line 297 */
+/* line 366 */
 .cf:after {
   clear: both;
 }

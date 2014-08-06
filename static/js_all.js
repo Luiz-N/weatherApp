@@ -7777,12 +7777,15 @@ Dashboard = (function() {
       legendVerticalPosition: "center",
       legendMargin: [0, cellSize, 0, 0],
       data: json,
+      weekStartOnMonday: false,
       dataType: "json",
       onClick: (function(_this) {
-        return function(date, items) {
-          _this.loadNewsClips(date, items);
-          date = moment(date);
-          $("#date").text(date.format("dddd MMM Do, YYYY"));
+        return function(clickDate, items) {
+          var dte;
+          _this.loadNewsClips(clickDate, items);
+          clickDate.setDate(clickDate.getDate() - 1);
+          dte = moment(clickDate);
+          $("#date").text(dte.format("dddd MMM Do, YYYY"));
           $("#date").addClass("hidden");
           return $(".tv-clip").remove();
         };
@@ -7983,6 +7986,17 @@ Chart = (function() {
     monthNum = dim.bottom(1)[0].Date.getMonth();
     this.chartObject.x(d3.scale.ordinal().domain(months(monthNum)));
     return this.chartObject.renderXAxis(this.chartObject.g());
+  };
+
+  Chart.prototype.resetFilters = function() {
+    var chartName, _ref, _results;
+    _ref = this.innerChart;
+    _results = [];
+    for (chartName in _ref) {
+      chart = _ref[chartName];
+      _results.push(chart.filterAll().expireCache());
+    }
+    return _results;
   };
 
   return Chart;

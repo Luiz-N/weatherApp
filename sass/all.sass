@@ -245,21 +245,34 @@ header
   div.modal-header, div.modal-footer
     background-color: $weatherColorDim
     color: $greyBackground
+    margin: 0
     span
       position: absolute
       left: 20px
       bottom: 20px
+  div.modal-dialog
+    width: 50%
+    img
+      width: 100%
+      margin: .75em 0
+      padding: .5em 0
+      border-bottom: 1px dashed
+      border-top: 1px dashed
+      border-color: black
   a
     color: $weatherColor
     border-bottom: 1px dashed
     &:hover
       border: none
   p
-    font-size: 1.25em
+    font-size: 1.5em
+    margin: 0
+    color: black
   button
     background-color: $greyBackground
     border-color: $greyBackground
     color: $weatherColor
+    font-size: 1.5em
     &:hover
       background-color: $weatherColor
       border-color: $weatherColor

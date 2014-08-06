@@ -302,11 +302,13 @@ class Dashboard
 			legendVerticalPosition: "center"
 			legendMargin: [0,cellSize,0,0]
 			data: json
+			weekStartOnMonday: false
 			dataType: "json"
-			onClick: (date,items) => 
-				@loadNewsClips(date, items)
-				date = moment(date)
-				$("#date").text(date.format("dddd MMM Do, YYYY"))
+			onClick: (clickDate,items) => 
+				@loadNewsClips(clickDate, items)
+				clickDate.setDate(clickDate.getDate()-1)
+				dte = moment(clickDate)
+				$("#date").text(dte.format("dddd MMM Do, YYYY"))
 				$("#date").addClass("hidden")
 				$(".tv-clip").remove()
 		})

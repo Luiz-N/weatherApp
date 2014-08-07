@@ -1,2 +1,2 @@
 
-web: python app.py
+web: gunicorn hello:app --workers $WEB_CONCURRENCY

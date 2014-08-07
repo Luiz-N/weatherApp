@@ -73,8 +73,7 @@ else:
         'css_all',
         assets.Bundle(
             'all.sass',
-            'extra.css',
-            filters=['sass','scss','css'],
+            filters=['sass','scss'],
             output='css_all.css'
         )
     )
@@ -163,8 +162,8 @@ def parsePageForClips(firstDay,nextDay,query):
     for clip in clips:
         rawLink = clip.find('a')['href']
         parsedLink = rawLink.split('/details/')[1].split('?q=')[0]
-        startTime = rawLink.split('start/')[1].split('/end')[0]
-        endTime = rawLink.split('/end/')[1]
+        startTime = str(int(rawLink.split('start/')[1].split('/end')[0])-20)
+        endTime = str(int(rawLink.split('/end/')[1])-20)
         srcLink = "https://archive.org/embed/"+parsedLink+"?start="+startTime+"&end="+endTime
         # print "##LINK##"
         # print srcLink

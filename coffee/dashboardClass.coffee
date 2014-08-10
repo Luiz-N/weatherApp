@@ -234,12 +234,12 @@ class Dashboard
 			$("#upperHalf .leftCol li a").removeClass("active")
 			$(this).addClass("active")
 			$("#cal-heatmap h4").text(go.displayName+" "+go.units)
-			ga('weather metrics', 'new metric', go.displayName);
+			ga('send','event','weather metrics', 'new metric', go.displayName);
 			go.refreshCharts()
 
 		$("#upperHalf .input-group").on "click","button", =>
 			@lastQuery = @inputBox.value
-			ga('Word Search', 'new search', @lastQuery);
+			ga('send','event','Word Search', 'new search', @lastQuery);
 			@getWordCount()
 
 		$(@inputBox).keypress (e) ->
@@ -315,7 +315,7 @@ class Dashboard
 				$("#date").text(dte.format("dddd MMM Do, YYYY"))
 				$("#date").addClass("hidden")
 				$(".tv-clip").remove()
-				ga('calendar days', 'day clicked', $("#date").text());
+				ga('send','event','calendar days', 'day clicked', $("#date").text());
 		})
 
 		metricValues.dispose()

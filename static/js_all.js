@@ -7544,9 +7544,9 @@ Dashboard = (function() {
     this.upperHeight = $("#upperHalf .leftCol").width() * .225;
     this.lowerHeight = $("#graphTitle").offset().top + this.upperHeight;
     this.metricArray = ["H_Pcnt"];
-    this.metricName = "Temp";
-    this.displayName = "Actual Temp";
-    this.units = "(F)";
+    this.metricName = $("#upperHalf ul.nav a.active").attr("data-name");
+    this.displayName = $("#upperHalf ul.nav a.active").text();
+    this.units = $("#upperHalf ul.nav a.active").attr("data-units");
     this.queries = [];
     this.inputBox = null;
     this.tvFrameTemplate = $("div.template").clone();
@@ -7555,7 +7555,7 @@ Dashboard = (function() {
     this.dimension = {};
     this.metric = {};
     this.cal = null;
-    this.brushFilter = [d3.time.format("%Y-%m-%d").parse("2010-02-01"), d3.time.format("%Y-%m-%d").parse("2011-02-01")];
+    this.brushFilter = [d3.time.format("%Y-%m-%d").parse("2011-07-01"), d3.time.format("%Y-%m-%d").parse("2012-06-02")];
     this.monthArray = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
     this.lastQuery = "flash flood";
     this.lastQueryResults = null;
@@ -7706,6 +7706,7 @@ Dashboard = (function() {
       go.units = $(this).attr("data-units");
       $("#upperHalf .leftCol li a").removeClass("active");
       $(this).addClass("active");
+      $("#cal-heatmap h4").text(go.displayName + " " + go.units);
       return go.refreshCharts();
     });
     $("#upperHalf .input-group").on("click", "button", (function(_this) {
@@ -7771,11 +7772,11 @@ Dashboard = (function() {
       legendColors: ["#ebf0f5", '#336699'],
       itemName: [this.units, this.units],
       cellSize: cellSize,
+      legendMargin: [0, 0, cellSize / 2, 0],
       legendCellSize: cellSize / 2,
       domainGutter: cellSize / 2,
-      legendOrientation: "vertical",
-      legendVerticalPosition: "center",
-      legendMargin: [0, cellSize, 0, 0],
+      legendOrientation: "horizontal",
+      legendVerticalPosition: "top",
       data: json,
       weekStartOnMonday: false,
       dataType: "json",

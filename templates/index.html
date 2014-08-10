@@ -12,7 +12,8 @@
 
         <script type="text/javascript" src="/static/js_all.js"></script>
 
-      
+          
+
 
 
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"></script>
@@ -59,12 +60,12 @@
                     
                     
                     <li><a href="#" data-units="(mph)" data-name="Wind" data-display ="">Wind</a></li>
-                    <li><a class="" href="#" data-units="(in)" data-name="Precip" data-display ="">Rain/Snow</a></li>
+                    <li><a class="active" href="#" data-units="(in)" data-name="Precip" data-display ="">Precipitation</a></li>
                     <li><a href="#" data-units="(%)" data-name="H_Pcnt" data-display ="">Humidity</a></li>
                     <li><a href="#" data-units="(%)" data-name="C_Pcnt" data-display ="">Cloudiness</a></li>
                     <li><a href="#" data-units="(kg/s^2)" data-name="Radiation" data-display ="">Solar Radiation</a></li>
                     <li><a href="#" data-units="(F)" data-name="Temp_Feels" data-display ="">Apparent Temp</a></li>
-                    <li ><a class="active" href="#" data-units="(F)" data-name="Temp" data-display ="">Actual Temp</a></li>
+                    <li ><a class="" href="#" data-units="(F)" data-name="Temp" data-display ="">Actual Temp</a></li>
                   </ul>
                   <div id="timeSeries" class="well">
                     <h4 id="graphTitle"><span class="metric">Temperature</span> & Mentions of "<span class="query">query</span>" Over Time</h4>
@@ -80,44 +81,18 @@
             <div id="lowerHalf" class="row"> 
                 <div class="rightCol col-xs-6 col-md-5 well">
                     <div id="monthChart" class="chart ">
-                    <!-- <input type="text" class="form-control"> -->
-  <!--                   <ul id="tabs" class="nav nav-tabs" role="tablist">
-                      <li class="active"><a class="active search" href="#search" data-toggle="tab">Search News</a></li>
-                      <li><a class="months" href="#months " data-toggle="tab">Months View</a></li>
-                    </ul>
-                    <div id="tabContent" class="tab-content well">
-                      
-                      <div class="tab-pane fade active in" id="search">
-                        <div class="input-group">
-                          <input type="text" value="flash flood" class="form-control" placeholder="Search for a word or phrase">
-                          <span class="input-group-btn">
-                          <button class="btn btn-default" type="button">Go</button>
-                          </span>
-                        </div>
-                        <p>Enter any word or phrase above to see how many times it was said by D.C./Baltimore local news anchors.
-                          </p>
-                          <p>
-                          Drag the box around the timeline above to view that period of time.
-                          Clicking a month in the months tab filters for that month.
-                          Finally, if you click on a day on the calendar you will find clips for that day where the word/phrase was said.</p>
-                          <p>To get you started "Flash Flood" has been entered already</p>
-                      </div>
-                      <div class="tab-pane fade in active" id="months">
-                        <div id="monthChart" class="chart">
-
-                         </div>
-                      </div>
-                    </div> -->
                     </div>
                       <!-- <div class="monthButton" id="monthSelector"></div> -->
 
-                      <span class="monthButton"><span class="glyphicon glyphicon-chevron-down"></span> Click for filter <span class="glyphicon glyphicon-chevron-down"></span></span>
+                      <span class="monthButton"><span class="glyphicon glyphicon-chevron-down"></span> Month Filter <span class="glyphicon glyphicon-chevron-down"></span></span>
 
                 </div>
 
 
               <div class="leftCol col-xs-12 col-md-12">
-                  <div id="cal-heatmap" class="well cf"></div>
+                  <div id="cal-heatmap" class="well cf">
+                    <h4>Precipitation (in)</h4>
+                  </div>
               </div>
             </div>
           <!-- </div> -->
@@ -139,7 +114,7 @@
 
                   <div id="tv-container" class="row">
                     <div id="dayHeader" class="col-xs-12">
-                      <h1 id="date"></h1>
+                      <h1 id="date">Click a day above to view news clips</h1>
                       <!-- <h3></h3> -->
                     </div>
                       <div class="col-xs-12 col-sm-6 col-md-4 template tvFrame ">
@@ -182,7 +157,7 @@
                   <li>Clicking on a day in the calendar will display news clips from that day containing the searched word or phrase.</li>
                   
                   </ul> -->
-                  <p>To get started <a target="_blank" href="https://archive.org/details/tv?q=flash%20flood%20AND%20(channel:WJLA%20OR%20channel:WRC%20OR%20channel:WTTG%20OR%20channel:WUSA%20OR%20channel:WBAL%20OR%20channel:WBFF%20OR%20channel:WJZ%20OR%20channel:WMAR%20OR%20channel:WNUV)">"Flash Flood"</a> has been entered for you already. Try and find out why it was mentioned so many times between July and October of 2011 and if any of the weather metrics correlate. (hint: it was rainy) </p>
+                  <p>To get started <a target="_blank" href="https://archive.org/details/tv?q=flash%20flood%20AND%20(channel:WJLA%20OR%20channel:WRC%20OR%20channel:WTTG%20OR%20channel:WUSA%20OR%20channel:WBAL%20OR%20channel:WBFF%20OR%20channel:WJZ%20OR%20channel:WMAR%20OR%20channel:WNUV)">"Flash Flood"</a> has been entered for you already. Try and find out why it was mentioned so many times between July and October of 2011 and if any of the weather metrics correlate. (hint: Sept 7-9th) </p>
                 </div>
                 <div class="modal-footer">
                   <span>This has been a <a href="https://twitter.com/Hey_Luiz" target="_blank">Hey Luiz</a> production</span>

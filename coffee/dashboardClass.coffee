@@ -3,9 +3,9 @@ class Dashboard
 		@upperHeight = ($("#upperHalf .leftCol").width()*.225)
 		@lowerHeight = $("#graphTitle").offset().top + @upperHeight
 		@metricArray = ["H_Pcnt"]
-		@metricName = "Temp"
-		@displayName = "Actual Temp"
-		@units = "(F)"
+		@metricName = $("#upperHalf ul.nav a.active").attr("data-name")
+		@displayName = $("#upperHalf ul.nav a.active").text()
+		@units = $("#upperHalf ul.nav a.active").attr("data-units")
 		@queries = []
 		@inputBox = null
 		@tvFrameTemplate = $("div.template").clone()
@@ -16,7 +16,7 @@ class Dashboard
 		@dimension = {}
 		@metric = {}
 		@cal = null
-		@brushFilter = [d3.time.format("%Y-%m-%d").parse("2010-02-01"),d3.time.format("%Y-%m-%d").parse("2011-02-01")]
+		@brushFilter = [d3.time.format("%Y-%m-%d").parse("2011-07-01"),d3.time.format("%Y-%m-%d").parse("2012-06-02")]
 		@monthArray = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"]
 		@lastQuery = "flash flood"
 		@lastQueryResults = null
@@ -233,6 +233,7 @@ class Dashboard
 			go.units = $(this).attr("data-units")
 			$("#upperHalf .leftCol li a").removeClass("active")
 			$(this).addClass("active")
+			$("#cal-heatmap h4").text(go.displayName+" "+go.units)
 			go.refreshCharts()
 
 		$("#upperHalf .input-group").on "click","button", =>
@@ -296,11 +297,12 @@ class Dashboard
 			legendColors: ["#ebf0f5", '#336699']
 			itemName: [@units,@units]
 			cellSize: cellSize
+			legendMargin: [0,0,cellSize/2,0]
 			legendCellSize: cellSize/2
 			domainGutter: cellSize/2
-			legendOrientation: "vertical"
-			legendVerticalPosition: "center"
-			legendMargin: [0,cellSize,0,0]
+			legendOrientation: "horizontal"
+			legendVerticalPosition: "top"
+			# legendMargin: [0,cellSize,0,0]
 			data: json
 			weekStartOnMonday: false
 			dataType: "json"

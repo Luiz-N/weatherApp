@@ -287,31 +287,39 @@ header a:last-child {
 /* line 197 */
 /* line 218 */
 #mainWrapper #lowerHalf #cal-heatmap {
-  padding: 2em 0 0 2em;
+  padding: 0 0 0 2em;
   overflow-y: hidden;
 }
 
 /* line 200 */
 /* line 223 */
+#mainWrapper #lowerHalf #cal-heatmap h4 {
+  padding: 0.5em 0;
+  color: black;
+  text-align: left;
+}
+
+/* line 204 */
+/* line 229 */
 #mainWrapper #lowerHalf #cal-heatmap svg.graph-legend {
   -webkit-transform: rotate(180deg);
 }
 
-/* line 202 */
-/* line 227 */
+/* line 206 */
+/* line 233 */
 #mainWrapper #lowerHalf #cal-heatmap g rect:hover {
   cursor: pointer;
 }
 
-/* line 204 */
-/* line 231 */
+/* line 208 */
+/* line 237 */
 #mainWrapper #lowerHalf #cal-heatmap .graph-label {
   fill: #666666;
   font-size: 1.5em;
 }
 
-/* line 207 */
-/* line 236 */
+/* line 211 */
+/* line 242 */
 #mainWrapper #lowerHalf .rightCol {
   transition: all 400ms ease-out;
   position: absolute;
@@ -319,14 +327,14 @@ header a:last-child {
   text-align: center;
 }
 
-/* line 217 */
-/* line 243 */
+/* line 221 */
+/* line 249 */
 #mainWrapper #tv-container .tvFrame {
   padding-bottom: 2em;
 }
 
-/* line 219 */
-/* line 247 */
+/* line 223 */
+/* line 253 */
 #mainWrapper #tv-container #date {
   text-align: center;
   color: rgba(255, 255, 255, 0.9);
@@ -334,97 +342,97 @@ header a:last-child {
   padding: 0.25em 0;
 }
 
-/* line 224 */
-/* line 254 */
+/* line 228 */
+/* line 260 */
 #mainWrapper #tv-container iframe {
   margin-bottom: 0;
 }
 
-/* line 226 */
-/* line 258 */
+/* line 230 */
+/* line 264 */
 #mainWrapper #tv-container .template {
   position: absolute;
   opacity: 0;
   x: -5000;
 }
 
-/* line 230 */
-/* line 264 */
+/* line 234 */
+/* line 270 */
 #mainWrapper #tv-container .caption {
   padding: 0.5em 1em;
   color: black;
 }
 
-/* line 233 */
-/* line 269 */
+/* line 237 */
+/* line 275 */
 #mainWrapper #tv-container .caption p {
   padding-bottom: 0;
   margin: 0;
 }
 
-/* line 236 */
-/* line 274 */
+/* line 240 */
+/* line 280 */
 #mainWrapper #tv-container .caption p a {
   font-size: 1.1em;
   background-color: rgba(255, 255, 255, 0.9);
 }
 
-/* line 239 */
-/* line 279 */
+/* line 243 */
+/* line 285 */
 #mainWrapper #tv-container .caption p a:first-child {
   float: left;
 }
 
-/* line 241 */
-/* line 283 */
+/* line 245 */
+/* line 289 */
 #mainWrapper #tv-container .caption p a:last-child {
   float: right;
 }
 
-/* line 244 */
-/* line 287 */
+/* line 248 */
+/* line 293 */
 #mainWrapper #tv-container .caption h3 {
   border-bottom: 1px solid lightgray;
   padding-bottom: 0.15em;
   margin-bottom: 0.25em;
 }
 
-/* line 248 */
-/* line 293 */
+/* line 252 */
+/* line 299 */
 #mainWrapper #tv-container .caption h4, #mainWrapper #tv-container .caption p {
   color: #999999;
 }
 
-/* line 251 */
-/* line 298 */
+/* line 255 */
+/* line 304 */
 #welcomeModal {
   color: #336699;
 }
 
-/* line 253 */
-/* line 302 */
+/* line 257 */
+/* line 308 */
 #welcomeModal div.modal-header, #welcomeModal div.modal-footer {
   background-color: rgba(51, 102, 153, 0.65);
   color: rgba(255, 255, 255, 0.9);
   margin: 0;
 }
 
-/* line 257 */
-/* line 308 */
+/* line 261 */
+/* line 314 */
 #welcomeModal div.modal-header span, #welcomeModal div.modal-footer span {
   position: absolute;
   left: 20px;
   bottom: 20px;
 }
 
-/* line 261 */
-/* line 314 */
+/* line 265 */
+/* line 320 */
 #welcomeModal div.modal-dialog {
   width: 50%;
 }
 
-/* line 263 */
-/* line 318 */
+/* line 267 */
+/* line 324 */
 #welcomeModal div.modal-dialog img {
   width: 100%;
   margin: 0.75em 0;
@@ -434,29 +442,29 @@ header a:last-child {
   border-color: black;
 }
 
-/* line 270 */
-/* line 327 */
+/* line 274 */
+/* line 333 */
 #welcomeModal a {
   color: #336699;
   border-bottom: 1px dashed;
 }
 
-/* line 273 */
-/* line 332 */
+/* line 277 */
+/* line 338 */
 #welcomeModal a:hover {
   border: none;
 }
 
-/* line 275 */
-/* line 336 */
+/* line 279 */
+/* line 342 */
 #welcomeModal p {
   font-size: 1.5em;
   margin: 0;
   color: black;
 }
 
-/* line 279 */
-/* line 342 */
+/* line 283 */
+/* line 348 */
 #welcomeModal button {
   background-color: rgba(255, 255, 255, 0.9);
   border-color: rgba(255, 255, 255, 0.9);
@@ -464,44 +472,44 @@ header a:last-child {
   font-size: 1.5em;
 }
 
-/* line 284 */
-/* line 349 */
+/* line 288 */
+/* line 355 */
 #welcomeModal button:hover {
   background-color: #336699;
   border-color: #336699;
   color: rgba(255, 255, 255, 0.9);
 }
 
-/* line 290 */
-/* line 356 */
+/* line 294 */
+/* line 362 */
 div.bigLoader {
   text-align: center;
   padding: 3em;
 }
 
-/* line 293 */
-/* line 361 */
+/* line 297 */
+/* line 367 */
 div.bigLoader img {
   width: 8%;
 }
 
-/* line 295 */
-/* line 366 */
+/* line 299 */
+/* line 372 */
 div.smallLoader {
   position: absolute;
   left: 26.5%;
 }
 
-/* line 299 */
-/* line 372 */
+/* line 303 */
+/* line 378 */
 .cf:before,
 .cf:after {
   content: " ";
   display: table;
 }
 
-/* line 305 */
-/* line 379 */
+/* line 309 */
+/* line 385 */
 .cf:after {
   clear: both;
 }

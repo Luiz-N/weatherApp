@@ -7707,11 +7707,13 @@ Dashboard = (function() {
       $("#upperHalf .leftCol li a").removeClass("active");
       $(this).addClass("active");
       $("#cal-heatmap h4").text(go.displayName + " " + go.units);
+      ga('weather metrics', 'new metric', go.displayName);
       return go.refreshCharts();
     });
     $("#upperHalf .input-group").on("click", "button", (function(_this) {
       return function() {
         _this.lastQuery = _this.inputBox.value;
+        ga('Word Search', 'new search', _this.lastQuery);
         return _this.getWordCount();
       };
     })(this));
@@ -7788,7 +7790,8 @@ Dashboard = (function() {
           dte = moment(clickDate);
           $("#date").text(dte.format("dddd MMM Do, YYYY"));
           $("#date").addClass("hidden");
-          return $(".tv-clip").remove();
+          $(".tv-clip").remove();
+          return ga('calendar days', 'day clicked', $("#date").text());
         };
       })(this)
     });

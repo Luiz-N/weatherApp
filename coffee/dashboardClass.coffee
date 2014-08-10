@@ -292,7 +292,7 @@ class Dashboard
 		@cal.init({
 			domain: "month",
 			subDomain: "x_day",
-			start: begin,
+			start: begin, 
 			domainDynamicDimension: false
 			range: numOfMonths,
 			legend: legendIntervals

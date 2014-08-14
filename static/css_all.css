@@ -429,10 +429,11 @@ header a:last-child {
 /* line 320 */
 #welcomeModal div.modal-dialog {
   width: 50%;
+  margin: auto;
 }
 
-/* line 267 */
-/* line 324 */
+/* line 268 */
+/* line 325 */
 #welcomeModal div.modal-dialog img {
   width: 100%;
   margin: 0.75em 0;
@@ -442,36 +443,37 @@ header a:last-child {
   border-color: black;
 }
 
-/* line 274 */
-/* line 333 */
+/* line 275 */
+/* line 334 */
 #welcomeModal a {
   color: #336699;
   border-bottom: 1px dashed;
 }
 
-/* line 277 */
-/* line 338 */
+/* line 278 */
+/* line 339 */
 #welcomeModal a:hover {
   border: none;
 }
 
-/* line 279 */
-/* line 342 */
+/* line 280 */
+/* line 343 */
 #welcomeModal h3 {
   color: black;
   text-align: center;
+  line-height: 1.25em;
 }
 
-/* line 282 */
-/* line 347 */
+/* line 284 */
+/* line 349 */
 #welcomeModal p {
   font-size: 1em;
   margin: 0;
   color: black;
 }
 
-/* line 286 */
-/* line 353 */
+/* line 288 */
+/* line 355 */
 #welcomeModal button {
   background-color: rgba(255, 255, 255, 0.9);
   border-color: rgba(255, 255, 255, 0.9);
@@ -479,44 +481,44 @@ header a:last-child {
   font-size: 1.5em;
 }
 
-/* line 291 */
-/* line 360 */
+/* line 293 */
+/* line 362 */
 #welcomeModal button:hover {
   background-color: #336699;
   border-color: #336699;
   color: rgba(255, 255, 255, 0.9);
 }
 
-/* line 297 */
-/* line 367 */
+/* line 299 */
+/* line 369 */
 div.bigLoader {
   text-align: center;
   padding: 3em;
 }
 
-/* line 300 */
-/* line 372 */
+/* line 302 */
+/* line 374 */
 div.bigLoader img {
   width: 8%;
 }
 
-/* line 302 */
-/* line 377 */
+/* line 304 */
+/* line 379 */
 div.smallLoader {
   position: absolute;
   left: 26.5%;
 }
 
-/* line 306 */
-/* line 383 */
+/* line 308 */
+/* line 385 */
 .cf:before,
 .cf:after {
   content: " ";
   display: table;
 }
 
-/* line 312 */
-/* line 390 */
+/* line 314 */
+/* line 392 */
 .cf:after {
   clear: both;
 }

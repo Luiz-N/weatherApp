@@ -457,14 +457,21 @@ header a:last-child {
 
 /* line 279 */
 /* line 342 */
+#welcomeModal h3 {
+  color: black;
+  text-align: center;
+}
+
+/* line 282 */
+/* line 347 */
 #welcomeModal p {
-  font-size: 1.5em;
+  font-size: 1em;
   margin: 0;
   color: black;
 }
 
-/* line 283 */
-/* line 348 */
+/* line 286 */
+/* line 353 */
 #welcomeModal button {
   background-color: rgba(255, 255, 255, 0.9);
   border-color: rgba(255, 255, 255, 0.9);
@@ -472,44 +479,44 @@ header a:last-child {
   font-size: 1.5em;
 }
 
-/* line 288 */
-/* line 355 */
+/* line 291 */
+/* line 360 */
 #welcomeModal button:hover {
   background-color: #336699;
   border-color: #336699;
   color: rgba(255, 255, 255, 0.9);
 }
 
-/* line 294 */
-/* line 362 */
+/* line 297 */
+/* line 367 */
 div.bigLoader {
   text-align: center;
   padding: 3em;
 }
 
-/* line 297 */
-/* line 367 */
+/* line 300 */
+/* line 372 */
 div.bigLoader img {
   width: 8%;
 }
 
-/* line 299 */
-/* line 372 */
+/* line 302 */
+/* line 377 */
 div.smallLoader {
   position: absolute;
   left: 26.5%;
 }
 
-/* line 303 */
-/* line 378 */
+/* line 306 */
+/* line 383 */
 .cf:before,
 .cf:after {
   content: " ";
   display: table;
 }
 
-/* line 309 */
-/* line 385 */
+/* line 312 */
+/* line 390 */
 .cf:after {
   clear: both;
 }

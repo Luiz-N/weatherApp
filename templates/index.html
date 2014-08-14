@@ -7,11 +7,18 @@
  
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc.css">
         <link rel="stylesheet" href="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.css" />
-
+<!-- 
         <link rel="stylesheet" type="text/css" href="/static/css_all.css"></link> 
 
         <script type="text/javascript" src="/static/js_all.js"></script>
  
+ -->
+        {% assets "css_all" %}
+            <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"></script>
+        {% endassets %}
+        {% assets "js_all" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}   
 
 
 
@@ -137,7 +144,7 @@
                   
           </div> 
 <!-- end of main col   -->
-          <div class="modal fade" id="welcomeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal fade" data-backdrop="static" id="welcomeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -145,7 +152,7 @@
                   <h4 class="modal-title" id="myModalLabel">DC-Data</h4>
                 </div>
                 <div class="modal-body">
-                  <p>This application was a submission for <a href="http://www.weatheranalytics.com/wa/climate-crush/" target="_blank">Weather Analytics' "Climate Crush"</a> competition. It joins <a href="https://archive.org/details/tv" target="_blank">local news coverage</a> with weather data for the D.C./Baltimore Area.</p>
+                  <h3>This submission for <a href="http://www.weatheranalytics.com/wa/climate-crush/" target="_blank">a data visualization competition</a> joins <a href="https://archive.org/details/tv" target="_blank">local news coverage</a> with weather data for the D.C./Baltimore Area.</h3>
                   <img src="static/snapshot.png" alt="">
                   <!-- <img src="static/snap2.png" alt=""> -->
 

@@ -1,21 +1,25 @@
 class Dashboard
 	constructor: () ->
-		@upperHeight = ($("#upperHalf .leftCol").width()*.333)
+		@upperHeight = ($("#upperHalf .leftCol").width()*.225)
 		@lowerHeight = $("#graphTitle").offset().top + @upperHeight
 		@metricArray = ["H_Pcnt"]
-		@metricName = "Temp"
-		@displayName = "Temperature (F)"
+		@metricName = $("#upperHalf ul.nav a.active").attr("data-name")
+		@displayName = $("#upperHalf ul.nav a.active").text()
+		@units = $("#upperHalf ul.nav a.active").attr("data-units")
 		@queries = []
 		@inputBox = null
+		@tvFrameTemplate = $("div.template").clone()
 		# @cf = null
+		@weatherColor = 'rgba(51,102,153,1)'
 		# @allGroups = null
 		@charts = {}
 		@dimension = {}
 		@metric = {}
 		@cal = null
-		@brushFilter = [d3.time.format("%Y-%m-%d").parse("2011-01-01"),d3.time.format("%Y-%m-%d").parse("2012-01-01")]
+		@brushFilter = [d3.time.format("%Y-%m-%d").parse("2011-07-01"),d3.time.format("%Y-%m-%d").parse("2012-06-02")]
 		@monthArray = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"]
 		@lastQuery = "flash flood"
+		@lastQueryResults = null
 
 	parseData: (data) ->
 		#@data = data
@@ -35,14 +39,20 @@ class Dashboard
 		    #d.weekStamp = d3.time.week(d.Date)
 
 		
-		$("#lowerHalf").height(@lowerHeight)
+		# $("#lowerHalf").height(@lowerHeight)
 
 		@buildDimensions()
 		@buildMonthChart()
 		@buildTimeSeriesChart()
+		@getWordCount()
 		# @loadCalendar()
-		
-		
+		dc.constants.EVENT_DELAY = 250
+
+		# $("#timeSpan").text(@brushFilter[0].format("MMM YYYY")+" - "+@brushFilter[1].format("MMM YYYY"))
+
+
+		# tvCols = Math.round($("#mainCol").innerWidth()/$(".tv-col").width()) - 1
+		# until tvCols -= 0
 
 	buildDimensions: () ->
 		go = @
@@ -50,9 +60,9 @@ class Dashboard
 		# @dimension.timeOfDay = @cf.dimension (d) -> d.hourlyNum
 		@dimension.monthStamp = @cf.dimension (d) -> d.monthStamp
 		@dimension.dayStamp = @cf.dimension (d) -> d.dayStamp
-		@dimension.monthNames = @cf.dimension (d) ->
+		@dimension.monthNames = @cf.dimension (d) =>
 			month = d.monthNum
-			# go.monthArray[month]
+			@monthArray[month]
 
 	buildMetrics: () ->
 		@metric.avgMonthOverTime = averageValues(@dimension.monthStamp,@metricName)
@@ -67,76 +77,61 @@ class Dashboard
 		thisChart = new Chart(dc.compositeChart("#monthChart"),@dimension.monthNames)
 		metric = thisChart.averageMetric(@metricName)
 
+		# domain = []
+		# (@dimension.dayStamp.bottom(1)[0].Date).getMonth()
+		# group.top(Infinity).forEach( (d) ->
+		#     domain[domain.length] = d.key
+		# )
+		
+		
+
 		actualValuesChart = dc.barChart(thisChart.chartObject)
 		actualValuesChart
 			.group(metric)
+			.colors([@weatherColor])
 			.valueAccessor (d) -> d.value.avg
+			.elasticX(true)
 
 		thisChart.chartObject
 			.dimension(@dimension.monthNames)
-			.width(thisChart.width + 75)
+			.width(thisChart.width + 70)
 			.height(@upperHeight)
 			.yAxisLabel(@displayName)
+			# .ordering( (d) ->  d.value.avg)
 			.elasticY(true)
-			.x(d3.scale.ordinal().domain(@monthArray))
+			.elasticX(true)
+			.x(d3.scale.ordinal().domain(months(@dimension.dayStamp.bottom(1)[0].Date.getMonth())))
 			.xUnits(dc.units.ordinal)
 			.renderHorizontalGridLines(true)
 			.compose([actualValuesChart])
-			.renderlet( () ->
-				dc.events.trigger( -> go.loadCalendar())
+			.on "preRedraw", (_chart) =>
+				# debugger
+				firstDate = moment(@dimension.dayStamp.bottom(1)[0].Date)
+				# console.log(@brushFilter[0])
+				# console.log
+				# @brushFilter[1] = moment(@charts.timeSeries.chartObject.filter()[1])
+				secondDate = moment(@dimension.dayStamp.top(1)[0].Date)
+
+
+				# @brushFilter[0] = moment(_chart.brush().extent()[0])
+				# @brushFilter[1] = moment(_chart.brush().extent()[1])
+				$("#timeSpan").text(firstDate.format("MMMM YYYY")+" - "+secondDate.format("MMMM YYYY"))
+
+
+				thisChart.updateXAxis(@dimension.dayStamp)
+		
+				# if actualValuesChart.filter() == null
+				# 	thisChart.updateXAxis(@dimension.dayStamp)
+			.renderlet( (_chart) =>
+				dc.events.trigger( => 
+					# @loadCalendar()
+					# actualValuesChart.renderXAxis(actualValuesChart.g())
+				)
 			)
 
 		thisChart.innerChart.values = actualValuesChart
 		@charts.monthChart = thisChart
 		# thisChart.innerChart.avgValues = dc.barChart(thisChart.chartObject)
-
-	buildYearChart: () ->
-		thisChart = new Chart(dc.compositeChart("#yearChart"),@dimension.yearName)
-		metric = thisChart.averageMetric(@metricName)
-
-		actualValuesChart = dc.barChart(thisChart.chartObject)
-		actualValuesChart
-			.group(metric)
-			.valueAccessor (d) -> d.value.avg
-
-		thisChart.chartObject
-			.dimension(@dimension.yearName)
-			.width(thisChart.width + 100)
-			.height(thisChart.width*.4)
-			.yAxisLabel(@displayName)
-			.elasticY(true)
-			.group(metric)
-	    .x(d3.scale.ordinal())
-	    .xUnits(dc.units.ordinal)
-    	.renderHorizontalGridLines(true)
-    	.compose([actualValuesChart])
-
-		thisChart.innerChart.values = actualValuesChart
-		@charts.yearChart = thisChart
-
-	buildHourlyChart: () ->
-		thisChart = new Chart(dc.compositeChart("#hourChart"),@dimension.timeOfDay)
-		metric = thisChart.averageMetric(@metricName)
-
-		actualValuesChart = dc.barChart(thisChart.chartObject)
-		actualValuesChart
-			.group(metric)
-			.valueAccessor (d) -> d.value.avg
-
-		thisChart.chartObject
-			.dimension(@dimension.timeOfDay)
-			.width(thisChart.width + 100)
-			.height(thisChart.width*.4)
-			.yAxisLabel(@displayName)
-			.elasticY(true)
-			.group(metric)
-	    .x(d3.scale.ordinal())
-	    .xUnits(dc.units.ordinal)
-    	.renderHorizontalGridLines(true)
-    	.compose([actualValuesChart])
-
-		thisChart.innerChart.values = actualValuesChart
-		@charts.hourChart = thisChart
 
 	buildTimeSeriesChart: () ->
 		go = @
@@ -149,18 +144,18 @@ class Dashboard
 		actualValuesChart = dc.lineChart(thisChart.chartObject)
 			.group(metric, "actual " + @displayName)
 			.valueAccessor (d) ->  d.value.avg
-			.colors(['green'])
+			.colors([@weatherColor])
 			.interpolate('basis-open')
 
 		normValuesChart = dc.lineChart(thisChart.chartObject)
-			.group(metric, "normal " + @displayName)
+			.group(metric, "Recorded " + @displayName)
 			.valueAccessor (d) -> d.value.avg_avg
-			.colors(['rgba(0,0,255,1)'])
+			.colors(['rgba(51,102,153,.5)'])
 			.interpolate('basis-open')
 		
 		# clipsCountChart = dc.lineChart(thisChart.chartObject)
-		# 	.group(buildFakeGroup(defaultClipsArray))
-		# 	.colors(['red'])
+		# 	.group(buildFakeGroup(flashFoodArray))
+		# 	.colors(['black'])
 		# 	.interpolate('basis-open')
 		#   .y(d3.scale.linear().range([100, 0]))
 		# 	.yAxis(d3.svg.axis().scale(d3.scale.linear().range([100, 0])))
@@ -169,83 +164,51 @@ class Dashboard
 			.dimension(@dimension.monthStamp)
 			.width(thisChart.width + 30)
 			.height(@upperHeight)
-			.yAxisLabel(@displayName)
+			.yAxisLabel(@displayName+" "+@units)
 			.elasticY(true)
 	    .x(d3.time.scale().domain([minDate,maxDate]))
 		  .xUnits(d3.time.months)
 		  .brushOn(false)
-			.legend(dc.legend().x(60).y(10).itemHeight(13).gap(5))
+			.legend(dc.legend().x(60).y(thisChart.chartObject.xAxisY()-60).itemHeight(13).gap(5))
     	.renderHorizontalGridLines(true)
     	.compose([actualValuesChart,normValuesChart])
-    	.renderlet( (chart) ->
-				if !chart.brushOn()
-					chart.brushOn(true)
-					chart.renderBrush(chart.g())
-					chart.brush().extent(go.brushFilter)
-					# chart.brush().extent([d3.time.format("%Y-%m-%d").parse("2011-01-01"),d3.time.format("%Y-%m-%d").parse("2012-01-01")])
-					chart.redrawBrush(chart.g())
-					chart.filter(go.brushFilter)
-					go.loadCalendar()
+    	.renderlet( (_chart) =>
+				_chart.selectAll("g.sub path").style("stroke-width",3)
+				_chart.selectAll("g.sub._1 path").style("stroke-dasharray",3)
+				legend = $(_chart.anchor()+" g.dc-legend-item")
+				act_legend = legend[0]
+				$(act_legend).find("text").text("Recorded " + @displayName + " "+@units)
+				avg_legend = legend[1]
+				$(avg_legend).find("text").text("10 year average"+ " "+@units)
+
+
+				dc.events.trigger( => 
+					if !_chart.brushOn()
+						_chart.brushOn(true)
+						_chart.renderBrush(_chart.g())
+						_chart.brush().extent(@brushFilter)
+						@brushFilter = _chart.brush().extent()
+						_chart.redrawBrush(_chart.g())
+						_chart.filter(@brushFilter)
+						@charts.monthChart.updateXAxis(@dimension.dayStamp)
+						@charts.monthChart.chartObject.redraw()
+						@getWordCount()
+					@loadCalendar()
+				)
+			)
+			.on("filter", (_chart,filter) =>
+				alert(filter)
+				# debugger
+				# timeSpan.text()
+
 			)
 
 		thisChart.innerChart.values = actualValuesChart
 		thisChart.innerChart.normalValues = normValuesChart
+		# thisChart.innerChart.clipCounts = clipsCountChart
 
 		@charts.timeSeries = thisChart
 	
-	buildCharts: () ->
-		thisChart = new Chart(dc.lineChart("#dlta .chart"),@dimension.monthStamp)
-		# metric = thisChart.averageMetric(@metricName)
-	
-		minDate = @dimension.monthStamp.bottom(1)[0].Date
-		maxDate = @dimension.monthStamp.top(1)[0].Date
-
-		# actualValuesChart = dc.lineChart(thisChart.chartObject)
-		# 	.group(metric, "actual " + @displayName)
-		# 	.valueAccessor (d) -> d.value.avg
-		# 	.colors(['green'])
-		# 	.interpolate('basis-open')
-
-		# normValuesChart = dc.lineChart(thisChart.chartObject)
-		# 	.group(metric, "normal " + @displayName)
-		# 	.valueAccessor (d) -> d.value.avg_avg
-		# 	.colors(['rgba(0,0,255,1)'])
-		# 	.interpolate('basis-open')
-		
-		# clipsCountChart = dc.lineChart(thisChart.chartObject)
-		# 	.group(buildFakeGroup(defaultClipsArray))
-		# 	.colors(['red'])
-		# 	.interpolate('basis-open')
-		  # .y(d3.scale.linear().range([100, 0]))
-			# .yAxis(d3.svg.axis().scale(d3.scale.linear().range([100, 0])))
-
-		thisChart.chartObject
-			.dimension(@dimension.monthStamp)
-			.group(thisChart.getDelta("Temp"),"Temp")
-			.width(thisChart.width + 30)
-			.height(thisChart.width*.333)
-			# .yAxisLabel(@displayName)
-			.valueAccessor (d) -> d.value.delta
-			.elasticY(true)
-	    .x(d3.time.scale().domain([minDate,maxDate]))
-		  .xUnits(d3.time.months)
-		  # .brushOn(true)
-		  .legend(dc.legend().x(60).y(10).itemHeight(13).gap(5))
-    	.renderHorizontalGridLines(true)
-    	# .stack(thisChart.getDelta("Wind"),"Wind")
-    	# .stack(thisChart.getDelta("Precip"),"Precip")
-    	# .stack(thisChart.getDelta("Temp_Feels"),"Temp_Feels")
-
-
-    	# .compose([actualValuesChart,normValuesChart,clipsCountChart])
-
-		# for metric in @metricArray
-    	# thisChart.chartObject.stack(thisChart.getDelta(metric),metric)
-
-		# thisChart.innerChart.values = actualValuesChart
-		# thisChart.innerChart.normalValues = normValuesChart
-
-		@charts.delta = thisChart
 
 	refreshCharts: () ->
 		go = @
@@ -257,41 +220,52 @@ class Dashboard
 			chart.updateMetric(@metricName,@displayName)
 			# chart.object.group(chart.averageMetric(@metricName))
 		dc.renderAll()
-		# @renderWordCountGraph()
-		# @activateListeners()
-		# setTimeout ( -> go.loadCalendar()),50
-
-			# chart.object.expireCache()
-		# $("svg").click () ->
-		# 	console.log("refresh svg")
-		# 	dc.events.trigger( -> 
-		# 		@timeSpan = go.charts.timeSeries.chartObject.filter()
-		# 		setTimeout ( -> go.loadCalendar()),350
-		# 	)
+		$("a.months").click()
 		
 
-	activateListeners: () ->
+	activateListeners: () =>
 		go = @
-		timeChart = go.charts.timeSeries.chartObject
+		timeChart = @charts.timeSeries.chartObject
 		@inputBox = $(".input-group input")[0]
-		$("#upperHalf .leftCol ul li").on "click","a", ->
+		$("#upperHalf .leftCol ul li a").on "click", ->
 			go.metricName = $(this).attr("data-name")
 			go.displayName = $(this).html()
-			$("#upperHalf .leftCol li").removeClass("active")
-			$(this).parent().addClass("active")
+			go.units = $(this).attr("data-units")
+			$("#upperHalf .leftCol li a").removeClass("active")
+			$(this).addClass("active")
+			$("#cal-heatmap h4").text(go.displayName+" "+go.units)
+			ga('send','event','weather metrics', 'new metric', go.displayName);
 			go.refreshCharts()
 
-		$("#upperHalf .rightCol").on "click","button", ->
-			queryString = go.inputBox.value
-			go.getWordCount(queryString)
+		$("#upperHalf .input-group").on "click","button", =>
+			@lastQuery = @inputBox.value
+			ga('send','event','Word Search', 'new search', @lastQuery);
+			@getWordCount()
 
 		$(@inputBox).keypress (e) ->
-			console.log(e.which)
 			if e.which == 13
-					console.log("clicked")
-					$("#upperHalf .rightCol button").click()
+					$("#upperHalf .input-group button").click()
 
-	loadCalendar: () ->
+		monthChartWidth = $("#lowerHalf div.rightCol").outerWidth()
+		buttonWidth = $("div.rightCol span.monthButton").outerHeight()
+		totalWidth = monthChartWidth + buttonWidth
+		$("#lowerHalf div.leftCol").css("transform","translateX("+buttonWidth+"px)")
+		$("#lowerHalf div.rightCol").css("transform","translateX(-"+monthChartWidth+"px)")
+
+		monthsViewable = false
+		$("span.monthButton").on "click", () =>
+			if monthsViewable == false
+				$("#lowerHalf div.leftCol").css("transform","translateX("+totalWidth+"px)")
+				$("#lowerHalf div.rightCol").css("transform","translateX("+0+"px)")
+				$("span.monthChart")
+				monthsViewable = true
+			else
+				$("#lowerHalf div.leftCol").css("transform","translateX("+buttonWidth+"px)")
+				$("#lowerHalf div.rightCol").css("transform","translateX(-"+monthChartWidth+"px)")
+				monthsViewable = false
+
+
+	loadCalendar: () =>
 		# console.log("in calendar")
 		$("div.ch-tooltip").remove()
 		
@@ -311,31 +285,37 @@ class Dashboard
 			metricValues = precipReduceHack(@dimension.dayStamp,@metricName)
 
 		json = buildCalendarJson(metricValues.all())
-		# debugger
-		# values = _.values(json)
-		max = _.max(_.pluck(_.pluck(metricValues.all(),'value'),'avg_avg'))
-		#get max for avgs instead
-		interval = max/10;
-		
+		legendIntervals = calculateIntervals(metricValues)
 		numOfMonths = Math.ceil(((end - begin) / 31536000000)*12)
 		cellSize = @upperHeight*.125
 
 		@cal.init({
 			domain: "month",
 			subDomain: "x_day",
-			start: begin,
+			start: begin, 
+			domainDynamicDimension: false
 			range: numOfMonths,
-			legend: [interval, 2 * interval, 3 * interval, 4 * interval,5 * interval,6 * interval,7 * interval,8*interval,9*interval, max],
-			legendColors: ["#efefef", "coral"]
+			legend: legendIntervals
+			legendColors: ["#ebf0f5", '#336699']
+			itemName: [@units,@units]
 			cellSize: cellSize
+			legendMargin: [0,0,cellSize/2,0]
 			legendCellSize: cellSize/2
 			domainGutter: cellSize/2
-			legendOrientation: "vertical"
-			legendVerticalPosition: "center"
-			legendMargin: [0,cellSize,0,0]
+			legendOrientation: "horizontal"
+			legendVerticalPosition: "top"
+			# legendMargin: [0,cellSize,0,0]
 			data: json
+			weekStartOnMonday: false
 			dataType: "json"
-			onClick: (date,items) => @loadNewsClips(date, items)
+			onClick: (clickDate,items) => 
+				@loadNewsClips(clickDate, items)
+				clickDate.setDate(clickDate.getDate()-1)
+				dte = moment(clickDate)
+				$("#date").text(dte.format("dddd MMM Do, YYYY"))
+				$("#date").addClass("hidden")
+				$(".tv-clip").remove()
+				ga('send','event','calendar days', 'day clicked', $("#date").text());
 		})
 
 		metricValues.dispose()
@@ -343,21 +323,25 @@ class Dashboard
 	loadNewsClips: (date,items) =>
 		# console.log(date.toISOString())
 		# console.log(items)
+		$("#tv-container div.bigLoader").removeClass("hidden")
+		$('html, body').animate({scrollTop: $(document).height()}, 'slow')
 		firstDate = new Date(date.getTime())
 		date.setDate(date.getDate()+1)
 		$.ajax $SCRIPT_ROOT+'/grabClips',
 			  data :
-			    year1  : firstDate.getFullYear()
+			    year1  : String(firstDate.getFullYear())
 			    month1 : ('0' + (firstDate.getMonth()+1)).slice(-2)
 			    day1  : ('0' + firstDate.getDate()).slice(-2)
-			    year2  : date.getFullYear()
+			    year2  : String(date.getFullYear())
 			    month2 : ('0' + (date.getMonth()+1)).slice(-2)
 			    day2  : ('0' + date.getDate()).slice(-2)
 			    query : @lastQuery
-			  success: (response, status, xhr) ->
+			  success: (response, status, xhr) =>
 			  	console.log(response)
+			  	@displayNewsClips(response.clips)
 			  error: (xhr, status, err) -> console.log(err,status,xhr)
-			  # complete : (xhr, status) ->
+			  complete : (xhr, status) ->
+			  	$("#tv-container div.bigLoader").addClass("hidden")
 
 	updateCal: () ->
 		go = @
@@ -384,57 +368,112 @@ class Dashboard
 		@cal.options.legend = [interval, 2 * interval, 3 * interval, 4 * interval,5 * interval,6 * interval,7 * interval,8*interval,9*interval, max]
 		@cal.update(json)
 
-	getWordCount: (queryString) ->
-		go = @
-		queryObject = _.findWhere(@queries,{query:queryString})
-
+	getWordCount: () =>
+		$("#upperHalf div.smallLoader").removeClass("hidden")
+		queryObject = _.findWhere(@queries,{query:@lastQuery})
 		if queryObject
-			renderWordCountGraph(queryObject)
+			@lastQueryResults = queryObject.results
+			@renderWordCountGraph()
 		else
 			$.ajax $SCRIPT_ROOT+'/newQuery',
 			  data :
-			    query : queryString
-			  success  : (response, status, xhr) ->
-			  	go.lastQuery = response.dailyCounts
-					# console.log(response)
-			  	go.renderWordCountGraph()
+			    query : @lastQuery
+			  success  : (response, status, xhr) =>
+						@lastQueryResults = response.dailyCounts
+						if @lastQueryResults == null
+						 	 alert('It doesn\'t seem "'+@lastQuery+'" has ever been said before on the news.')
+						else		
+							@queries.push({query:@lastQuery,results:response.dailyCounts})
+							@renderWordCountGraph()
+						$("#upperHalf div.smallLoader").addClass("hidden")
 			  error    : (xhr, status, err) -> console.log(err,status,xhr)
 			  # complete : (xhr, status) ->
 
-	renderWordCountGraph: () ->
-				$("g.area").remove()
-				chart = @charts.timeSeries.chartObject
-				console.log(@lastQuery)
-				height = chart.xAxisY() 
-				max = _.max(_.pluck(@lastQuery,"value"))
-				x = chart.x()
-				y = d3.scale.linear().domain([0, max]).range([height, 0])
+	renderWordCountGraph: () =>
+		$("#upperHalf div.smallLoader").addClass("hidden")
+		$("g.area").remove()
+		chart = @charts.timeSeries.chartObject
+		# chart.redraw()
+		# console.log(@lastQuery)
+		height = chart.xAxisY() 
+		max = _.max(_.pluck(@lastQueryResults,"value"))
+		x = chart.x()
+		y = d3.scale.linear().domain([0, max]).range([height, 0])
 
 
-				group = chart.g().append("g")
-								.attr("class","area")
-								.attr("transform", "translate(42,0)")
+		group = chart.g().append("g")
+						.attr("class","area")
+						.attr("transform", "translate(42,0)")
 
 
-				area = d3.svg.area()
-							 .x( (d) -> x(d3.time.format("%Y-%m").parse(d.key)))
-							 .y0(height	)
-							 .y1( (d) -> y(d.value))
-							 .interpolate("basis-open")
-							 # .y( (d) -> 4000)
-				chart.g().select("g.area").append("path")
-							 .datum(@lastQuery)
-							 .attr("d",area)
-							 .style("fill", "rgba(153,153,153,.25)" )
-		
-				yAxisRight = d3.svg.axis().scale(y).orient("right").ticks(3)
-				group.append("g")
-								.attr("transform", "translate(" + (chart.xAxisLength()) + ",0)")
-								.attr("class","axis y hack")
-								.call(yAxisRight)
+		area = d3.svg.area()
+					 .x( (d) -> x(d3.time.format("%Y-%m").parse(d.key)))
+					 .y0(height	)
+					 .y1( (d) ->
+					 		# debugger
+					 		if moment(d3.time.format("%Y-%m").parse(d.key)).year() < 2014
+					 			y(d.value)
+					  	else 
+					  		y(0)
+					  )
+					 .interpolate("basis-open")
+					 # .y( (d) -> 4000)
+		chart.g().select("g.area").append("path")
+					 .datum(@lastQueryResults)
+					 .attr("d",area)
+					 .style("fill", "rgba(153,153,153,.25)" )
 
-				$("g.brush").remove()
-				chart.renderBrush(chart.g())
+		yAxisRight = d3.svg.axis().scale(y).orient("right").ticks(3)
+		group.append("g")
+						.attr("transform", "translate(" + (chart.xAxisLength()) + ",0)")
+						.attr("class","axis hack")
+						.call(yAxisRight)
+		if $(chart.anchor()).find("g.dc-legend-item").length == 3
+			$(chart.anchor()).find("g.dc-legend-item:last-child").remove()
+		# debugger
+		act_legend = $(chart.anchor()).find("g.dc-legend-item:first-child")
+		newItem = $(act_legend).clone().css("transform","translateY(36px)")
+		newItem.find("text").text('TV news mentions of "'+@lastQuery+'"')
+		newItem.find("rect").css("fill","rgba(153,153,153,.4)")
+		$(chart.anchor() + " g.dc-legend").append(newItem)
+
+		$("#graphTitle span.metric").text(@displayName + " "+@units)
+		$("#graphTitle span.query").text(@lastQuery)
+		# chart.yAxisLabel(@displayName+" "+@units)
+		# chart.renderYAxis()
+
+		$("g.brush").remove()
+		# chart.brushOn(false)
+		chart.renderBrush(chart.g())
+		# chart.redraw()
+
+	displayNewsClips: (clips) =>
+
+		$(".tv-clip").remove()
+		$("#date").removeClass("hidden")
+
+		if clips.length == 0
+			dte = $("#date").text()
+			$("#date").text('No local news clips containg "'+@lastQuery+'"" were found on '+dte)
+
+
+		for clip in clips
+			tvFrame = @tvFrameTemplate.clone().removeClass("template").addClass("tv-clip")
+			iFrame = tvFrame.find("iframe").remove().addClass("well")
+			tvFrame.appendTo("#tv-container")
+
+			tvFrame.find(".show").text(clip.show)
+			tvFrame.find(".date").text(clip.date.split(" ")[3]+" "+clip.date.split(" ")[4])
+			tvFrame.find(".station").text(clip.station)
+			# debugger
+			iFrame.attr("src", clip.link)
+			width = tvFrame.find(".caption").innerWidth()
+			iFrame.attr("width", width)
+			iFrame.attr("height", width*.75)
+			iFrame.prependTo(tvFrame)
+
+			# break
+
 
 		# cal.update(calFormattedJson)
 		# console.log((new Date() - startTime)/1000)

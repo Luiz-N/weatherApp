@@ -1,52 +1,316 @@
-.counties 
-  fill: none
-.states
-  fill: none
-  stroke: #fff
-  stroke-linejoin: round
+// .hidden
+  // display: none
+// rgba(28,139,152,1)
+
+$weatherColor: rgba(51,102,153,1)
+$weatherColorDim: rgba(51,102,153,.65)
+$greyBackground: rgba(255,255,255,.9)
+$greyBackgroundDim: rgba(255,255,255,.75)
+
+// $weatherColorDimmest: rgba(51,102,153,.7)
+
 
 h1
   text-align:center
+body.container-fluid
+  // background-color: $greyBackground
+  color: $greyBackground
+  padding: 0
+  background-color: $weatherColorDim
+
+
+  h1
+    3em
+  h2
+    2.5em
+  h3
+    2em
+  h4
+    1.5em
+
+  h1,h2,h3,h4
+    margin: 0
 
 //#mainWrapper div
+
+header
+  // background-color: $greyBackground
+  padding: .75em 0
+  padding-left: 2em
+  a
+    color: $greyBackground
+    font-size: 1.5em
+    display: inline-block
+    &:hover
+      text-decoration: none
+      font-weight: bolder
+      // color: 
+  a:last-child
+    cursor: pointer
+    float: right
+    padding-right: 2em
+
 #mainWrapper
   overflow: hidden
+  padding: 0
+  .chart
+    width: 100%
+    float: none
+  #mainCol
+    padding: 2em
+    padding-top: 0
+  #timeSpan
+    font-size: 4em
+    text-align: center
+    color: $greyBackground
+    padding: .25em
+  .well
+    background-color: $greyBackgroundDim
+    margin-bottom: 0
+    border-color: $greyBackgroundDim
+    border-top-color: transparent
+
+
   #upperHalf
-    .chart
-      width: 100% 
     g.resize
       display: none
     rect.background
       display: none
-    .buttons
-      background-color: rgba(240,128,128,.7)
-      ul
+    .leftCol
+
+      #timeSeries
+        rect.extent
+          fill: $weatherColor
+        h4
+          color: black
+          text-align: center
+        // border: 2px solid $weatherColorDim
+        // border-top: 0
+        // border-radius: 1px
+      // background-color: $weatherColorDim
+      // padding-top: 0
+      // padding: .25em
+      // border-radius: 3px
+      ul.nav-pills
+        // background-color: $weatherColorDimmest
         list-style: none
+        margin-left: 2px
         li
+          float: right
+          a
+            background-color: $weatherColor
+            color: $greyBackgroundDim
+            border: 1px solid #ddd
+            border-bottom-color: transparent
+            margin-right: 1px
+            line-height: 1.42857143
+            border: 1px solid transparent
+            border-radius: 4px 4px 0 0
+            &:hover
+              background-color: $greyBackgroundDim
+              color: $weatherColor
+            &.active
+              background-color: $greyBackgroundDim
+              color: $weatherColor
+        li:first-child
           float: left
+          width: 25%
+          input
+            background-color: $greyBackgroundDim
+            border-color: $greyBackgroundDim
+            font-size: 1.5em
+          button
+            background-color: $weatherColor
+            border-color: $weatherColor
+            color: $greyBackgroundDim
+          // border: 2px solid $weatherColorDim
     .rightCol
       overflow: hidden
 
   #lowerHalf
+    overflow: hidden
+    position: relative
+    ul.nav
+      li a
+        background-color: $weatherColor
+        color: $greyBackgroundDim
+        border: 1px solid #ddd
+        border-bottom-color: transparent
+        margin-right: 1px
+        line-height: 1.42857143
+        border: 1px solid transparent
+        border-radius: 4px 4px 0 0
+        &:hover
+          background-color: $greyBackgroundDim
+          color: $weatherColor
+        &.active
+          background-color: $greyBackgroundDim
+          color: $weatherColor
 
-    .leftCol
+    #tabContent
       height: 100%
-      text-align: center
-      overflow-x: scroll
-    #cal-heatmap
+      width: 100%
+    #months
+      // padding: 1em
+      overflow: hidden
+    #monthChart
+      // padding: 1em 0 1em .5em
+    #monthSelector
+      background-color: $greyBackground
+      height: 100%
+      position: absolute
+      right: -2em
+      width: 3em
+      top: 0
+    span.monthButton
+      position: absolute
+      -webkit-transform: rotate(-90deg)
+      -moz-transform: rotate(-90deg)
+      -ms-transform: rotate(-90deg)
+      transform: rotate(-90deg)
       display: block
-      // position: absolute
-      top: 50%
-      height: 30%
-      width: 50%
-      margin: -15% 0 0 0
+      width: 100%
+      right: -54%
+      background: $greyBackgroundDim
+      top: 45%
+      color: $weatherColor
+      font-size: 1.5em
+      font-weight: 600
+      padding: .5em 0 .25em 0
+      border-top: 2px dashed $weatherColor
+      &:hover
+        background: $weatherColor
+        color: $greyBackground
+        cursor: pointer
+        border-top: 2px dashed $greyBackgroundDim
+
+    #search
+      color: black
+      p
+        padding-top: 2em
+    .leftCol
+      transition: all 400ms ease-out
+      margin-top: 0em
+      text-align: center
+      overflow: hidden
+      padding: 0
+    #cal-heatmap
+      padding: 0 0 0 2em
+      overflow-y: hidden
+      h4
+        padding: .5em 0
+        color: black
+        text-align: left
+      svg.graph-legend
+        -webkit-transform: rotate(180deg)
       g rect:hover
         cursor: pointer
       .graph-label
+        fill: #666
         font-size: 1.5em
     .rightCol
+      transition: all 400ms ease-out
+      position: absolute
       height: 100%
       text-align: center
-      overflow: scroll
+      // transform: translateX(-550px)
+      // overflow: hidden
 
+  #tv-container
+    // margin-top: 3em
+    .tvFrame
+      padding-bottom: 2em
+    #date
+      text-align: center
+      color: $greyBackground
+      font-size: 4em
+      padding: .25em 0
+    iframe
+      margin-bottom: 0
+    .template
+      position: absolute
+      opacity: 0
+      x: -5000
+    .caption
+      padding: .5em 1em
+      color: black
+      p
+        padding-bottom: 0
+        margin: 0
+        a
+          font-size: 1.1em
+          background-color: $greyBackground
+        a:first-child
+          float: left
+        a:last-child
+          float: right
+
+      h3
+        border-bottom: 1px solid lightgrey
+        padding-bottom: .15em
+        margin-bottom: .25em
+      h4,p
+        color: #999
+
+#welcomeModal
+  color: $weatherColor
+  div.modal-header, div.modal-footer
+    background-color: $weatherColorDim
+    color: $greyBackground
+    margin: 0
+    span
+      position: absolute
+      left: 20px
+      bottom: 20px
+  div.modal-dialog
+    width: 50%
+    margin: auto
+    img
+      width: 100%
+      margin: .75em 0 
+      padding: .5em 0
+      border-bottom: 1px dashed
+      border-top: 1px dashed
+      border-color: black
+  a
+    color: $weatherColor
+    border-bottom: 1px dashed
+    &:hover
+      border: none
+  h3
+    color: black
+    text-align: center
+    line-height: 1.25em
+  p
+    font-size: 1em
+    margin: 0
+    color: black
+  button
+    background-color: $greyBackground
+    border-color: $greyBackground
+    color: $weatherColor
+    font-size: 1.5em
+    &:hover
+      background-color: $weatherColor
+      border-color: $weatherColor
+      color: $greyBackground
+
+
+div.bigLoader
+  text-align: center
+  padding: 3em
+  img
+    width: 8%
+div.smallLoader
+  position: absolute
+  left: 26.5%
+
+.cf:before,
+.cf:after 
+  content: " "
+  display: table
+
+
+.cf:after 
+  clear: both
 

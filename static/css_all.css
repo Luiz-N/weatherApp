@@ -1,99 +1,524 @@
-/* line 1 */
+/* line 15 */
 /* line 2 */
-.counties {
-  fill: none;
+body.container-fluid {
+  color: rgba(255, 255, 255, 0.9);
+  padding: 0;
+  background-color: rgba(51, 102, 153, 0.65);
 }
 
-/* line 3 */
-/* line 7 */
-.states {
-  fill: none;
-  stroke: white;
-  stroke-linejoin: round;
+/* line 31 */
+/* line 8 */
+body.container-fluid h1, body.container-fluid h2, body.container-fluid h3, body.container-fluid h4 {
+  margin: 0;
 }
 
-/* line 12 */
-/* line 14 */
+/* line 36 */
+/* line 13 */
+header {
+  padding: 0.75em 0;
+  padding-left: 2em;
+}
+
+/* line 40 */
+/* line 18 */
+header a {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.5em;
+  display: inline-block;
+}
+
+/* line 44 */
+/* line 24 */
+header a:hover {
+  text-decoration: none;
+  font-weight: bolder;
+}
+
+/* line 48 */
+/* line 29 */
+header a:last-child {
+  cursor: pointer;
+  float: right;
+  padding-right: 2em;
+}
+
+/* line 53 */
+/* line 36 */
 #mainWrapper {
   overflow: hidden;
+  padding: 0;
 }
 
-/* line 15 */
-/* line 18 */
-#mainWrapper #upperHalf .chart {
+/* line 56 */
+/* line 41 */
+#mainWrapper .chart {
   width: 100%;
+  float: none;
 }
 
-/* line 17 */
-/* line 22 */
+/* line 59 */
+/* line 46 */
+#mainWrapper #mainCol {
+  padding: 2em;
+  padding-top: 0;
+}
+
+/* line 62 */
+/* line 51 */
+#mainWrapper #timeSpan {
+  font-size: 4em;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  padding: 0.25em;
+}
+
+/* line 67 */
+/* line 58 */
+#mainWrapper .well {
+  background-color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 0;
+  border-color: rgba(255, 255, 255, 0.75);
+  border-top-color: transparent;
+}
+
+/* line 75 */
+/* line 65 */
 #mainWrapper #upperHalf g.resize {
   display: none;
 }
 
-/* line 19 */
-/* line 26 */
+/* line 77 */
+/* line 69 */
 #mainWrapper #upperHalf rect.background {
   display: none;
 }
 
-/* line 21 */
-/* line 30 */
-#mainWrapper #upperHalf .buttons {
-  background-color: rgba(240, 128, 128, 0.7);
+/* line 82 */
+/* line 73 */
+#mainWrapper #upperHalf .leftCol #timeSeries rect.extent {
+  fill: #336699;
 }
 
-/* line 23 */
-/* line 34 */
-#mainWrapper #upperHalf .buttons ul {
+/* line 84 */
+/* line 77 */
+#mainWrapper #upperHalf .leftCol #timeSeries h4 {
+  color: black;
+  text-align: center;
+}
+
+/* line 94 */
+/* line 82 */
+#mainWrapper #upperHalf .leftCol ul.nav-pills {
   list-style: none;
+  margin-left: 2px;
 }
 
-/* line 25 */
-/* line 38 */
-#mainWrapper #upperHalf .buttons ul li {
+/* line 98 */
+/* line 87 */
+#mainWrapper #upperHalf .leftCol ul.nav-pills li {
+  float: right;
+}
+
+/* line 100 */
+/* line 91 */
+#mainWrapper #upperHalf .leftCol ul.nav-pills li a {
+  background-color: #336699;
+  color: rgba(255, 255, 255, 0.75);
+  border: 1px solid #dddddd;
+  border-bottom-color: transparent;
+  margin-right: 1px;
+  line-height: 1.42857;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+}
+
+/* line 109 */
+/* line 102 */
+#mainWrapper #upperHalf .leftCol ul.nav-pills li a:hover {
+  background-color: rgba(255, 255, 255, 0.75);
+  color: #336699;
+}
+
+/* line 112 */
+/* line 107 */
+#mainWrapper #upperHalf .leftCol ul.nav-pills li a.active {
+  background-color: rgba(255, 255, 255, 0.75);
+  color: #336699;
+}
+
+/* line 115 */
+/* line 112 */
+#mainWrapper #upperHalf .leftCol ul.nav-pills li:first-child {
   float: left;
+  width: 25%;
 }
 
-/* line 27 */
-/* line 42 */
+/* line 118 */
+/* line 117 */
+#mainWrapper #upperHalf .leftCol ul.nav-pills li:first-child input {
+  background-color: rgba(255, 255, 255, 0.75);
+  border-color: rgba(255, 255, 255, 0.75);
+  font-size: 1.5em;
+}
+
+/* line 122 */
+/* line 123 */
+#mainWrapper #upperHalf .leftCol ul.nav-pills li:first-child button {
+  background-color: #336699;
+  border-color: #336699;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* line 127 */
+/* line 129 */
 #mainWrapper #upperHalf .rightCol {
   overflow: hidden;
 }
 
-/* line 32 */
-/* line 46 */
-#mainWrapper #lowerHalf .leftCol {
+/* line 130 */
+/* line 133 */
+#mainWrapper #lowerHalf {
+  overflow: hidden;
+  position: relative;
+}
+
+/* line 134 */
+/* line 138 */
+#mainWrapper #lowerHalf ul.nav li a {
+  background-color: #336699;
+  color: rgba(255, 255, 255, 0.75);
+  border: 1px solid #dddddd;
+  border-bottom-color: transparent;
+  margin-right: 1px;
+  line-height: 1.42857;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+}
+
+/* line 143 */
+/* line 149 */
+#mainWrapper #lowerHalf ul.nav li a:hover {
+  background-color: rgba(255, 255, 255, 0.75);
+  color: #336699;
+}
+
+/* line 146 */
+/* line 154 */
+#mainWrapper #lowerHalf ul.nav li a.active {
+  background-color: rgba(255, 255, 255, 0.75);
+  color: #336699;
+}
+
+/* line 150 */
+/* line 159 */
+#mainWrapper #lowerHalf #tabContent {
   height: 100%;
-  text-align: center;
-  overflow-x: scroll;
+  width: 100%;
 }
 
-/* line 36 */
-/* line 52 */
-#mainWrapper #lowerHalf #cal-heatmap {
+/* line 153 */
+/* line 164 */
+#mainWrapper #lowerHalf #months {
+  overflow: hidden;
+}
+
+/* line 158 */
+/* line 168 */
+#mainWrapper #lowerHalf #monthSelector {
+  background-color: rgba(255, 255, 255, 0.9);
+  height: 100%;
+  position: absolute;
+  right: -2em;
+  width: 3em;
+  top: 0;
+}
+
+/* line 165 */
+/* line 177 */
+#mainWrapper #lowerHalf span.monthButton {
+  position: absolute;
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
   display: block;
-  top: 50%;
-  height: 30%;
-  width: 50%;
-  margin: -15% 0 0 0;
+  width: 100%;
+  right: -54%;
+  background: rgba(255, 255, 255, 0.75);
+  top: 45%;
+  color: #336699;
+  font-size: 1.5em;
+  font-weight: 600;
+  padding: 0.5em 0 0.25em 0;
+  border-top: 2px dashed #336699;
 }
 
-/* line 43 */
-/* line 60 */
+/* line 181 */
+/* line 195 */
+#mainWrapper #lowerHalf span.monthButton:hover {
+  background: #336699;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  border-top: 2px dashed rgba(255, 255, 255, 0.75);
+}
+
+/* line 187 */
+/* line 202 */
+#mainWrapper #lowerHalf #search {
+  color: black;
+}
+
+/* line 189 */
+/* line 206 */
+#mainWrapper #lowerHalf #search p {
+  padding-top: 2em;
+}
+
+/* line 191 */
+/* line 210 */
+#mainWrapper #lowerHalf .leftCol {
+  transition: all 400ms ease-out;
+  margin-top: 0em;
+  text-align: center;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* line 197 */
+/* line 218 */
+#mainWrapper #lowerHalf #cal-heatmap {
+  padding: 0 0 0 2em;
+  overflow-y: hidden;
+}
+
+/* line 200 */
+/* line 223 */
+#mainWrapper #lowerHalf #cal-heatmap h4 {
+  padding: 0.5em 0;
+  color: black;
+  text-align: left;
+}
+
+/* line 204 */
+/* line 229 */
+#mainWrapper #lowerHalf #cal-heatmap svg.graph-legend {
+  -webkit-transform: rotate(180deg);
+}
+
+/* line 206 */
+/* line 233 */
 #mainWrapper #lowerHalf #cal-heatmap g rect:hover {
   cursor: pointer;
 }
 
-/* line 45 */
-/* line 64 */
+/* line 208 */
+/* line 237 */
 #mainWrapper #lowerHalf #cal-heatmap .graph-label {
+  fill: #666666;
   font-size: 1.5em;
 }
 
-/* line 47 */
-/* line 68 */
+/* line 211 */
+/* line 242 */
 #mainWrapper #lowerHalf .rightCol {
+  transition: all 400ms ease-out;
+  position: absolute;
   height: 100%;
   text-align: center;
-  overflow: scroll;
+}
+
+/* line 221 */
+/* line 249 */
+#mainWrapper #tv-container .tvFrame {
+  padding-bottom: 2em;
+}
+
+/* line 223 */
+/* line 253 */
+#mainWrapper #tv-container #date {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 4em;
+  padding: 0.25em 0;
+}
+
+/* line 228 */
+/* line 260 */
+#mainWrapper #tv-container iframe {
+  margin-bottom: 0;
+}
+
+/* line 230 */
+/* line 264 */
+#mainWrapper #tv-container .template {
+  position: absolute;
+  opacity: 0;
+  x: -5000;
+}
+
+/* line 234 */
+/* line 270 */
+#mainWrapper #tv-container .caption {
+  padding: 0.5em 1em;
+  color: black;
+}
+
+/* line 237 */
+/* line 275 */
+#mainWrapper #tv-container .caption p {
+  padding-bottom: 0;
+  margin: 0;
+}
+
+/* line 240 */
+/* line 280 */
+#mainWrapper #tv-container .caption p a {
+  font-size: 1.1em;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* line 243 */
+/* line 285 */
+#mainWrapper #tv-container .caption p a:first-child {
+  float: left;
+}
+
+/* line 245 */
+/* line 289 */
+#mainWrapper #tv-container .caption p a:last-child {
+  float: right;
+}
+
+/* line 248 */
+/* line 293 */
+#mainWrapper #tv-container .caption h3 {
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 0.15em;
+  margin-bottom: 0.25em;
+}
+
+/* line 252 */
+/* line 299 */
+#mainWrapper #tv-container .caption h4, #mainWrapper #tv-container .caption p {
+  color: #999999;
+}
+
+/* line 255 */
+/* line 304 */
+#welcomeModal {
+  color: #336699;
+}
+
+/* line 257 */
+/* line 308 */
+#welcomeModal div.modal-header, #welcomeModal div.modal-footer {
+  background-color: rgba(51, 102, 153, 0.65);
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+/* line 261 */
+/* line 314 */
+#welcomeModal div.modal-header span, #welcomeModal div.modal-footer span {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+}
+
+/* line 265 */
+/* line 320 */
+#welcomeModal div.modal-dialog {
+  width: 50%;
+  margin: auto;
+}
+
+/* line 268 */
+/* line 325 */
+#welcomeModal div.modal-dialog img {
+  width: 100%;
+  margin: 0.75em 0;
+  padding: 0.5em 0;
+  border-bottom: 1px dashed;
+  border-top: 1px dashed;
+  border-color: black;
+}
+
+/* line 275 */
+/* line 334 */
+#welcomeModal a {
+  color: #336699;
+  border-bottom: 1px dashed;
+}
+
+/* line 278 */
+/* line 339 */
+#welcomeModal a:hover {
+  border: none;
+}
+
+/* line 280 */
+/* line 343 */
+#welcomeModal h3 {
+  color: black;
+  text-align: center;
+  line-height: 1.25em;
+}
+
+/* line 284 */
+/* line 349 */
+#welcomeModal p {
+  font-size: 1em;
+  margin: 0;
+  color: black;
+}
+
+/* line 288 */
+/* line 355 */
+#welcomeModal button {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.9);
+  color: #336699;
+  font-size: 1.5em;
+}
+
+/* line 293 */
+/* line 362 */
+#welcomeModal button:hover {
+  background-color: #336699;
+  border-color: #336699;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* line 299 */
+/* line 369 */
+div.bigLoader {
+  text-align: center;
+  padding: 3em;
+}
+
+/* line 302 */
+/* line 374 */
+div.bigLoader img {
+  width: 8%;
+}
+
+/* line 304 */
+/* line 379 */
+div.smallLoader {
+  position: absolute;
+  left: 26.5%;
+}
+
+/* line 308 */
+/* line 385 */
+.cf:before,
+.cf:after {
+  content: " ";
+  display: table;
+}
+
+/* line 314 */
+/* line 392 */
+.cf:after {
+  clear: both;
 }

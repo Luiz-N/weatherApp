@@ -19,7 +19,6 @@ t1 = null
 
 
 parseDate = d3.time.format("%Y-%m-%d %H:%M:%S").parse
-
 d3.csv("static/aggedWeather.csv", (data) ->
   #d.Date = parseDate(d.Date)
 
@@ -31,6 +30,9 @@ d3.csv("static/aggedWeather.csv", (data) ->
 
   dataSlice = data[0]
   console.log(dataSlice)
+  $("#welcomeModal button").removeClass("disabled")
+  $("#welcomeModal button").text("Start Exploring")
+
   console.log((new Date() - startTime)/1000)
 )
 
